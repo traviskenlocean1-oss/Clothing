@@ -259,29 +259,51 @@ section{ position:relative; }
 .heart-card:hover .heart-card__shadow{ transform:scaleY(1); }
 
 /* ---------- brand quote ---------- */
-/* ---------- brand store: tilted showcase + copy ---------- */
-.brand-store{ padding:7rem 0; overflow:hidden; }
-.brand-store__grid{ display:grid; grid-template-columns:1.05fr 1fr; gap:6vw; align-items:center; }
-.brand-store__media{ perspective:1800px; }
+/* ---------- brand store: tilted device-screen mockup ---------- */
+.brand-store{ padding:7rem 0; overflow:hidden; text-align:center; }
+.brand-store__head{ margin-bottom:3.4rem; }
+.brand-store__media{ perspective:2200px; max-width:1000px; margin:0 auto; }
 .brand-store__frame{
-  position:relative;
-  transform:rotate3d(0,1,0,-14deg) rotate(-3deg);
-  border-radius:16px;
+  display:flex;
+  min-height:420px;
+  border-radius:14px;
   overflow:hidden;
-  box-shadow:34px 46px 70px rgba(0,0,0,.28);
+  box-shadow:44px 56px 90px rgba(0,0,0,.32);
+  transform:rotate3d(0,1,0,-18deg) rotate3d(1,0,0,5deg) rotate(-2deg);
   transition:transform .6s var(--ease);
 }
-.brand-store__media:hover .brand-store__frame{ transform:rotate3d(0,1,0,-7deg) rotate(-1.5deg); }
-.brand-store__frame img{ width:100%; display:block; }
-.brand-store__copy h2{ font-size:clamp(2rem,4vw,3.2rem); margin:1rem 0 1.4rem; }
-.brand-store__copy p{ color:var(--gray); max-width:38ch; margin-bottom:2rem; line-height:1.65; }
+.brand-store__media:hover .brand-store__frame{ transform:rotate3d(0,1,0,-9deg) rotate3d(1,0,0,2.5deg) rotate(-1deg); }
+.brand-store__photo{ flex:1 1 50%; min-width:0; }
+.brand-store__photo img{ width:100%; height:100%; object-fit:cover; display:block; }
+.brand-store__panel{
+  flex:1 1 50%;
+  background:var(--red-shadow);
+  color:var(--white);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:flex-start;
+  gap:2rem;
+  padding:3rem 2.8rem;
+  text-align:left;
+}
+.brand-store__panel p{ font-size:1.15rem; line-height:1.6; }
+.brand-store__badge{
+  background:var(--black);
+  color:var(--white);
+  font-size:.72rem;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  padding:.9em 1.6em;
+}
+.brand-store__cta{ margin-top:3.4rem; }
 
-@media (max-width:900px){
-  .brand-store__grid{ grid-template-columns:1fr; gap:4rem; }
-  .brand-store__frame{ transform:rotate(-2deg); max-width:340px; margin:0 auto; }
-  .brand-store__media:hover .brand-store__frame{ transform:rotate(-2deg); }
-  .brand-store__copy{ text-align:center; }
-  .brand-store__copy p{ margin-left:auto; margin-right:auto; }
+@media (max-width:760px){
+  .brand-store__media{ max-width:340px; }
+  .brand-store__frame{ flex-direction:column; min-height:0; transform:rotate(-1.5deg); }
+  .brand-store__media:hover .brand-store__frame{ transform:rotate(-1.5deg); }
+  .brand-store__photo{ aspect-ratio:4/3; }
+  .brand-store__panel{ padding:2.2rem; }
 }
 
 .photo-block{ position:relative; height:80vh; min-height:520px; overflow:hidden; }
