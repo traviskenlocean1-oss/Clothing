@@ -311,12 +311,17 @@ section{ position:relative; }
 footer.site-footer{ padding:4rem var(--gutter) 2rem; }
 .footer-grid{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:2rem; padding-bottom:2.4rem; }
 .footer-grid .nav__logo{ font-size:2.2rem; }
-.footer-social{ display:flex; gap:1.6rem; font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; }
+.footer-social{ display:flex; gap:2rem; font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; }
+.footer-social a{ display:flex; flex-direction:column; align-items:center; gap:.5rem; }
+.footer-social svg{ width:20px; height:20px; }
 .footer-bottom{ display:flex; justify-content:space-between; padding-top:1.6rem; border-top:1px solid rgba(0,0,0,.1); font-size:.7rem; letter-spacing:.1em; color:var(--gray); flex-wrap:wrap; gap:1rem; }
-.brand-outro{ overflow:hidden; margin:0 calc(var(--gutter) * -1) 1.2rem; }
+.brand-outro{ overflow:hidden; margin:0 calc(var(--gutter) * -1) 1.2rem; width:100vw; }
 .brand-outro span{
   display:block; font-family:var(--font-display); font-size:clamp(4.5rem,17vw,13rem);
-  line-height:.82; white-space:nowrap; letter-spacing:-.01em; color:var(--black); padding-left:.5vw;
+  line-height:.82; white-space:nowrap; letter-spacing:-.01em; color:var(--black);
+  transform-origin:left center;
+  -webkit-mask-image:linear-gradient(180deg, #000 55%, transparent 92%);
+  mask-image:linear-gradient(180deg, #000 55%, transparent 92%);
 }
 .trust-row{ display:flex; align-items:center; gap:.5rem; font-size:.78rem; color:#555; }
 .payment-badges{ display:flex; flex-wrap:wrap; gap:.5rem; padding-bottom:2rem; }

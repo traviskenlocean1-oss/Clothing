@@ -7,6 +7,18 @@
 /* ---------- hero entrance (staggered fade/rise on load) ---------- */
 requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.add('hero-loaded')));
 
+/* ---------- brand-outro: stretch text to fill exactly edge-to-edge ---------- */
+function stretchBrandOutro(){
+  const el = document.querySelector('.brand-outro span');
+  if (!el) return;
+  el.style.transform = 'none';
+  const naturalWidth = el.getBoundingClientRect().width;
+  const targetWidth = window.innerWidth;
+  if (naturalWidth > 0) el.style.transform = `scaleX(${targetWidth / naturalWidth})`;
+}
+window.addEventListener('load', stretchBrandOutro);
+window.addEventListener('resize', stretchBrandOutro);
+
 /* ---------- page transition (square wipe) ----------
    The covering overlay itself is injected synchronously in <head> (before
    paint, so there's no flash of the page underneath). This handles the
