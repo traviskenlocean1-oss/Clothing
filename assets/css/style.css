@@ -274,11 +274,15 @@ section{ position:relative; }
 /* ---------- horizontal collection preview ---------- */
 .scroller{ overflow:hidden; padding:0 0 1rem; }
 .scroller__track{ display:flex; gap:1.6rem; width:max-content; animation:scroller-scroll 36s linear infinite; }
-.scroller:hover .scroller__track{ animation-play-state:paused; }
 @keyframes scroller-scroll{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
 .scroll-card{
   flex:0 0 360px; position:relative; aspect-ratio:3/4;
-  background:var(--white); border:1px solid rgba(0,0,0,.08); overflow:hidden; cursor:pointer;
+  background:var(--white); border:2px solid var(--black); overflow:hidden; cursor:pointer;
+}
+.scroll-card::before{
+  content:""; position:absolute; top:.8rem; right:.8rem; width:22px; height:22px; z-index:2;
+  background:url("../img/hearts/heart-red.png") center/contain no-repeat;
+  opacity:.85; pointer-events:none;
 }
 .scroll-card .tee{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; transition:opacity .4s var(--ease); }
 .scroll-card .tee--back{ opacity:0; }
@@ -291,6 +295,11 @@ section{ position:relative; }
 
 /* ---------- newsletter ---------- */
 .newsletter{ text-align:center; padding:7rem var(--gutter); }
+.newsletter__icons{ display:flex; justify-content:center; gap:1rem; margin-bottom:2.4rem; flex-wrap:wrap; }
+.newsletter__icons img{
+  width:64px; height:64px; object-fit:contain; padding:12px;
+  background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.15); border-radius:4px;
+}
 .newsletter form{ display:flex; justify-content:center; gap:1rem; margin-top:2rem; flex-wrap:wrap; }
 .newsletter input{
   background:transparent; border:none; border-bottom:1px solid currentColor;
