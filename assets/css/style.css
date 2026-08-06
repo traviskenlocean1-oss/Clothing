@@ -302,7 +302,7 @@ footer.site-footer{ padding:4rem var(--gutter) 2rem; }
 .footer-grid{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:2rem; padding-bottom:2.4rem; }
 .footer-grid .nav__logo{ font-size:2.2rem; }
 .footer-social{ display:flex; gap:1.6rem; font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; }
-.footer-bottom{ display:flex; justify-content:space-between; padding-top:1.6rem; border-top:1px solid rgba(255,255,255,.15); font-size:.7rem; letter-spacing:.1em; color:var(--gray); flex-wrap:wrap; gap:1rem; }
+.footer-bottom{ display:flex; justify-content:space-between; padding-top:1.6rem; border-top:1px solid rgba(0,0,0,.1); font-size:.7rem; letter-spacing:.1em; color:var(--gray); flex-wrap:wrap; gap:1rem; }
 .trust-row{ display:flex; align-items:center; gap:.5rem; font-size:.78rem; color:#555; }
 .payment-badges{ display:flex; flex-wrap:wrap; gap:.5rem; padding-bottom:2rem; }
 .payment-badge{
@@ -393,6 +393,12 @@ footer.site-footer{ padding:4rem var(--gutter) 2rem; }
 .about-hero{ background:var(--black); color:var(--white); min-height:60vh; display:flex; align-items:center; justify-content:center; text-align:center; padding:8rem var(--gutter) 4rem; }
 .about-hero .display{ font-size:clamp(2.6rem,8vw,6rem); }
 .split{ display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center; padding:7rem var(--gutter); }
+.brand-heading{
+  display:flex; align-items:baseline; justify-content:center; gap:.6rem;
+  flex-wrap:wrap; padding:5rem var(--gutter) 0; text-align:center;
+}
+.brand-heading .display{ font-size:clamp(2.4rem,6vw,4rem); }
+.brand-heading .script{ font-size:clamp(2.8rem,7vw,4.8rem); }
 .split__media{ aspect-ratio:4/5; background:var(--black); }
 .split__text{ display:flex; flex-direction:column; gap:1.4rem; font-size:1.05rem; line-height:1.8; }
 .split.reverse{ direction:rtl; }
