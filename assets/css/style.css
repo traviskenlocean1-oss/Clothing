@@ -295,6 +295,13 @@ section{ position:relative; }
   text-transform:uppercase;
   padding:.9em 1.6em;
 }
+.brand-store__stamp{
+  position:absolute; z-index:3; pointer-events:none;
+  width:clamp(320px,34vw,560px);
+  left:46%; top:82%;
+  transform:translate(-50%,-50%) rotate(-8deg);
+  filter:drop-shadow(0 4px 4px rgba(0,0,0,.6)) drop-shadow(0 14px 30px rgba(0,0,0,.5));
+}
 
 @media (max-width:900px){
   .brand-store{ min-height:0; display:flex; flex-direction:column; }
@@ -304,6 +311,7 @@ section{ position:relative; }
   }
   .brand-store__panel{ min-height:0; justify-content:center; }
   .brand-store__copy{ width:100%; min-width:0; padding:3.5rem var(--gutter); align-items:center; text-align:center; }
+  .brand-store__stamp{ width:min(76vw,320px); left:50%; top:53vh; transform:translate(-50%,-50%) rotate(-6deg); }
 }
 
 .photo-block{ position:relative; height:80vh; min-height:520px; overflow:hidden; }
