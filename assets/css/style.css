@@ -17,7 +17,7 @@
 
   --font-display:'Anton', 'Bebas Neue', sans-serif;
   --font-script:'Alex Brush', cursive;
-  --font-body:'Inter', 'Helvetica Neue', Arial, sans-serif;
+  --font-body:'Archivo', 'Helvetica Neue', Arial, sans-serif;
   --font-quote:'Cormorant Garamond', serif;
 
   --ease:cubic-bezier(.16,.84,.44,1);
@@ -223,10 +223,10 @@ section{ position:relative; }
 .heart-card__link::after{ content:"→"; transition:transform .3s var(--ease); }
 .heart-card:hover .heart-card__link::after{ transform:translateX(6px); }
 .heart-card__shadow{
-  position:absolute; left:0; right:0; bottom:0; height:0; background:currentColor;
-  opacity:.06; transition:height .5s var(--ease); z-index:0;
+  position:absolute; inset:0; background:currentColor;
+  opacity:.06; transform:scaleY(0); transform-origin:bottom; transition:transform .5s var(--ease); z-index:0;
 }
-.heart-card:hover .heart-card__shadow{ height:100%; }
+.heart-card:hover .heart-card__shadow{ transform:scaleY(1); }
 
 /* ---------- brand quote ---------- */
 .quote-block{ text-align:center; padding:8rem var(--gutter); }
@@ -311,9 +311,9 @@ footer.site-footer{ padding:4rem var(--gutter) 2rem; }
 .accordion-item{ border-top:1px solid rgba(0,0,0,.15); }
 .accordion-item:last-child{ border-bottom:1px solid rgba(0,0,0,.15); }
 .accordion-item button{ width:100%; display:flex; justify-content:space-between; align-items:center; padding:1.2em 0; font-size:.85rem; letter-spacing:.06em; text-transform:uppercase; }
-.accordion-item__panel{ max-height:0; overflow:hidden; transition:max-height .4s var(--ease); font-size:.9rem; color:#333; line-height:1.7; }
-.accordion-item__panel p{ padding-bottom:1.2em; }
-.accordion-item.is-open .accordion-item__panel{ max-height:16em; }
+.accordion-item__panel{ display:grid; grid-template-rows:0fr; transition:grid-template-rows .4s var(--ease); font-size:.9rem; color:#333; line-height:1.7; }
+.accordion-item__panel p{ overflow:hidden; min-height:0; padding-bottom:1.2em; }
+.accordion-item.is-open .accordion-item__panel{ grid-template-rows:1fr; }
 .accordion-item.is-open button{ opacity:.6; }
 
 /* ---------- about page ---------- */
