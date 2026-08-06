@@ -46,33 +46,73 @@
 
     const list = document.querySelector('.cart-items');
     const sub = document.querySelector('.cart-subtotal .amount');
+    if(list){
+      const items = read();
+      list.innerHTML = '';
+      if(!items.length){
+        list.innerHTML = '<p class="cart-empty">Your bag is empty.</p>';
+      } else {
+        items.forEach(i => {
+          const row = document.createElement('div');
+          row.className = 'cart-item';
+          row.innerHTML = `
+            <div class="cart-item__media" style="background:${i.color || '#111'}"></div>
+            <div class="cart-item__meta">
+              <div class="name">${i.name}</div>
+              <div class="opts">Size ${i.size} &middot; Qty ${i.qty}</div>
+            </div>
+            <div class="cart-item__price">$${(i.price * i.qty).toFixed(0)}</div>
+            <button class="cart-item__remove" aria-label="Remove" data-id="${i.id}" data-size="${i.size}">&times;</button>
+          `;
+          list.appendChild(row);
+        });
+      }
+      if(sub) sub.textContent = `$${subtotal().toFixed(0)}`;
+      list.querySelectorAll('.cart-item__remove').forEach(btn => {
+        btn.addEventListener('click', () => remove(btn.dataset.id, btn.dataset.size));
+      });
+    }
+
+    renderCheckout();
+  }
+
+  /* ---------- checkout page: order summary ---------- */
+  function renderCheckout(){
+    const list = document.querySelector('.checkout-items');
     if(!list) return;
 
     const items = read();
+    const placeOrderBtn = document.querySelector('#checkout-form button[type="submit"]');
     list.innerHTML = '';
     if(!items.length){
-      list.innerHTML = '<p class="cart-empty">Your bag is empty.</p>';
+      list.innerHTML = '<p class="cart-empty">Your bag is empty. <a href="shop.html">Continue shopping</a>.</p>';
+      if(placeOrderBtn) placeOrderBtn.disabled = true;
     } else {
       items.forEach(i => {
         const row = document.createElement('div');
-        row.className = 'cart-item';
+        row.className = 'order-item';
         row.innerHTML = `
-          <div class="cart-item__media" style="background:${i.color || '#111'}"></div>
-          <div class="cart-item__meta">
+          <div class="order-item__media" style="background:${i.color || '#111'}"></div>
+          <div class="order-item__meta">
             <div class="name">${i.name}</div>
             <div class="opts">Size ${i.size} &middot; Qty ${i.qty}</div>
           </div>
-          <div class="cart-item__price">$${(i.price * i.qty).toFixed(0)}</div>
-          <button class="cart-item__remove" aria-label="Remove" data-id="${i.id}" data-size="${i.size}">&times;</button>
+          <div class="order-item__price">$${(i.price * i.qty).toFixed(2)}</div>
         `;
         list.appendChild(row);
       });
+      if(placeOrderBtn) placeOrderBtn.disabled = false;
     }
-    if(sub) sub.textContent = `$${subtotal().toFixed(0)}`;
 
-    list.querySelectorAll('.cart-item__remove').forEach(btn => {
-      btn.addEventListener('click', () => remove(btn.dataset.id, btn.dataset.size));
-    });
+    const sub = subtotal();
+    const shipping = sub === 0 ? 0 : (sub >= 100 ? 0 : 8);
+    const total = sub + shipping;
+    const subEl = document.querySelector('.checkout-subtotal .amount');
+    const shipEl = document.querySelector('.checkout-shipping .amount');
+    const totalEl = document.querySelector('.checkout-total .amount');
+    if(subEl) subEl.textContent = `$${sub.toFixed(2)}`;
+    if(shipEl) shipEl.textContent = shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`;
+    if(totalEl) totalEl.textContent = `$${total.toFixed(2)}`;
   }
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -80,6 +120,19 @@
     document.querySelectorAll('[data-cart-open]').forEach(el => el.addEventListener('click', open));
     document.querySelectorAll('[data-cart-close]').forEach(el => el.addEventListener('click', close));
     document.querySelector('.cart-overlay')?.addEventListener('click', close);
+
+    const checkoutForm = document.getElementById('checkout-form');
+    checkoutForm?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if(!read().length) return;
+      const orderNumber = 'PL-' + Math.floor(100000 + Math.random() * 900000);
+      const confirm = document.querySelector('.checkout-confirm');
+      confirm.querySelector('[data-order-number]').textContent = `#${orderNumber}`;
+      checkoutForm.closest('section').hidden = true;
+      confirm.hidden = false;
+      localStorage.removeItem(KEY);
+      render();
+    });
   });
 
   window.PLCart = { add, remove, setQty, count, subtotal, open, close, read };
