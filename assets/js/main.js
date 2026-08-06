@@ -7,6 +7,29 @@
 /* ---------- hero entrance (staggered fade/rise on load) ---------- */
 requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.add('hero-loaded')));
 
+/* ---------- page transition (square wipe) ----------
+   The covering overlay itself is injected synchronously in <head> (before
+   paint, so there's no flash of the page underneath). This handles the
+   reveal-on-load and the cover-then-navigate on internal link clicks. */
+(function(){
+  const overlay = document.getElementById('page-transition');
+  if (!overlay) return;
+  requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('is-revealing')));
+
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a');
+    if (!a) return;
+    const href = a.getAttribute('href');
+    if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+    if (a.target === '_blank' || a.hasAttribute('data-cart-open')) return;
+    if (a.origin && a.origin !== location.origin) return;
+    e.preventDefault();
+    overlay.classList.remove('is-revealing');
+    overlay.classList.add('is-covering');
+    setTimeout(() => { window.location.href = href; }, 420);
+  });
+})();
+
 /* ---------- nav scroll state + mobile menu ---------- */
 const nav = document.querySelector('.nav');
 window.addEventListener('scroll', () => {

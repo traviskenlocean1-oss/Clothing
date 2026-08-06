@@ -10,6 +10,20 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Alex+Brush&family=Cormorant+Garamond:ital,wght@1,500&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
+<script>
+(function(){
+  var o = document.createElement('div');
+  o.id = 'page-transition';
+  o.className = 'page-transition';
+  for (var i = 0; i < 40; i++) {
+    var sq = document.createElement('div');
+    sq.className = 'page-transition__sq';
+    sq.style.transitionDelay = (i % 8) * 0.02 + 's';
+    o.appendChild(sq);
+  }
+  document.documentElement.appendChild(o);
+})();
+</script>
 <script type="module" src="https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
 </head>
 <body>
@@ -181,13 +195,18 @@
 
   const gallery = document.getElementById('gallery');
   gallery.innerHTML = `
-    <div class="product-gallery__main" id="g-main"></div>
+    <div class="product-gallery__main" id="g-main">
+      <div class="product-gallery__view" id="g-view"></div>
+      <button class="product-gallery__arrow product-gallery__arrow--prev" data-arrow="prev" aria-label="Previous view">&#8249;</button>
+      <button class="product-gallery__arrow product-gallery__arrow--next" data-arrow="next" aria-label="Next view">&#8250;</button>
+    </div>
     <div class="product-gallery__thumb is-active" data-view="3d"></div>
     <div class="product-gallery__thumb" data-view="back"></div>
     <div class="product-gallery__thumb" data-view="detail"></div>
     <div class="product-gallery__thumb" data-view="logo"></div>
   `;
   const mainEl = document.getElementById('g-main');
+  const viewOrder = ['3d', 'back', 'detail', 'logo'];
   const views = {
     '3d': () => `
       <model-viewer class="tee-3d" src="assets/models/shirt-${pickBaseModel(p.shirt)}.glb"
@@ -209,14 +228,22 @@
     mv.addEventListener('pointerenter', () => mv.setAttribute('auto-rotate', ''));
     mv.addEventListener('pointerleave', () => mv.removeAttribute('auto-rotate'));
   }
+  const viewEl = document.getElementById('g-view');
+  let currentView = viewOrder[0];
   function setView(name){
-    mainEl.style.display = 'flex';
-    mainEl.style.alignItems = 'center';
-    mainEl.style.justifyContent = 'center';
-    mainEl.innerHTML = views[name]();
-    wireModelViewer(mainEl);
+    currentView = name;
+    viewEl.innerHTML = views[name]();
+    wireModelViewer(viewEl);
     document.querySelectorAll('.product-gallery__thumb').forEach(t => t.classList.toggle('is-active', t.dataset.view === name));
   }
+  document.querySelectorAll('[data-arrow]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const dir = btn.dataset.arrow === 'next' ? 1 : -1;
+      const idx = viewOrder.indexOf(currentView);
+      const nextIdx = (idx + dir + viewOrder.length) % viewOrder.length;
+      setView(viewOrder[nextIdx]);
+    });
+  });
   document.querySelectorAll('.product-gallery__thumb').forEach(t => {
     t.style.display = 'flex'; t.style.alignItems = 'center'; t.style.justifyContent = 'center';
     if(t.dataset.view === '3d'){
