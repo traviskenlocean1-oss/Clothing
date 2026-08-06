@@ -4,6 +4,9 @@
    input lag with a physical mouse wheel's discrete notches. GSAP/ScrollTrigger
    were also loaded but never actually used for anything, so both are dropped. */
 
+/* ---------- hero entrance (staggered fade/rise on load) ---------- */
+requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.add('hero-loaded')));
+
 /* ---------- nav scroll state + mobile menu ---------- */
 const nav = document.querySelector('.nav');
 window.addEventListener('scroll', () => {
@@ -75,7 +78,7 @@ function renderTee({ face = 'front', shirt = '#111111', heart = 'assets/img/hear
   const heartY = face === 'front' ? 78 : 60;
   return `
     <svg class="tee-mock" viewBox="0 0 200 240" width="${size}%">
-      <path d="${path}" fill="${shirt}" stroke="rgba(255,255,255,.15)" stroke-width="1.5"/>
+      <path d="${path}" fill="${shirt}" stroke="rgba(0,0,0,.15)" stroke-width="1.5"/>
       <image href="${heart}" x="${heartX}" y="${heartY}" width="${heartSize}" height="${heartSize}" />
     </svg>`;
 }
