@@ -139,7 +139,38 @@
         <div class="row checkout-shipping"><span>Shipping</span><span class="amount">$0.00</span></div>
         <div class="row total checkout-total"><span>Total</span><span class="amount">$0.00</span></div>
       </div>
-      <button type="submit" class="btn btn-solid" style="width:100%;margin-top:1.6rem;"><span>Place Order</span></button>
+      <button type="button" id="reveal-payment-btn" class="btn btn-solid" style="width:100%;margin-top:1.6rem;"><span>Place Order</span></button>
+
+      <div class="checkout-payment" id="checkout-payment" hidden>
+        <h2 class="checkout-section-title">Payment</h2>
+        <div class="payment-badges" style="padding-bottom:1.2rem;">
+          <span class="payment-badge payment-badge--visa">VISA</span>
+          <span class="payment-badge payment-badge--mastercard"><span class="mc-circle red"></span><span class="mc-circle orange"></span></span>
+          <span class="payment-badge payment-badge--amex">AMEX</span>
+          <span class="payment-badge payment-badge--discover">DISCOVER</span>
+          <span class="payment-badge payment-badge--paypal">PayPal</span>
+          <span class="payment-badge payment-badge--applepay"> Pay</span>
+        </div>
+        <div class="form-field">
+          <label for="card-name">Name on Card</label>
+          <input type="text" id="card-name" name="card-name" placeholder="Name as shown on card" required disabled>
+        </div>
+        <div class="form-field" style="margin-top:1.2rem;">
+          <label for="card-number">Card Number</label>
+          <input type="text" id="card-number" name="card-number" placeholder="1234 5678 9012 3456" inputmode="numeric" maxlength="19" required disabled>
+        </div>
+        <div class="checkout-form__row" style="margin-top:1.2rem;">
+          <div class="form-field">
+            <label for="card-expiry">Expiry</label>
+            <input type="text" id="card-expiry" name="card-expiry" placeholder="MM / YY" required disabled>
+          </div>
+          <div class="form-field">
+            <label for="card-cvv">CVV</label>
+            <input type="text" id="card-cvv" name="card-cvv" placeholder="CVV" inputmode="numeric" maxlength="4" required disabled>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-solid" style="width:100%;margin-top:1.6rem;"><span>Finish Checkout</span></button>
+      </div>
     </div>
 
   </form>
@@ -149,7 +180,7 @@
   <div class="container" style="text-align:center;padding:6rem 0;">
     <span class="eyebrow">Order Confirmed</span>
     <h1 class="display" style="font-size:clamp(2.2rem,5vw,3.6rem);margin:1rem 0;">Thank You.</h1>
-    <p style="color:var(--gray);max-width:46ch;margin:0 auto 2rem;">Your order <strong data-order-number></strong> has been placed. This is a demo storefront, so no payment was processed — a confirmation email would normally land in your inbox here.</p>
+    <p style="color:var(--gray);max-width:46ch;margin:0 auto 2rem;">Thank you for shopping with us at Psychotic Love. Your order <strong data-order-number></strong> has been placed — we'll be sending you an email about your order shortly. This is a demo storefront, so no real payment was processed.</p>
     <a href="shop.html" class="btn btn-dark"><span>Continue Shopping</span></a>
   </div>
 </section>

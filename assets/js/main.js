@@ -193,20 +193,33 @@ document.querySelectorAll('.filter-pill').forEach(pill => {
   });
 });
 
-/* ---------- add-to-cart wiring ---------- */
+/* ---------- add-to-cart / buy-now wiring ---------- */
+function readCardItem(card){
+  const sizeEl = card.querySelector('.size-swatch.is-active');
+  const qtyEl = card.querySelector('.qty-row input');
+  return {
+    id: card.dataset.product,
+    name: card.dataset.name,
+    price: parseFloat(card.dataset.price),
+    color: card.dataset.shirt || '#111111',
+    heart: card.dataset.heart || '',
+    size: sizeEl ? sizeEl.textContent.trim() : 'M',
+    qty: qtyEl ? parseInt(qtyEl.value) : 1
+  };
+}
 document.querySelectorAll('[data-add-to-cart]').forEach(btn => {
   btn.addEventListener('click', () => {
     const card = btn.closest('[data-product]');
     if (!card || !window.PLCart) return;
-    const sizeEl = card.querySelector('.size-swatch.is-active');
-    const qtyEl = card.querySelector('.qty-row input');
-    window.PLCart.add({
-      id: card.dataset.product,
-      name: card.dataset.name,
-      price: parseFloat(card.dataset.price),
-      color: card.dataset.shirt || '#111111',
-      size: sizeEl ? sizeEl.textContent.trim() : 'M',
-      qty: qtyEl ? parseInt(qtyEl.value) : 1
-    });
+    window.PLCart.add(readCardItem(card));
+  });
+});
+document.querySelectorAll('[data-buy-now]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const card = btn.closest('[data-product]');
+    if (!card || !window.PLCart) return;
+    window.PLCart.add(readCardItem(card));
+    window.PLCart.close();
+    window.location.href = 'checkout.html';
   });
 });

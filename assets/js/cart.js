@@ -41,6 +41,13 @@
     document.querySelector('.cart-overlay')?.classList.remove('is-open');
   }
 
+  function teeMediaMarkup(i){
+    if(typeof window.renderTee === 'function'){
+      return window.renderTee({ shirt: i.color || '#111111', heart: i.heart, size: 100 });
+    }
+    return '';
+  }
+
   function render(){
     document.querySelectorAll('.nav__cart-count').forEach(el => el.textContent = count());
 
@@ -56,7 +63,7 @@
           const row = document.createElement('div');
           row.className = 'cart-item';
           row.innerHTML = `
-            <div class="cart-item__media" style="background:${i.color || '#111'}"></div>
+            <div class="cart-item__media">${teeMediaMarkup(i)}</div>
             <div class="cart-item__meta">
               <div class="name">${i.name}</div>
               <div class="opts">Size ${i.size} &middot; Qty ${i.qty}</div>
@@ -82,7 +89,7 @@
     if(!list) return;
 
     const items = read();
-    const placeOrderBtn = document.querySelector('#checkout-form button[type="submit"]');
+    const placeOrderBtn = document.getElementById('reveal-payment-btn');
     list.innerHTML = '';
     if(!items.length){
       list.innerHTML = '<p class="cart-empty">Your bag is empty. <a href="shop.html">Continue shopping</a>.</p>';
@@ -92,7 +99,7 @@
         const row = document.createElement('div');
         row.className = 'order-item';
         row.innerHTML = `
-          <div class="order-item__media" style="background:${i.color || '#111'}"></div>
+          <div class="order-item__media">${teeMediaMarkup(i)}</div>
           <div class="order-item__meta">
             <div class="name">${i.name}</div>
             <div class="opts">Size ${i.size} &middot; Qty ${i.qty}</div>
@@ -122,6 +129,18 @@
     document.querySelector('.cart-overlay')?.addEventListener('click', close);
 
     const checkoutForm = document.getElementById('checkout-form');
+    const revealPaymentBtn = document.getElementById('reveal-payment-btn');
+    const paymentSection = document.getElementById('checkout-payment');
+
+    revealPaymentBtn?.addEventListener('click', () => {
+      if(!read().length) return;
+      if(!checkoutForm.checkValidity()){ checkoutForm.reportValidity(); return; }
+      paymentSection.querySelectorAll('input').forEach(el => el.disabled = false);
+      revealPaymentBtn.hidden = true;
+      paymentSection.hidden = false;
+      paymentSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+
     checkoutForm?.addEventListener('submit', (e) => {
       e.preventDefault();
       if(!read().length) return;

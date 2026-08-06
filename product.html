@@ -95,7 +95,10 @@
       </div>
     </div>
 
-    <button class="btn btn-solid" data-add-to-cart style="width:100%;"><span>Add to Cart</span></button>
+    <div style="display:flex;gap:.8rem;">
+      <button class="btn btn-dark" data-add-to-cart style="flex:1;"><span>Add to Cart</span></button>
+      <button class="btn btn-solid" data-buy-now style="flex:1;"><span>Buy Now</span></button>
+    </div>
 
     <div class="trust-row">
       <span>Free shipping over $100</span>
@@ -199,6 +202,7 @@
   root.dataset.name = p.name;
   root.dataset.price = p.price;
   root.dataset.shirt = p.shirt;
+  root.dataset.heart = p.heart;
 
   document.getElementById('page-title').textContent = `${p.name} | Psychotic Love`;
   document.getElementById('p-name').textContent = p.name;
