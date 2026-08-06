@@ -10,10 +10,11 @@ requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.
 /* ---------- brand-outro: stretch text to fill exactly edge-to-edge ---------- */
 function stretchBrandOutro(){
   const el = document.querySelector('.brand-outro span');
-  if (!el) return;
+  const container = document.querySelector('.brand-outro');
+  if (!el || !container) return;
   el.style.transform = 'none';
   const naturalWidth = el.getBoundingClientRect().width;
-  const targetWidth = window.innerWidth;
+  const targetWidth = container.getBoundingClientRect().width;
   if (naturalWidth > 0) el.style.transform = `scaleX(${targetWidth / naturalWidth})`;
 }
 window.addEventListener('load', stretchBrandOutro);
