@@ -141,6 +141,28 @@
       paymentSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     });
 
+    /* ---------- card brand detection ---------- */
+    const CARD_BRAND_HTML = {
+      visa: '<span class="payment-badge payment-badge--visa">VISA</span>',
+      mastercard: '<span class="payment-badge payment-badge--mastercard"><span class="mc-circle red"></span><span class="mc-circle orange"></span></span>',
+      amex: '<span class="payment-badge payment-badge--amex">AMEX</span>',
+      discover: '<span class="payment-badge payment-badge--discover">DISCOVER</span>'
+    };
+    function detectCardBrand(digits){
+      if(/^4/.test(digits)) return 'visa';
+      if(/^(5[1-5]|2(2[2-9]\d|[3-6]\d\d|7[01]\d|720))/.test(digits)) return 'mastercard';
+      if(/^3[47]/.test(digits)) return 'amex';
+      if(/^(6011|65|64[4-9]|622(1[2-9]\d|[2-8]\d\d|9([01]\d|2[0-5])))/.test(digits)) return 'discover';
+      return null;
+    }
+    const cardNumberInput = document.getElementById('card-number');
+    const cardBrandIcon = document.getElementById('card-brand-icon');
+    cardNumberInput?.addEventListener('input', () => {
+      const digits = cardNumberInput.value.replace(/\D/g, '');
+      const brand = detectCardBrand(digits);
+      cardBrandIcon.innerHTML = brand ? CARD_BRAND_HTML[brand] : '';
+    });
+
     checkoutForm?.addEventListener('submit', (e) => {
       e.preventDefault();
       if(!read().length) return;

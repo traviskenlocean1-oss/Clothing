@@ -157,7 +157,10 @@
         </div>
         <div class="form-field" style="margin-top:1.2rem;">
           <label for="card-number">Card Number</label>
-          <input type="text" id="card-number" name="card-number" placeholder="1234 5678 9012 3456" inputmode="numeric" maxlength="19" required disabled>
+          <div class="card-number-wrap">
+            <input type="text" id="card-number" name="card-number" placeholder="1234 5678 9012 3456" inputmode="numeric" maxlength="19" required disabled>
+            <span class="card-number-brand" id="card-brand-icon" aria-hidden="true"></span>
+          </div>
         </div>
         <div class="checkout-form__row" style="margin-top:1.2rem;">
           <div class="form-field">
@@ -169,7 +172,8 @@
             <input type="text" id="card-cvv" name="card-cvv" placeholder="CVV" inputmode="numeric" maxlength="4" required disabled>
           </div>
         </div>
-        <button type="submit" class="btn btn-solid" style="width:100%;margin-top:1.6rem;"><span>Finish Checkout</span></button>
+        <p class="checkout-consent">By placing this order, you agree to Psychotic Love's <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>, and authorize this card to be charged for the total shown above.</p>
+        <button type="submit" class="btn btn-solid" style="width:100%;margin-top:1.2rem;"><span>Finish Checkout</span></button>
       </div>
     </div>
 
