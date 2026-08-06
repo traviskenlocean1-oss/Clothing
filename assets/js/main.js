@@ -84,14 +84,41 @@ function renderTee({ face = 'front', shirt = '#111111', heart = 'assets/img/hear
 }
 window.renderTee = renderTee;
 
-document.querySelectorAll('[data-tee]').forEach(el => {
+/* ---------- 3D tee mockup (real GLB models, lazy-mounted, hover-to-spin) ---------- */
+function hexToRgba(hex){
+  const n = parseInt(hex.replace('#',''), 16);
+  return [((n>>16)&255)/255, ((n>>8)&255)/255, (n&255)/255, 1];
+}
+function pickBaseModel(hex){
+  const n = parseInt(hex.replace('#',''), 16);
+  const brightness = (((n>>16)&255)*299 + ((n>>8)&255)*587 + (n&255)*114) / 1000;
+  return brightness > 140 ? 'white' : 'black';
+}
+function mount3DTee(el){
+  if (el.dataset.teeMounted) return;
+  el.dataset.teeMounted = '1';
   const shirt = el.dataset.shirt || '#111111';
   const heart = el.dataset.heart;
   el.innerHTML = `
-    <div class="tee tee--front">${renderTee({ face:'front', shirt, heart })}</div>
-    <div class="tee tee--back">${renderTee({ face:'back', shirt, heart })}</div>
+    <model-viewer class="tee-3d" src="assets/models/shirt-${pickBaseModel(shirt)}.glb"
+      camera-controls disable-zoom shadow-intensity="1" exposure="1"
+      rotation-per-second="28deg" interaction-prompt="none"></model-viewer>
+    <img src="${heart}" alt="" class="tee-3d-decal">
   `;
-});
+  const mv = el.querySelector('model-viewer');
+  mv.addEventListener('load', () => {
+    const material = mv.model?.materials?.[0];
+    material?.pbrMetallicRoughness?.setBaseColorFactor(hexToRgba(shirt));
+  });
+  mv.addEventListener('pointerenter', () => mv.setAttribute('auto-rotate', ''));
+  mv.addEventListener('pointerleave', () => mv.removeAttribute('auto-rotate'));
+}
+const teeObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) mount3DTee(e.target); });
+}, { rootMargin: '250px' });
+window.observeTee = (el) => teeObserver.observe(el);
+
+document.querySelectorAll('[data-tee]').forEach(el => teeObserver.observe(el));
 
 /* ---------- accordion (product page) ---------- */
 document.querySelectorAll('.accordion-item > button').forEach(btn => {

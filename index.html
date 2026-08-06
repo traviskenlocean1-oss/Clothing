@@ -14,6 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Alex+Brush&family=Cormorant+Garamond:ital,wght@1,500&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
+<script type="module" src="https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -67,6 +68,36 @@
   <div class="hero__scroll">Scroll</div>
 </section>
 
+<div class="marquee on-cream">
+  <div class="marquee__track">
+    <span class="marquee__item"><img src="assets/img/hearts/heart-blue.png" alt="Blue Heart"></span>
+    <span class="marquee__item display">Built From Broken Hearts</span>
+    <span class="marquee__item"><img src="assets/img/hearts/heart-green.png" alt="Green Heart"></span>
+    <span class="marquee__item display">Psychotic Love</span>
+    <span class="marquee__item"><img src="assets/img/hearts/heart-pink.png" alt="Pink Heart"></span>
+    <span class="marquee__item display">Built From Broken Hearts</span>
+    <span class="marquee__item"><img src="assets/img/hearts/heart-white.png" alt="White Heart"></span>
+    <span class="marquee__item display">Psychotic Love</span>
+    <span class="marquee__item"><img src="assets/img/hearts/heart-coral.png" alt="Coral Heart"></span>
+    <span class="marquee__item display">Built From Broken Hearts</span>
+    <span class="marquee__item"><img src="assets/img/hearts/heart-gray.png" alt="Gray Heart"></span>
+    <span class="marquee__item display">Psychotic Love</span>
+    <!-- duplicate set for seamless loop -->
+    <span class="marquee__item"><img src="assets/img/hearts/heart-blue.png" alt="Blue Heart"></span>
+    <span class="marquee__item display">Built From Broken Hearts</span>
+    <span class="marquee__item"><img src="assets/img/hearts/heart-green.png" alt="Green Heart"></span>
+    <span class="marquee__item display">Psychotic Love</span>
+    <span class="marquee__item"><img src="assets/img/hearts/heart-pink.png" alt="Pink Heart"></span>
+    <span class="marquee__item display">Built From Broken Hearts</span>
+    <span class="marquee__item"><img src="assets/img/hearts/heart-white.png" alt="White Heart"></span>
+    <span class="marquee__item display">Psychotic Love</span>
+    <span class="marquee__item"><img src="assets/img/hearts/heart-coral.png" alt="Coral Heart"></span>
+    <span class="marquee__item display">Built From Broken Hearts</span>
+    <span class="marquee__item"><img src="assets/img/hearts/heart-gray.png" alt="Gray Heart"></span>
+    <span class="marquee__item display">Psychotic Love</span>
+  </div>
+</div>
+
 <section class="on-cream" id="featured">
   <div class="container" style="padding-top:6rem;padding-bottom:6rem;">
     <div class="section-head reveal">
@@ -76,19 +107,19 @@
     <div class="collection-grid">
       <a href="shop.html?filter=blue" class="heart-card reveal" style="color:var(--blue)">
         <div class="heart-card__shadow"></div>
-        <img src="assets/img/hearts/heart-blue.png" alt="Blue Heart graphic" class="heart" width="150" style="filter:drop-shadow(0 14px 22px rgba(0,0,0,.18))">
+        <img src="assets/img/hearts/heart-blue.png" alt="Blue Heart graphic" class="heart" width="190" style="filter:drop-shadow(0 14px 22px rgba(0,0,0,.18))">
         <h3 class="heart-card__name">Blue Heart</h3>
         <span class="heart-card__link">Shop</span>
       </a>
       <a href="shop.html?filter=green" class="heart-card reveal" style="color:var(--green)">
         <div class="heart-card__shadow"></div>
-        <img src="assets/img/hearts/heart-green.png" alt="Green Heart graphic" class="heart" width="150" style="filter:drop-shadow(0 14px 22px rgba(0,0,0,.18))">
+        <img src="assets/img/hearts/heart-green.png" alt="Green Heart graphic" class="heart" width="190" style="filter:drop-shadow(0 14px 22px rgba(0,0,0,.18))">
         <h3 class="heart-card__name">Green Heart</h3>
         <span class="heart-card__link">Shop</span>
       </a>
       <a href="shop.html?filter=pink" class="heart-card reveal" style="color:var(--pink)">
         <div class="heart-card__shadow"></div>
-        <img src="assets/img/hearts/heart-pink.png" alt="Pink Heart graphic" class="heart" width="150" style="filter:drop-shadow(0 14px 22px rgba(0,0,0,.18))">
+        <img src="assets/img/hearts/heart-pink.png" alt="Pink Heart graphic" class="heart" width="190" style="filter:drop-shadow(0 14px 22px rgba(0,0,0,.18))">
         <h3 class="heart-card__name">Pink Heart</h3>
         <span class="heart-card__link">Shop</span>
       </a>
@@ -152,7 +183,12 @@
     </div>
   </div>
   <div class="payment-badges">
-    <span>VISA</span><span>MASTERCARD</span><span>AMEX</span><span>DISCOVER</span><span>PAYPAL</span><span>APPLE PAY</span>
+    <span class="payment-badge payment-badge--visa">VISA</span>
+    <span class="payment-badge payment-badge--mastercard"><span class="mc-circle red"></span><span class="mc-circle orange"></span></span>
+    <span class="payment-badge payment-badge--amex">AMEX</span>
+    <span class="payment-badge payment-badge--discover">DISCOVER</span>
+    <span class="payment-badge payment-badge--paypal">PayPal</span>
+    <span class="payment-badge payment-badge--applepay"> Pay</span>
   </div>
   <div class="footer-bottom">
     <span>&copy; <span id="year"></span> Psychotic Love. All rights reserved.</span>

@@ -14,6 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Alex+Brush&family=Cormorant+Garamond:ital,wght@1,500&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
+<script type="module" src="https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
 </head>
 <body>
 
@@ -30,7 +31,7 @@
   </div>
 </aside>
 
-<nav class="nav" style="color:var(--black);mix-blend-mode:normal;">
+<nav class="nav" style="color:var(--black);background:rgba(246,241,232,.92);backdrop-filter:blur(6px);">
   <a href="index.html" class="nav__logo">PSYCHOTIC <span class="script" data-text="Love">Love</span></a>
   <ul class="nav__links">
     <li><a href="index.html">Home</a></li>
@@ -156,7 +157,12 @@
     </div>
   </div>
   <div class="payment-badges">
-    <span>VISA</span><span>MASTERCARD</span><span>AMEX</span><span>DISCOVER</span><span>PAYPAL</span><span>APPLE PAY</span>
+    <span class="payment-badge payment-badge--visa">VISA</span>
+    <span class="payment-badge payment-badge--mastercard"><span class="mc-circle red"></span><span class="mc-circle orange"></span></span>
+    <span class="payment-badge payment-badge--amex">AMEX</span>
+    <span class="payment-badge payment-badge--discover">DISCOVER</span>
+    <span class="payment-badge payment-badge--paypal">PayPal</span>
+    <span class="payment-badge payment-badge--applepay"> Pay</span>
   </div>
   <div class="footer-bottom">
     <span>&copy; <span id="year"></span> Psychotic Love. All rights reserved.</span>

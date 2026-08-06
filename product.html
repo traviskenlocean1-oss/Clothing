@@ -27,7 +27,7 @@
   </div>
 </aside>
 
-<nav class="nav" style="color:var(--black);mix-blend-mode:normal;">
+<nav class="nav" style="color:var(--black);background:rgba(246,241,232,.92);backdrop-filter:blur(6px);">
   <a href="index.html" class="nav__logo">PSYCHOTIC <span class="script" data-text="Love">Love</span></a>
   <ul class="nav__links">
     <li><a href="index.html">Home</a></li>
@@ -78,6 +78,20 @@
 
     <button class="btn btn-solid" data-add-to-cart style="width:100%;"><span>Add to Cart</span></button>
 
+    <div class="trust-row">
+      <span>Free shipping over $100</span>
+      <span>&middot;</span>
+      <span>Guaranteed safe checkout</span>
+    </div>
+    <div class="payment-badges" style="padding-bottom:0;">
+      <span class="payment-badge payment-badge--visa">VISA</span>
+      <span class="payment-badge payment-badge--mastercard"><span class="mc-circle red"></span><span class="mc-circle orange"></span></span>
+      <span class="payment-badge payment-badge--amex">AMEX</span>
+      <span class="payment-badge payment-badge--discover">DISCOVER</span>
+      <span class="payment-badge payment-badge--paypal">PayPal</span>
+      <span class="payment-badge payment-badge--applepay">&#63743; Pay</span>
+    </div>
+
     <p id="p-desc" style="color:#333;line-height:1.8;padding-top:.6rem;"></p>
 
     <div class="accordion">
@@ -123,7 +137,12 @@
     </div>
   </div>
   <div class="payment-badges">
-    <span>VISA</span><span>MASTERCARD</span><span>AMEX</span><span>DISCOVER</span><span>PAYPAL</span><span>APPLE PAY</span>
+    <span class="payment-badge payment-badge--visa">VISA</span>
+    <span class="payment-badge payment-badge--mastercard"><span class="mc-circle red"></span><span class="mc-circle orange"></span></span>
+    <span class="payment-badge payment-badge--amex">AMEX</span>
+    <span class="payment-badge payment-badge--discover">DISCOVER</span>
+    <span class="payment-badge payment-badge--paypal">PayPal</span>
+    <span class="payment-badge payment-badge--applepay"> Pay</span>
   </div>
   <div class="footer-bottom">
     <span>&copy; <span id="year"></span> Psychotic Love. All rights reserved.</span>
@@ -221,14 +240,7 @@
         <span class="product-card__price">$${rp.price}</span>
       </div>`;
     related.appendChild(el);
-  });
-  document.querySelectorAll('[data-tee]').forEach(el => {
-    const shirt = el.dataset.shirt || '#111111';
-    const heart = el.dataset.heart;
-    el.innerHTML = `
-      <div class="tee tee--front">${renderTee({ face:'front', shirt, heart })}</div>
-      <div class="tee tee--back">${renderTee({ face:'back', shirt, heart })}</div>
-    `;
+    window.observeTee(el.querySelector('[data-tee]'));
   });
 })();
 </script>
