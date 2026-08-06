@@ -2,17 +2,20 @@
 
 /* ---------- smooth scroll (Lenis) + GSAP wiring ---------- */
 let lenis;
+if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
 if (window.Lenis) {
-  lenis = new Lenis({ duration: 1.1, smoothWheel: true });
-  function raf(time){ lenis.raf(time); requestAnimationFrame(raf); }
-  requestAnimationFrame(raf);
+  lenis = new Lenis({ duration: 0.6, smoothWheel: true, wheelMultiplier: 1 });
   if (window.gsap && window.ScrollTrigger) {
+    // GSAP's ticker drives lenis here — do NOT also run a manual rAF loop,
+    // driving lenis.raf() from two clocks at once was causing the scroll lag.
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add((time) => lenis.raf(time * 1000));
     gsap.ticker.lagSmoothing(0);
+  } else {
+    function raf(time){ lenis.raf(time); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
   }
 }
-if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
 
 /* ---------- nav scroll state + mobile menu ---------- */
 const nav = document.querySelector('.nav');
