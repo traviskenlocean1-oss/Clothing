@@ -26,7 +26,7 @@ requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.
     e.preventDefault();
     overlay.classList.remove('is-revealing');
     overlay.classList.add('is-covering');
-    setTimeout(() => { window.location.href = href; }, 420);
+    setTimeout(() => { window.location.href = href; }, 680);
   });
 })();
 
