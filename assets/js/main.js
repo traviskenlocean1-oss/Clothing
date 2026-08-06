@@ -101,7 +101,7 @@ function mount3DTee(el){
   const heart = el.dataset.heart;
   el.innerHTML = `
     <model-viewer class="tee-3d" src="assets/models/shirt-${pickBaseModel(shirt)}.glb"
-      camera-controls disable-zoom shadow-intensity="1" exposure="1"
+      camera-orbit="0deg 78deg 100%" camera-controls disable-zoom shadow-intensity="1" exposure="1"
       rotation-per-second="28deg" interaction-prompt="none"></model-viewer>
     <img src="${heart}" alt="" class="tee-3d-decal">
   `;

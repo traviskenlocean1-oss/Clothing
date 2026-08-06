@@ -191,7 +191,7 @@
   const views = {
     '3d': () => `
       <model-viewer class="tee-3d" src="assets/models/shirt-${pickBaseModel(p.shirt)}.glb"
-        camera-controls disable-zoom shadow-intensity="1" exposure="1" auto-rotate-delay="0"
+        camera-orbit="0deg 78deg 100%" camera-controls disable-zoom shadow-intensity="1" exposure="1" auto-rotate-delay="0"
         rotation-per-second="28deg" interaction-prompt="none"></model-viewer>
       <img src="${p.heart}" alt="${p.name} logo" class="tee-3d-decal">
     `,
