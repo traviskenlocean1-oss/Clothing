@@ -1,4 +1,7 @@
 .git
 .wrangler
+.impeccable
+.gitignore
+.assetsignore
 wrangler.jsonc
 assets/img/brand/source-logo-sheet.jpg
