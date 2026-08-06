@@ -125,32 +125,44 @@ function hexToRgba(hex){
   const n = parseInt(hex.replace('#',''), 16);
   return [((n>>16)&255)/255, ((n>>8)&255)/255, (n&255)/255, 1];
 }
-function pickBaseModel(hex){
-  const n = parseInt(hex.replace('#',''), 16);
-  const brightness = (((n>>16)&255)*299 + ((n>>8)&255)*587 + (n&255)*114) / 1000;
-  return brightness > 140 ? 'white' : 'black';
-}
+const GARMENT_CONFIG = {
+  tshirt: { src: 'assets/models/tshirt-basic.glb', orbit: '0deg 78deg 100%', decalClass: '' },
+  hoodie: { src: 'assets/models/hoodie-basic.glb', orbit: '90deg 78deg 100%', decalClass: 'tee-3d-decal--hoodie' }
+};
+window.GARMENT_CONFIG = GARMENT_CONFIG;
 function mount3DTee(el){
   if (el.dataset.teeMounted) return;
   el.dataset.teeMounted = '1';
   const shirt = el.dataset.shirt || '#111111';
   const heart = el.dataset.heart;
+  const garment = GARMENT_CONFIG[el.dataset.garment] ? el.dataset.garment : 'tshirt';
+  const cfg = GARMENT_CONFIG[garment];
   el.innerHTML = `
-    <model-viewer class="tee-3d" src="assets/models/shirt-${pickBaseModel(shirt)}.glb"
-      camera-orbit="0deg 78deg 100%" camera-controls disable-zoom shadow-intensity="1" exposure="1"
+    <model-viewer class="tee-3d" src="${cfg.src}"
+      camera-orbit="${cfg.orbit}" camera-controls disable-zoom shadow-intensity="1" exposure="1"
       rotation-per-second="28deg" interaction-prompt="none"></model-viewer>
-    <img src="${heart}" alt="" class="tee-3d-decal">
+    <img src="${heart}" alt="" class="tee-3d-decal ${cfg.decalClass}">
   `;
   const mv = el.querySelector('model-viewer');
   mv.addEventListener('load', () => {
-    const material = mv.model?.materials?.[0];
-    material?.pbrMetallicRoughness?.setBaseColorFactor(hexToRgba(shirt));
+    mv.model?.materials?.forEach(material => {
+      material.pbrMetallicRoughness?.setBaseColorFactor(hexToRgba(shirt));
+    });
   });
   mv.addEventListener('pointerenter', () => mv.setAttribute('auto-rotate', ''));
   mv.addEventListener('pointerleave', () => mv.removeAttribute('auto-rotate'));
 }
 const teeObserver = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) mount3DTee(e.target); });
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      mount3DTee(e.target);
+    } else if (e.target.dataset.teeMounted) {
+      /* release the WebGL context once scrolled well out of view — grids with
+         many products can otherwise exceed the browser's simultaneous-context limit */
+      e.target.innerHTML = '';
+      delete e.target.dataset.teeMounted;
+    }
+  });
 }, { rootMargin: '250px' });
 window.observeTee = (el) => teeObserver.observe(el);
 
@@ -203,6 +215,7 @@ function readCardItem(card){
     price: parseFloat(card.dataset.price),
     color: card.dataset.shirt || '#111111',
     heart: card.dataset.heart || '',
+    garment: card.dataset.garment || 'tshirt',
     size: sizeEl ? sizeEl.textContent.trim() : 'M',
     qty: qtyEl ? parseInt(qtyEl.value) : 1
   };

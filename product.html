@@ -203,6 +203,7 @@
   root.dataset.price = p.price;
   root.dataset.shirt = p.shirt;
   root.dataset.heart = p.heart;
+  root.dataset.garment = p.garment || 'tshirt';
 
   document.getElementById('page-title').textContent = `${p.name} | Psychotic Love`;
   document.getElementById('p-name').textContent = p.name;
@@ -213,11 +214,7 @@
     const n = parseInt(hex.replace('#',''), 16);
     return [((n>>16)&255)/255, ((n>>8)&255)/255, (n&255)/255, 1];
   }
-  function pickBaseModel(hex){
-    const n = parseInt(hex.replace('#',''), 16);
-    const brightness = (((n>>16)&255)*299 + ((n>>8)&255)*587 + (n&255)*114) / 1000;
-    return brightness > 140 ? 'white' : 'black';
-  }
+  const garmentCfg = window.GARMENT_CONFIG[p.garment || 'tshirt'];
 
   const gallery = document.getElementById('gallery');
   gallery.innerHTML = `
@@ -235,10 +232,10 @@
   const viewOrder = ['3d', 'back', 'detail', 'logo'];
   const views = {
     '3d': () => `
-      <model-viewer class="tee-3d" src="assets/models/shirt-${pickBaseModel(p.shirt)}.glb"
-        camera-orbit="0deg 78deg 100%" camera-controls disable-zoom shadow-intensity="1" exposure="1" auto-rotate-delay="0"
+      <model-viewer class="tee-3d" src="${garmentCfg.src}"
+        camera-orbit="${garmentCfg.orbit}" camera-controls disable-zoom shadow-intensity="1" exposure="1" auto-rotate-delay="0"
         rotation-per-second="28deg" interaction-prompt="none"></model-viewer>
-      <img src="${p.heart}" alt="${p.name} logo" class="tee-3d-decal">
+      <img src="${p.heart}" alt="${p.name} logo" class="tee-3d-decal ${garmentCfg.decalClass}">
     `,
     back: () => renderTee({ face:'back', shirt:p.shirt, heart:p.heart, size:70 }),
     detail: () => `<img src="${p.heart}" alt="${p.name} heart detail" style="width:50%;filter:drop-shadow(0 14px 26px rgba(0,0,0,.4))">`,
@@ -248,8 +245,9 @@
     const mv = container.querySelector('model-viewer');
     if(!mv) return;
     mv.addEventListener('load', () => {
-      const material = mv.model?.materials?.[0];
-      material?.pbrMetallicRoughness?.setBaseColorFactor(hexToRgba(p.shirt));
+      mv.model?.materials?.forEach(material => {
+        material.pbrMetallicRoughness?.setBaseColorFactor(hexToRgba(p.shirt));
+      });
     });
     mv.addEventListener('pointerenter', () => mv.setAttribute('auto-rotate', ''));
     mv.addEventListener('pointerleave', () => mv.removeAttribute('auto-rotate'));
