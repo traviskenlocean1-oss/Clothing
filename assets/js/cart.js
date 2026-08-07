@@ -42,10 +42,19 @@
   }
 
   function teeMediaMarkup(i){
-    if(typeof window.renderTee === 'function'){
-      return window.renderTee({ shirt: i.color || '#111111', heart: i.heart, size: 100 });
-    }
-    return '';
+    const cfg = (window.GARMENT_CONFIG && window.GARMENT_CONFIG[i.garment]) || (window.GARMENT_CONFIG && window.GARMENT_CONFIG.tshirt);
+    if(!cfg) return '';
+    return `
+      <model-viewer class="tee-3d" src="${cfg.src}" camera-orbit="${cfg.orbit}" disable-zoom interaction-prompt="none" shadow-intensity="1" exposure="1"></model-viewer>
+      <img src="${i.heart}" alt="" class="tee-3d-decal ${cfg.decalClass}">
+    `;
+  }
+  function wireMiniTee(container, colorHex){
+    const mv = container.querySelector('model-viewer');
+    if(!mv) return;
+    mv.addEventListener('load', () => {
+      mv.model?.materials?.forEach(m => m.pbrMetallicRoughness?.setBaseColorFactor(window.hexToRgba(colorHex || '#111111')));
+    });
   }
 
   function render(){
@@ -72,6 +81,7 @@
             <button class="cart-item__remove" aria-label="Remove" data-id="${i.id}" data-size="${i.size}">&times;</button>
           `;
           list.appendChild(row);
+          wireMiniTee(row.querySelector('.cart-item__media'), i.color);
         });
       }
       if(sub) sub.textContent = `$${subtotal().toFixed(0)}`;
@@ -107,6 +117,7 @@
           <div class="order-item__price">$${(i.price * i.qty).toFixed(2)}</div>
         `;
         list.appendChild(row);
+        wireMiniTee(row.querySelector('.order-item__media'), i.color);
       });
       if(placeOrderBtn) placeOrderBtn.disabled = false;
     }

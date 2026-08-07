@@ -103,31 +103,15 @@ function hexToRgb(hex){
   return [(n>>16)&255, (n>>8)&255, n&255];
 }
 
-/* ---------- tee mockup renderer (front / back, coded SVG, no photos) ---------- */
-const TEE_FRONT_PATH = "M40,30 C40,15 60,5 80,10 L80,25 Q100,42 120,25 L120,10 C140,5 160,15 160,30 L188,58 L166,84 L150,68 L150,222 L50,222 L50,68 L34,84 L12,58 Z";
-const TEE_BACK_PATH   = "M40,30 C40,12 60,4 100,4 C140,4 160,12 160,30 L188,58 L166,84 L150,68 L150,222 L50,222 L50,68 L34,84 L12,58 Z";
-
-function renderTee({ face = 'front', shirt = '#111111', heart = 'assets/img/hearts/heart-pink.png', size = 100, back = false } = {}){
-  const path = face === 'front' ? TEE_FRONT_PATH : TEE_BACK_PATH;
-  const heartSize = face === 'front' ? 34 : 46;
-  const heartX = 100 - heartSize/2;
-  const heartY = face === 'front' ? 78 : 60;
-  return `
-    <svg class="tee-mock" viewBox="0 0 200 240" width="${size}%">
-      <path d="${path}" fill="${shirt}" stroke="rgba(0,0,0,.15)" stroke-width="1.5"/>
-      <image href="${heart}" x="${heartX}" y="${heartY}" width="${heartSize}" height="${heartSize}" />
-    </svg>`;
-}
-window.renderTee = renderTee;
-
 /* ---------- 3D tee mockup (real GLB models, lazy-mounted, hover-to-spin) ---------- */
 function hexToRgba(hex){
   const n = parseInt(hex.replace('#',''), 16);
   return [((n>>16)&255)/255, ((n>>8)&255)/255, (n&255)/255, 1];
 }
+window.hexToRgba = hexToRgba;
 const GARMENT_CONFIG = {
-  tshirt: { src: 'assets/models/tshirt-basic.glb', orbit: '0deg 78deg 100%', decalClass: '' },
-  hoodie: { src: 'assets/models/hoodie-basic.glb', orbit: '90deg 78deg 100%', decalClass: 'tee-3d-decal--hoodie' }
+  tshirt: { src: 'assets/models/tshirt-basic.glb', orbit: '0deg 78deg 100%', backOrbit: '180deg 78deg 100%', decalClass: '' },
+  hoodie: { src: 'assets/models/hoodie-basic.glb', orbit: '90deg 78deg 100%', backOrbit: '270deg 78deg 100%', decalClass: 'tee-3d-decal--hoodie' }
 };
 window.GARMENT_CONFIG = GARMENT_CONFIG;
 function mount3DTee(el){
