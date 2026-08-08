@@ -288,8 +288,13 @@
   const scrubBar   = document.getElementById('scrub-bar');
   const heroContent = document.getElementById('hero-content');
 
-  const HERO_FRAME_COUNT = 109;
-  const heroFramePath = i => `assets/img/hero-frames/frame-${String(i).padStart(3, '0')}.jpg`;
+  // Mobile gets its own frame sequence shot natively in 9:16 — the desktop
+  // set is 16:9 footage, which has no clean crop against a portrait screen.
+  const isMobileHero = window.matchMedia('(max-width:768px)').matches;
+  const HERO_FRAME_COUNT = isMobileHero ? 152 : 109;
+  const heroFramePath = i => isMobileHero
+    ? `assets/img/hero-frames-mobile/frame-${String(i).padStart(3, '0')}.jpg`
+    : `assets/img/hero-frames/frame-${String(i).padStart(3, '0')}.jpg`;
   const heroFrames = new Array(HERO_FRAME_COUNT + 1);
   // A frame is only usable once decode() resolves. Drawing an Image to canvas
   // before it's decoded forces the browser to decode it synchronously inside
