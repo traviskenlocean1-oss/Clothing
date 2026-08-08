@@ -234,7 +234,7 @@ section{ position:relative; }
 .hero__content.is-hidden{ pointer-events:none; }
 .hero__sub{ font-family:var(--font-script); font-size:clamp(1.6rem,4vw,2.6rem); color:var(--cream); }
 @media (max-width:768px){
-  .scrub-wrap{ height:300vh; }
+  .scrub-wrap{ height:230vh; }
   .scrub-pin{ min-height:480px; }
 }
 
@@ -678,19 +678,28 @@ footer.site-footer{ padding:1.6rem var(--gutter) 2rem; }
 
 /* ---------- responsive ---------- */
 @media (max-width:900px){
-  .nav__links{ display:none; }
-  /* The burger toggles .is-open via JS (main.js), but nothing ever made this
+  /* The burger toggled .is-open via JS (main.js), but nothing ever made this
      state visible — .nav__links stayed display:none regardless, so the
-     mobile menu button did nothing at all. */
-  .nav__links.is-open{
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap:2.6rem; position:fixed; inset:0; z-index:90;
-    background:rgba(10,10,10,.97); font-size:1.4rem;
+     mobile menu button did nothing at all. Slides in as a drawer from the
+     left, matching the cart drawer's own slide-in-from-the-right pattern
+     already used on this site, rather than inventing a different style. */
+  .nav__links{
+    display:flex; flex-direction:column; align-items:flex-start; justify-content:flex-start;
+    gap:2rem; position:fixed; top:0; left:0; height:100vh; width:min(300px,80vw);
+    background:var(--cream); color:var(--black); z-index:190;
+    padding:7rem 2rem 2rem; font-size:1.05rem; letter-spacing:.08em;
+    transform:translateX(-100%); transition:transform .5s var(--ease);
+    box-shadow:20px 0 40px rgba(0,0,0,.25);
   }
+  .nav__links.is-open{ transform:translateX(0); }
   .nav__burger{ display:flex; }
   .nav__burger.is-active span:nth-child(1){ transform:translateY(6px) rotate(45deg); }
   .nav__burger.is-active span:nth-child(2){ opacity:0; }
   .nav__burger.is-active span:nth-child(3){ transform:translateY(-6px) rotate(-45deg); }
+  /* Same pixel-per-second speed reads as much slower on a narrow phone
+     screen, which shows one card at a time instead of a whole row — cut
+     the cycle time so cards keep visibly moving rather than crawling. */
+  .scroller__track{ animation-duration:20s; }
   .values-grid,.product-grid{ grid-template-columns:1fr; }
   .collection-grid{ flex-direction:column; height:auto; }
   .heart-card{ padding:4rem 2rem; }

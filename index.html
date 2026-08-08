@@ -330,7 +330,14 @@
     lastDrawnFrame = idx;
     const cw = canvas.width, ch = canvas.height;
     const iw = img.naturalWidth, ih = img.naturalHeight;
-    const scale = Math.max(cw / iw, ch / ih);
+    const coverScale = Math.max(cw / iw, ch / ih);
+    const fitWidthScale = cw / iw;
+    // A strict "cover" crop on a tall narrow (portrait) pin vs. this 16:9
+    // landscape footage zooms in far enough to show just a doorway instead
+    // of the room — cap how far past a fit-width framing we'll zoom so the
+    // walkthrough still reads as a whole store, letterboxing top/bottom
+    // (into the canvas's own dark background) on those viewports instead.
+    const scale = Math.min(coverScale, fitWidthScale * 1.35);
     const dw = iw * scale, dh = ih * scale;
     ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
   }
