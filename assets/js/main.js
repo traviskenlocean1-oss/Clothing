@@ -62,20 +62,6 @@ if (revealItems.length) {
   revealItems.forEach(el => io.observe(el));
 }
 
-/* ---------- letter-glitch (wordmark jitter, runs independent of scroll) ---------- */
-const glitchLetters = document.querySelectorAll('.glitch');
-if (glitchLetters.length) {
-  function triggerGlitch(){
-    glitchLetters.forEach(l => {
-      l.style.transform = `translate(${(Math.random()-.5)*4}px, ${(Math.random()-.5)*4}px)`;
-      l.style.opacity = .85;
-    });
-    setTimeout(() => glitchLetters.forEach(l => { l.style.transform = ''; l.style.opacity = 1; }), 120);
-    setTimeout(triggerGlitch, 2600 + Math.random() * 2200);
-  }
-  triggerGlitch();
-}
-
 /* ---------- 3D tee mockup (real GLB models, lazy-mounted, hover-to-spin) ---------- */
 function hexToRgba(hex){
   const n = parseInt(hex.replace('#',''), 16);
