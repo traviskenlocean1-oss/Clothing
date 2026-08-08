@@ -380,7 +380,19 @@
     // well past the hero (e.g. through the Shop By Heart section) since a
     // full-viewport canvas redraw was firing on every scroll event site-wide.
     if (p < 1 || lastRequestedFrame < HERO_FRAME_COUNT) {
-      requestHeroFrame(1 + p * (HERO_FRAME_COUNT - 1));
+      // Scroll->frame mapping stays linear (unchanged) for the first 85% so
+      // the heroContentOpacity(0.75) fade-in window below stays in sync with
+      // where the footage actually is. Only the final approach eases to a
+      // stop (not a scroll-lock — that was tried before and read as a bug,
+      // not an intentional pause) so the walk-in settles into the "Welcome"
+      // shot gradually instead of arriving at a constant rate all the way in.
+      const TAIL_START = 0.85;
+      let framesP = p;
+      if (p > TAIL_START) {
+        const q = (p - TAIL_START) / (1 - TAIL_START);
+        framesP = TAIL_START + (1 - TAIL_START) * (1 - Math.pow(1 - q, 2));
+      }
+      requestHeroFrame(1 + framesP * (HERO_FRAME_COUNT - 1));
     }
     if (scrubBar) scrubBar.style.transform = `scaleX(${p})`;
     if (heroContent) {
