@@ -86,7 +86,6 @@
       <p class="hero__sub script" data-text="Built From Broken Hearts.">Built From Broken Hearts.</p>
       <a href="shop.html" class="btn btn-light"><span>Shop Collection</span></a>
     </div>
-    <div class="hero__scroll" id="hero-scroll-hint">Scroll</div>
     <div class="scrub-bar" id="scrub-bar"></div>
   </div>
 </section>
@@ -290,7 +289,6 @@
   if (!scrubWrap || !scrubPin || !canvas) return;
   const ctx        = canvas.getContext('2d');
   const scrubBar   = document.getElementById('scrub-bar');
-  const scrollHint = document.getElementById('hero-scroll-hint');
   const heroContent = document.getElementById('hero-content');
 
   const HERO_FRAME_COUNT = 109;
@@ -355,13 +353,10 @@
     return Math.max(0, Math.min(1, (window.scrollY - t) / (h - vh)));
   }
 
-  // Hero copy (logo/tagline/CTA) reads as the opener over the storefront
-  // exterior, fades out once the walk-in starts so it doesn't sit over the
-  // footage, then fades back in as the final CTA once the camera arrives at
-  // the "Welcome" register shot.
+  // Hero copy (logo/tagline/CTA) stays fully hidden through the walk-in and
+  // only fades in as the final CTA once the camera arrives at the "Welcome"
+  // register shot — nothing overlays the footage itself.
   function heroContentOpacity(p) {
-    if (p < 0.12) return 1;
-    if (p < 0.24) return 1 - (p - 0.12) / 0.12;
     if (p < 0.86) return 0;
     if (p < 0.97) return (p - 0.86) / 0.11;
     return 1;
@@ -372,7 +367,6 @@
     const p = scrubProg();
     requestHeroFrame(1 + p * (HERO_FRAME_COUNT - 1));
     if (scrubBar) scrubBar.style.transform = `scaleX(${p})`;
-    if (scrollHint) scrollHint.style.opacity = p < 0.04 ? 1 : 0;
     if (heroContent) {
       const o = heroContentOpacity(p);
       heroContent.style.opacity = o;
