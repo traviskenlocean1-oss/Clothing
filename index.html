@@ -360,9 +360,24 @@
     return (p - 0.75) / 0.25;
   }
 
+  // Hold the scroll at full arrival for a beat once the camera reaches the
+  // "Welcome" register shot, instead of letting scroll momentum carry
+  // straight through into the next section — gives the payoff a moment to
+  // land. Re-arms if the user scrolls back up and returns, so it holds
+  // again on every fresh arrival, not just the first.
+  const ARRIVE_HOLD_MS = 1500;
+  let arrived = false, holdUntil = 0;
+  function isHolding() { return performance.now() < holdUntil; }
+
   let raf = false;
   function scrubTick() {
     const p = scrubProg();
+    if (p >= 0.999 && !arrived) {
+      arrived = true;
+      holdUntil = performance.now() + ARRIVE_HOLD_MS;
+    } else if (p < 0.95 && arrived) {
+      arrived = false;
+    }
     // Once fully scrolled past the hero and already showing the last frame,
     // skip re-running the smoothing loop and redrawing the canvas on every
     // scroll tick for the rest of the page — this was causing scroll jank
@@ -381,6 +396,16 @@
   }
 
   window.addEventListener('scroll', () => { if (!raf) { raf = true; requestAnimationFrame(scrubTick); } }, { passive: true });
+  // Freeze scroll input itself (not just the visual) during the hold —
+  // wheel/touch/keyboard scrolling are all suppressed for ARRIVE_HOLD_MS
+  // right as the user arrives at "Welcome", then release normally.
+  window.addEventListener('wheel', (e) => { if (isHolding()) e.preventDefault(); }, { passive: false });
+  window.addEventListener('touchmove', (e) => { if (isHolding()) e.preventDefault(); }, { passive: false });
+  window.addEventListener('keydown', (e) => {
+    if (isHolding() && ['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', ' ', 'Spacebar', 'End', 'Home'].includes(e.key)) {
+      e.preventDefault();
+    }
+  });
   window.addEventListener('resize', sizeHeroCanvas);
   sizeHeroCanvas();
   scrubTick();
