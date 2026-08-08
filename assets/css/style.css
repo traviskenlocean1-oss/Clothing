@@ -241,12 +241,16 @@ section{ position:relative; }
 .hero__sub{ font-family:var(--font-script); font-size:clamp(1.6rem,4vw,2.6rem); color:var(--cream); text-shadow:0 8px 28px rgba(0,0,0,.6); }
 @media (max-width:768px){
   .scrub-wrap{ height:230vh; }
-  /* The blue neon lines flare outward toward the left/right edges of the
-     shot as they rise — a 100vh-tall crop against this 16:9 footage cuts
-     exactly that outer width off. Shortening the pin (verified visually)
-     is what actually brings them into frame; no amount of vertical
-     repositioning would, since they're lost to the sides, not the top. */
-  .scrub-pin{ height:auto; aspect-ratio:9/10; min-height:420px; }
+  /* Must stay full viewport height. .scrub-pin is `position:sticky` inside
+     a much taller .scrub-wrap (that extra height is what creates scroll
+     distance to scrub through) — if the pin is shorter than the viewport,
+     the leftover space below it shows .scrub-wrap's own bare background
+     for the ENTIRE middle of the scroll, not just at the start/end. A
+     shorter pin was tried to show more of the shot's width and it produced
+     exactly that: a large blank gap for most of the interaction. Full
+     height guarantees the sticky pin always fills the screen with zero gap.
+  */
+  .scrub-pin{ min-height:480px; }
 }
 
 /* ---------- heart marquee ---------- */
