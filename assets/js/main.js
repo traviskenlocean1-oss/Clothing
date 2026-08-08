@@ -101,9 +101,15 @@ const teeObserver = new IntersectionObserver((entries) => {
   entries.forEach(e => {
     if (e.isIntersecting) {
       mount3DTee(e.target);
-    } else if (e.target.dataset.teeMounted) {
+    } else if (e.target.dataset.teeMounted && !e.target.closest('.scroller')) {
       /* release the WebGL context once scrolled well out of view — grids with
-         many products can otherwise exceed the browser's simultaneous-context limit */
+         many products can otherwise exceed the browser's simultaneous-context limit.
+         Skipped for the auto-scrolling carousel: its cards constantly cross in and
+         out of the rootMargin on their own (no user scroll involved), so unmounting
+         here raced with each model's load time — a card would get destroyed and
+         re-mounted before its glb ever finished loading, which looked like it
+         "glitching back" to the previous shirt. It's a small, fixed set of cards,
+         so mounting them once and leaving them is cheap and glitch-free. */
       e.target.innerHTML = '';
       delete e.target.dataset.teeMounted;
     }
@@ -111,7 +117,20 @@ const teeObserver = new IntersectionObserver((entries) => {
 }, { rootMargin: '250px' });
 window.observeTee = (el) => teeObserver.observe(el);
 
-document.querySelectorAll('[data-tee]').forEach(el => teeObserver.observe(el));
+document.querySelectorAll('[data-tee]').forEach(el => {
+  if (el.closest('.scroller')) {
+    /* IntersectionObserver checks are throttled to the browser's own pace,
+       not every animation frame — fine for a page the user scrolls by hand,
+       but this carousel's cards cross the whole viewport in ~2s on their
+       own, fast enough that some entries/exits happen between checks and
+       never fire at all (some cards just never got their model mounted).
+       It's a small, fixed set, so load them all immediately instead of
+       depending on visibility timing. */
+    mount3DTee(el);
+  } else {
+    teeObserver.observe(el);
+  }
+});
 
 /* ---------- accordion (product page) ---------- */
 document.querySelectorAll('.accordion-item > button').forEach(btn => {
