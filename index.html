@@ -330,14 +330,12 @@
     lastDrawnFrame = idx;
     const cw = canvas.width, ch = canvas.height;
     const iw = img.naturalWidth, ih = img.naturalHeight;
-    const coverScale = Math.max(cw / iw, ch / ih);
-    const fitWidthScale = cw / iw;
-    // A strict "cover" crop on a tall narrow (portrait) pin vs. this 16:9
-    // landscape footage zooms in far enough to show just a doorway instead
-    // of the room — cap how far past a fit-width framing we'll zoom so the
-    // walkthrough still reads as a whole store, letterboxing top/bottom
-    // (into the canvas's own dark background) on those viewports instead.
-    const scale = Math.min(coverScale, fitWidthScale * 1.35);
+    // Always a full edge-to-edge cover crop — no letterbox bars, ever. How
+    // much of the room's width that leaves visible on a narrow phone is
+    // controlled by .scrub-pin's own height in CSS (a shorter pin means a
+    // less extreme aspect mismatch against this 16:9 footage, hence less
+    // crop), not by capping the scale here.
+    const scale = Math.max(cw / iw, ch / ih);
     const dw = iw * scale, dh = ih * scale;
     ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
   }
@@ -364,8 +362,13 @@
   }
 
   function scrubProg() {
-    const t = scrubWrap.offsetTop, h = scrubWrap.offsetHeight, vh = window.innerHeight;
-    return Math.max(0, Math.min(1, (window.scrollY - t) / (h - vh)));
+    // A sticky element pins for (wrapper height - the sticky element's own
+    // height), not necessarily the viewport height — those are only the
+    // same when .scrub-pin is exactly 100vh tall, which stops being true on
+    // viewports where the pin's CSS height is overridden to something
+    // shorter (see the mobile breakpoint).
+    const t = scrubWrap.offsetTop, h = scrubWrap.offsetHeight, pinH = scrubPin.offsetHeight;
+    return Math.max(0, Math.min(1, (window.scrollY - t) / (h - pinH)));
   }
 
   // Hero copy (logo/tagline/CTA) stays fully hidden through the walk-in and
