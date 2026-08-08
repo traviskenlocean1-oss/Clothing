@@ -38,6 +38,7 @@ body{
   -webkit-font-smoothing:antialiased;
   overflow-x:hidden;
 }
+body.nav-open{ overflow:hidden; }
 img{ max-width:100%; display:block; }
 a{ color:inherit; text-decoration:none; }
 button{ font-family:inherit; border:none; background:none; cursor:pointer; color:inherit; }
@@ -473,7 +474,12 @@ footer.site-footer{ padding:1.6rem var(--gutter) 2rem; }
 .accordion-item:last-child{ border-bottom:1px solid rgba(0,0,0,.15); }
 .accordion-item button{ width:100%; display:flex; justify-content:space-between; align-items:center; padding:1.2em 0; font-size:.85rem; letter-spacing:.06em; text-transform:uppercase; }
 .accordion-item__panel{ display:grid; grid-template-rows:0fr; transition:grid-template-rows .4s var(--ease); font-size:.9rem; color:#333; line-height:1.7; }
-.accordion-item__panel p{ overflow:hidden; min-height:0; padding-bottom:1.2em; }
+/* The padding must live one level inside the overflow:hidden/min-height:0
+   wrapper, not on it — padding on the grid item itself is never subject to
+   min-height:0, so it becomes a floor the 0fr row can't shrink past, and
+   the "closed" state leaks a sliver of clipped text instead of true 0. */
+.accordion-item__panel > div{ overflow:hidden; min-height:0; }
+.accordion-item__panel p{ padding-bottom:1.2em; }
 .accordion-item.is-open .accordion-item__panel{ grid-template-rows:1fr; }
 .accordion-item.is-open button{ opacity:.6; }
 
@@ -673,7 +679,18 @@ footer.site-footer{ padding:1.6rem var(--gutter) 2rem; }
 /* ---------- responsive ---------- */
 @media (max-width:900px){
   .nav__links{ display:none; }
+  /* The burger toggles .is-open via JS (main.js), but nothing ever made this
+     state visible — .nav__links stayed display:none regardless, so the
+     mobile menu button did nothing at all. */
+  .nav__links.is-open{
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:2.6rem; position:fixed; inset:0; z-index:90;
+    background:rgba(10,10,10,.97); font-size:1.4rem;
+  }
   .nav__burger{ display:flex; }
+  .nav__burger.is-active span:nth-child(1){ transform:translateY(6px) rotate(45deg); }
+  .nav__burger.is-active span:nth-child(2){ opacity:0; }
+  .nav__burger.is-active span:nth-child(3){ transform:translateY(-6px) rotate(-45deg); }
   .values-grid,.product-grid{ grid-template-columns:1fr; }
   .collection-grid{ flex-direction:column; height:auto; }
   .heart-card{ padding:4rem 2rem; }
@@ -700,6 +717,10 @@ footer.site-footer{ padding:1.6rem var(--gutter) 2rem; }
   .founder__seal{ width:140px; height:140px; }
   .value-card__seal{ width:64px; height:64px; }
   .timeline-item{ gap:1.4rem; }
+  /* Fixed 11rem padding + 105vh min-height was tuned for wide desktop
+     viewports — on a tall narrow phone screen it forces far more empty
+     background photo than the content needs before the footer. */
+  .newsletter{ padding:6rem var(--gutter); min-height:auto; }
 }
 
 @media (prefers-reduced-motion: reduce){

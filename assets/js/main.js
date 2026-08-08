@@ -49,8 +49,10 @@ window.addEventListener('scroll', () => {
   nav?.classList.toggle('scrolled', window.scrollY > 40);
 }, { passive: true });
 
-document.querySelector('.nav__burger')?.addEventListener('click', () => {
-  document.querySelector('.nav__links')?.classList.toggle('is-open');
+document.querySelector('.nav__burger')?.addEventListener('click', (e) => {
+  const isOpen = document.querySelector('.nav__links')?.classList.toggle('is-open');
+  e.currentTarget.classList.toggle('is-active', isOpen);
+  document.body.classList.toggle('nav-open', isOpen);
 });
 
 /* ---------- reveal-on-scroll ---------- */
