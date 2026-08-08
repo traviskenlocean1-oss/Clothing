@@ -211,7 +211,13 @@ section{ position:relative; }
 }
 .scrub-canvas{
   position:absolute; inset:0; width:100%; height:100%; display:block;
-  background:#0c0c0c center/cover no-repeat url("../img/hero-frames/frame-001.jpg");
+  /* Solid color only — this used to also carry a cover-cropped frame-001.jpg
+     as a CSS background for an instant first paint, but now that the JS
+     draw can letterbox (see drawHeroFrame's zoom cap) that old, differently
+     -cropped image showed through behind the new, less-cropped canvas
+     drawing in the letterbox gaps: two mismatched crops of the same frame
+     stacked on top of each other. */
+  background:#0c0c0c;
   transform:translateZ(0); backface-visibility:hidden;
   filter:contrast(1.08) saturate(1.15) brightness(1.1);
 }
