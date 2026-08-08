@@ -78,6 +78,7 @@
 <section class="scrub-wrap" id="scrub-wrap">
   <div class="scrub-pin grain" id="scrub-pin">
     <canvas class="scrub-canvas" id="scrub-canvas"></canvas>
+    <img class="scrub-mobile-bg" src="assets/img/brand/storefront-hero-mobile.jpg" alt="Psychotic Love storefront entrance" id="scrub-mobile-bg">
     <div class="scrub-overlay"></div>
     <div class="hero__content" id="hero-content">
       <p class="hero__sub script" data-text="Built From Broken Hearts.">Built From Broken Hearts.</p>
@@ -280,6 +281,12 @@
 // video.seekable stays [0,0] and currentTime assignments get silently
 // clamped back to 0) — plain image GETs sidestep that entirely.
 (function(){
+  // Mobile gets a plain static photo hero (see .scrub-mobile-bg in the CSS)
+  // instead of this scroll-scrubbed sequence — skip loading all 109 frames
+  // and the scroll-jacking entirely; nothing here has anything to do on a
+  // phone. Checked once at load, matching how the CSS breakpoint is drawn.
+  if (window.matchMedia('(max-width:768px)').matches) return;
+
   const scrubWrap = document.getElementById('scrub-wrap');
   const scrubPin  = document.getElementById('scrub-pin');
   const canvas    = document.getElementById('scrub-canvas');
