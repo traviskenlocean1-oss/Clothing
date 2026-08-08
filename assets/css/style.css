@@ -349,7 +349,7 @@ section{ position:relative; }
 
 /* ---------- horizontal collection preview ---------- */
 .scroller{ overflow:hidden; padding:0 0 1rem; }
-.scroller__track{ display:flex; gap:1.6rem; width:max-content; animation:scroller-scroll 36s linear infinite; }
+.scroller__track{ display:flex; gap:1.6rem; width:max-content; animation:scroller-scroll 16s linear infinite; }
 @keyframes scroller-scroll{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
 .scroll-card{
   flex:0 0 360px; position:relative; aspect-ratio:3/4;
