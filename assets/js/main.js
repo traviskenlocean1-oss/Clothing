@@ -82,9 +82,16 @@ function mount3DTee(el){
   const heart = el.dataset.heart;
   const garment = GARMENT_CONFIG[el.dataset.garment] ? el.dataset.garment : 'tshirt';
   const cfg = GARMENT_CONFIG[garment];
+  // The auto-scrolling carousel's cards are decorative/non-interactive (they
+  // fly past on their own), so skip the interaction and shadow-rendering
+  // overhead that's only worth paying for on a card the user can actually
+  // stop and orbit — smaller per-instance GPU cost with several of these
+  // rendering at once.
+  const lightweight = !!el.closest('.scroller');
+  const extraAttrs = lightweight ? 'shadow-intensity="0"' : 'camera-controls shadow-intensity="1"';
   el.innerHTML = `
     <model-viewer class="tee-3d" src="${cfg.src}"
-      camera-orbit="${cfg.orbit}" camera-controls disable-zoom shadow-intensity="1" exposure="1"
+      camera-orbit="${cfg.orbit}" disable-zoom ${extraAttrs} exposure="1"
       rotation-per-second="28deg" interaction-prompt="none"></model-viewer>
     <img src="${heart}" alt="" class="tee-3d-decal ${cfg.decalClass}">
   `;
@@ -93,6 +100,23 @@ function mount3DTee(el){
     mv.model?.materials?.forEach(material => {
       material.pbrMetallicRoughness?.setBaseColorFactor(hexToRgba(shirt));
     });
+    // Recover from WebGL context loss — can happen under GPU memory pressure
+    // (more of a risk on mobile, with several <model-viewer> instances
+    // rendering at once) and would otherwise show as this card silently
+    // reverting to an unstyled/default model with no error. model-viewer
+    // doesn't reliably restore scene/material state on every device after
+    // contextrestored, so treat any loss as "rebuild this card from scratch."
+    const glCanvas = mv.shadowRoot && mv.shadowRoot.querySelector('canvas');
+    if (glCanvas && !glCanvas.dataset.contextLossWired) {
+      glCanvas.dataset.contextLossWired = '1';
+      glCanvas.addEventListener('webglcontextlost', (ev) => {
+        ev.preventDefault();
+        console.warn('[tee] WebGL context lost — remounting', el);
+        delete el.dataset.teeMounted;
+        el.innerHTML = '';
+        mount3DTee(el);
+      });
+    }
   });
   mv.addEventListener('pointerenter', () => mv.setAttribute('auto-rotate', ''));
   mv.addEventListener('pointerleave', () => mv.removeAttribute('auto-rotate'));
