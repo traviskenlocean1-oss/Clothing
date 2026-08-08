@@ -715,7 +715,7 @@ footer.site-footer{ padding:1.6rem var(--gutter) 2rem; }
   /* Same pixel-per-second speed reads as much slower on a narrow phone
      screen, which shows one card at a time instead of a whole row — cut
      the cycle time so cards keep visibly moving rather than crawling. */
-  .scroller__track{ animation-duration:2s; }
+  .scroller__track{ animation-duration:7s; }
   .values-grid,.product-grid{ grid-template-columns:1fr; }
   .collection-grid{ flex-direction:column; height:auto; }
   .heart-card{ padding:4rem 2rem; }
