@@ -90,8 +90,12 @@ section{ position:relative; }
   font-size:.72rem;
   letter-spacing:.28em;
   text-transform:uppercase;
-  color:var(--gray);
+  color:var(--black);
 }
+/* Almost every eyebrow sits on a light (cream/white) section, where the
+   lighter --gray reads as too faint — dark is the correct default. The one
+   exception is dark-background sections, where gray-on-black is legible. */
+.dark .eyebrow{ color:var(--gray); }
 .quote{
   font-family:var(--font-quote);
   font-style:italic;
@@ -554,13 +558,13 @@ footer.site-footer{ padding:1.6rem var(--gutter) 2rem; }
 .checkout-form__row{ display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; }
 
 .form-field{ display:flex; flex-direction:column; gap:.5rem; }
-.form-field label{ font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; color:var(--gray); }
+.form-field label{ font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; color:var(--black); }
 .form-field input, .form-field select{
   border:1px solid rgba(0,0,0,.16); border-radius:6px; padding:.9em 1em;
   font-family:var(--font-body); font-size:.92rem; background:var(--white); color:var(--black);
   transition:border-color .3s var(--ease);
 }
-.form-field input::placeholder{ color:#b9b4a9; }
+.form-field input::placeholder{ color:#8a8478; }
 .form-field input:focus, .form-field select:focus{ outline:none; border-color:var(--black); }
 
 .order-panel{

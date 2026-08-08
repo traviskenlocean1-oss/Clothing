@@ -352,17 +352,25 @@
 
   // Hero copy (logo/tagline/CTA) stays fully hidden through the walk-in and
   // only fades in as the final CTA once the camera arrives at the "Welcome"
-  // register shot — nothing overlays the footage itself.
+  // register shot — nothing overlays the footage itself. A wide fade-in
+  // window (a quarter of the total scroll) makes the reveal read as a slow,
+  // deliberate arrival rather than a snap-in over a sliver of scroll.
   function heroContentOpacity(p) {
-    if (p < 0.86) return 0;
-    if (p < 0.97) return (p - 0.86) / 0.11;
-    return 1;
+    if (p < 0.75) return 0;
+    return (p - 0.75) / 0.25;
   }
 
   let raf = false;
   function scrubTick() {
     const p = scrubProg();
-    requestHeroFrame(1 + p * (HERO_FRAME_COUNT - 1));
+    // Once fully scrolled past the hero and already showing the last frame,
+    // skip re-running the smoothing loop and redrawing the canvas on every
+    // scroll tick for the rest of the page — this was causing scroll jank
+    // well past the hero (e.g. through the Shop By Heart section) since a
+    // full-viewport canvas redraw was firing on every scroll event site-wide.
+    if (p < 1 || lastRequestedFrame < HERO_FRAME_COUNT) {
+      requestHeroFrame(1 + p * (HERO_FRAME_COUNT - 1));
+    }
     if (scrubBar) scrubBar.style.transform = `scaleX(${p})`;
     if (heroContent) {
       const o = heroContentOpacity(p);
