@@ -239,23 +239,9 @@ section{ position:relative; }
 .hero-loaded .hero__content > *{ opacity:1; transform:translateY(0); }
 .hero__content.is-hidden{ pointer-events:none; }
 .hero__sub{ font-family:var(--font-script); font-size:clamp(1.6rem,4vw,2.6rem); color:var(--cream); }
-.scrub-mobile-bg{ display:none; }
 @media (max-width:768px){
-  /* The scroll-scrubbed walkthrough is built from 16:9 desktop footage —
-     against a phone's portrait screen that's a fundamental aspect-ratio
-     mismatch with no clean answer (crop it and lose width, or leave empty
-     space to avoid cropping). Rather than keep trading one visible flaw for
-     another, mobile gets its own real photo, shot for this orientation, as
-     a plain static hero instead of the scroll-jacked animation — no crop
-     compromise needed because the image already fits the screen's shape.
-     The wrap/pin no longer need to be taller than the viewport since
-     there's nothing to scrub through. */
-  .scrub-wrap{ height:auto; }
-  .scrub-pin{ position:relative; height:100vh; min-height:480px; }
-  .scrub-canvas, .scrub-bar{ display:none; }
-  .scrub-mobile-bg{
-    display:block; position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
-  }
+  .scrub-wrap{ height:230vh; }
+  .scrub-pin{ min-height:480px; }
 }
 
 /* ---------- heart marquee ---------- */
