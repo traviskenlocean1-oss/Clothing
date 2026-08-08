@@ -62,45 +62,18 @@ if (revealItems.length) {
   revealItems.forEach(el => io.observe(el));
 }
 
-/* ---------- hero: heart-drip + letter-glitch + cream/black bg shift on scroll ---------- */
-const hero = document.querySelector('.hero');
-if (hero) {
-  const drips = hero.querySelectorAll('.drip');
-  const glitchLetters = hero.querySelectorAll('.glitch');
-
-  window.addEventListener('scroll', () => {
-    const progress = Math.min(1, window.scrollY / (window.innerHeight * 0.9));
-    drips.forEach((d, i) => {
-      d.style.transform = `scaleY(${1 + progress * (0.6 + i * 0.15)})`;
-    });
-    hero.style.background = `linear-gradient(180deg,
-      ${mixColor('#0c0c0c', '#F6F1E8', progress * 0.15)} 0%,
-      ${mixColor('#1a1a1a', '#F6F1E8', progress * 0.25)} 55%,
-      #0c0c0c 100%)`;
-  }, { passive: true });
-
-  let glitchTimer;
+/* ---------- letter-glitch (wordmark jitter, runs independent of scroll) ---------- */
+const glitchLetters = document.querySelectorAll('.glitch');
+if (glitchLetters.length) {
   function triggerGlitch(){
     glitchLetters.forEach(l => {
       l.style.transform = `translate(${(Math.random()-.5)*4}px, ${(Math.random()-.5)*4}px)`;
       l.style.opacity = .85;
     });
     setTimeout(() => glitchLetters.forEach(l => { l.style.transform = ''; l.style.opacity = 1; }), 120);
-    glitchTimer = setTimeout(triggerGlitch, 2600 + Math.random() * 2200);
+    setTimeout(triggerGlitch, 2600 + Math.random() * 2200);
   }
-  if (glitchLetters.length) triggerGlitch();
-}
-
-function mixColor(hexA, hexB, t){
-  const a = hexToRgb(hexA), b = hexToRgb(hexB);
-  const r = Math.round(a[0] + (b[0]-a[0]) * t);
-  const g = Math.round(a[1] + (b[1]-a[1]) * t);
-  const bl = Math.round(a[2] + (b[2]-a[2]) * t);
-  return `rgb(${r},${g},${bl})`;
-}
-function hexToRgb(hex){
-  const n = parseInt(hex.replace('#',''), 16);
-  return [(n>>16)&255, (n>>8)&255, n&255];
+  triggerGlitch();
 }
 
 /* ---------- 3D tee mockup (real GLB models, lazy-mounted, hover-to-spin) ---------- */
