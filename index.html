@@ -33,7 +33,6 @@
   document.documentElement.appendChild(o);
 })();
 </script>
-<script type="module" src="https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -291,10 +290,21 @@
   const HERO_FRAME_COUNT = 109;
   const heroFramePath = i => `assets/img/hero-frames/frame-${String(i).padStart(3, '0')}.jpg`;
   const heroFrames = new Array(HERO_FRAME_COUNT + 1);
+  // A frame is only usable once decode() resolves. Drawing an Image to canvas
+  // before it's decoded forces the browser to decode it synchronously inside
+  // drawImage, blocking the main thread (measured 900ms+ single-frame stalls
+  // while scrubbing into not-yet-decoded frames) — decode() does that same
+  // work off the main thread ahead of time instead.
+  const frameDecoded = new Array(HERO_FRAME_COUNT + 1).fill(false);
   for (let i = 1; i <= HERO_FRAME_COUNT; i++) {
     const img = new Image();
     img.src = heroFramePath(i);
-    img.onload = () => { if (i === 1) drawHeroFrame(1); };
+    const markReady = () => { frameDecoded[i] = true; if (i === 1) drawHeroFrame(1); };
+    if (img.decode) {
+      img.decode().then(markReady).catch(() => { img.onload = markReady; });
+    } else {
+      img.onload = markReady;
+    }
     heroFrames[i] = img;
   }
 
@@ -308,14 +318,14 @@
     drawHeroFrame(Math.max(1, lastRequestedFrame));
   }
 
-  // Falls back to the nearest earlier loaded frame so the scrub never flashes
-  // blank while later frames are still downloading.
+  // Falls back to the nearest earlier decoded frame so the scrub never flashes
+  // blank (or stalls on an undecoded one) while later frames are still ready.
   function drawHeroFrame(n) {
     lastRequestedFrame = n;
     let idx = Math.round(n);
-    while (idx > 1 && !(heroFrames[idx] && heroFrames[idx].complete && heroFrames[idx].naturalWidth)) idx--;
+    while (idx > 1 && !frameDecoded[idx]) idx--;
     const img = heroFrames[idx];
-    if (!img || !img.complete || !img.naturalWidth || idx === lastDrawnFrame) return;
+    if (!img || !frameDecoded[idx] || idx === lastDrawnFrame) return;
     lastDrawnFrame = idx;
     const cw = canvas.width, ch = canvas.height;
     const iw = img.naturalWidth, ih = img.naturalHeight;
