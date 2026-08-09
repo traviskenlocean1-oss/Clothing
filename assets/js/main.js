@@ -224,3 +224,43 @@ document.querySelectorAll('[data-buy-now]').forEach(btn => {
     window.location.href = 'checkout.html';
   });
 });
+
+/* ---------- collection-preview carousel: swipe-controlled on mobile ----------
+   Desktop keeps the original CSS auto-scroll (untouched). On mobile the CSS
+   animation is turned off (see style.css) and this drives position by index
+   instead — swipe left/right moves one card at a time, nothing runs on its
+   own. The markup still has 12 cards (6 unique, duplicated for the old
+   infinite-auto-scroll trick) but this only ever targets the first 6; the
+   duplicates just sit unused past the last one, which is harmless. */
+(function(){
+  if (!window.matchMedia('(max-width:900px)').matches) return;
+  const track = document.querySelector('.scroller__track');
+  if (!track) return;
+  const cards = Array.from(track.children);
+  const uniqueCount = cards.length / 2;
+  let index = 0;
+
+  function cardStep(){
+    const style = getComputedStyle(track);
+    return cards[0].getBoundingClientRect().width + (parseFloat(style.gap) || 0);
+  }
+  function goTo(i){
+    index = ((i % uniqueCount) + uniqueCount) % uniqueCount;
+    track.style.transform = `translateX(${-index * cardStep()}px)`;
+  }
+
+  let startX = 0, dragging = false;
+  track.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+    dragging = true;
+  }, { passive: true });
+  track.addEventListener('touchend', (e) => {
+    if (!dragging) return;
+    dragging = false;
+    const delta = e.changedTouches[0].clientX - startX;
+    if (Math.abs(delta) < 40) return; // too small to count as an intentional swipe
+    goTo(index + (delta < 0 ? 1 : -1));
+  }, { passive: true });
+
+  goTo(0);
+})();
