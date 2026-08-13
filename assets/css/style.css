@@ -177,6 +177,8 @@ section{ position:relative; }
   transform:scaleX(0); transform-origin:left; transition:transform .35s var(--ease);
 }
 .nav__links a:hover::after{ transform:scaleX(1); }
+.nav__vip{ color:#6fd8d8; text-shadow:0 0 10px rgba(111,216,216,.65); }
+.nav__vip::after{ background:#6fd8d8; box-shadow:0 0 6px rgba(111,216,216,.8); }
 .nav__right{ display:flex; align-items:center; gap:1.6rem; }
 .nav__cart{ display:flex; align-items:center; gap:.5rem; font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; }
 .nav__cart-count{
@@ -229,6 +231,31 @@ section{ position:relative; }
   background:linear-gradient(180deg, rgba(0,0,0,0) 75%, rgba(0,0,0,.35) 100%);
 }
 .scrub-bar{ position:absolute; bottom:0; left:0; height:3px; width:100%; background:var(--pink); box-shadow:0 0 12px var(--pink); transform:scaleX(0); transform-origin:left; }
+
+/* ---------- VIP page ---------- */
+body.vip-page{ background:var(--black); }
+.vip-scrub-wrap{ height:460vh; }
+.vip-scrub-wrap .scrub-canvas{ filter:none; } /* footage is already color-locked — don't re-grade it */
+.vip-scrub-wrap .scrub-bar{ background:#6fd8d8; box-shadow:0 0 12px #6fd8d8; }
+@media (max-width:768px){ .vip-scrub-wrap{ height:260vh; } }
+
+.vip-drops{ padding:6rem var(--gutter) 4rem; }
+.vip-drops .eyebrow{ color:#6fd8d8; }
+.vip-drops__grid{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; margin-top:3rem;
+}
+.vip-drops__card{
+  aspect-ratio:4/5; border:1px solid rgba(255,255,255,.14);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-display); letter-spacing:.1em; text-transform:uppercase;
+  font-size:.85rem; color:rgba(255,255,255,.45);
+  background:linear-gradient(160deg, rgba(111,216,216,.05), transparent 60%);
+}
+@media (max-width:900px){ .vip-drops__grid{ grid-template-columns:repeat(2,1fr); } }
+
+.vip-marquee{ background:var(--black); border-top:1px solid rgba(255,255,255,.1); border-bottom:1px solid rgba(255,255,255,.1); }
+.vip-marquee .marquee__item{ color:#e7e2d6; }
+.vip-marquee__dot{ color:#6fd8d8; font-size:.6rem; }
 .hero__content{ position:relative; z-index:2; display:flex; flex-direction:column; align-items:center; gap:1rem; padding-bottom:1.6rem; transition:opacity .8s var(--ease); }
 .hero__content > *{
   opacity:0; transform:translateY(36px);
