@@ -80,6 +80,8 @@
   <div class="vip-drops__grid">
     <div class="vip-drops__card reveal"><span>Coming Soon</span></div>
     <div class="vip-drops__card reveal"><span>Coming Soon</span></div>
+    <div class="vip-drops__card reveal"><span>Coming Soon</span></div>
+    <div class="vip-drops__card reveal"><span>Coming Soon</span></div>
   </div>
 </section>
 
@@ -196,15 +198,15 @@
     lastDrawnFrame = idx;
     const cw = canvas.width, ch = canvas.height;
     const iw = img.naturalWidth, ih = img.naturalHeight;
-    // Capped cover-crop: on a viewport that's unusually wide/short relative
-    // to this 16:9 footage, a pure Math.max cover crop scales up enough to
-    // slice a lot off the top and bottom — which is exactly where the
-    // "Welcome to VIP" sign lives. Capping how far past fit-width the scale
-    // can go bounds that vertical loss; on any viewport short enough to still
-    // exceed the cap, the dark canvas background shows as a thin letterbox
-    // instead of cropping the sign away.
-    const fitW = cw / iw;
-    const scale = Math.min(Math.max(fitW, ch / ih), fitW * 1.25);
+    // Contain-fit, not cover-crop: the previous capped-cover approach still
+    // cropped hard on wide/short desktop windows (browser chrome eating
+    // vertical space pushes the viewport well past 16:9), slicing into the
+    // "Welcome to VIP" sign and lounge composition. Scaling to the SMALLER
+    // of the two fit ratios guarantees the full frame is always visible,
+    // never cropped, on any window shape — the dark fill below becomes a
+    // thin letterbox/pillarbox bar instead, which reads as intentional
+    // against this near-black scene rather than as a bug.
+    const scale = Math.min(cw / iw, ch / ih);
     const dw = iw * scale, dh = ih * scale;
     ctx.fillStyle = '#0c0c0c';
     ctx.fillRect(0, 0, cw, ch);

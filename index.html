@@ -313,13 +313,18 @@
     lastDrawnFrame = idx;
     const cw = canvas.width, ch = canvas.height;
     const iw = img.naturalWidth, ih = img.naturalHeight;
-    // Always a full edge-to-edge cover crop — no letterbox bars, ever. How
-    // much of the room's width that leaves visible on a narrow phone is
-    // controlled by .scrub-pin's own height in CSS (a shorter pin means a
-    // less extreme aspect mismatch against this 16:9 footage, hence less
-    // crop), not by capping the scale here.
-    const scale = Math.max(cw / iw, ch / ih);
+    // Contain-fit, not cover-crop — reversed from the old "always edge-to-edge
+    // cover, no letterbox ever" policy. That policy cropped hard on any
+    // viewport whose aspect strays far from this 16:9 footage: portrait
+    // mobile sliced most of the "Built From Broken Hearts" wordmark off both
+    // edges, and wide/short desktop windows sliced the top/bottom instead.
+    // Scaling to the SMALLER of the two fit ratios keeps the full frame
+    // visible on any window shape, at the cost of a thin dark letterbox bar
+    // in extreme cases — invisible against this near-black scene.
+    const scale = Math.min(cw / iw, ch / ih);
     const dw = iw * scale, dh = ih * scale;
+    ctx.fillStyle = '#0b0b0b';
+    ctx.fillRect(0, 0, cw, ch);
     ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
   }
 
