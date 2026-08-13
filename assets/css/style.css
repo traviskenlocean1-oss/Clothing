@@ -169,6 +169,11 @@ section{ position:relative; }
   transition:padding .4s var(--ease), background .4s var(--ease);
 }
 .nav.scrolled{ padding:1rem var(--gutter); background:rgba(10,10,10,.92); backdrop-filter:blur(6px); }
+/* The VIP hero pin is 650vh of scroll — .nav.scrolled's solid dark bar
+   engages almost immediately (scrollY > 40px) and stays on top the entire
+   time, physically covering the "Welcome to VIP" sign near the top of
+   frame. Keep the light top-fade gradient instead for the whole page. */
+body.vip-page .nav.scrolled{ background:linear-gradient(180deg, rgba(0,0,0,.45) 0%, transparent 100%); backdrop-filter:none; }
 .nav__logo{ font-family:var(--font-display); font-size:1.1rem; letter-spacing:.08em; }
 .nav__links{ display:flex; gap:2.4rem; font-size:.78rem; letter-spacing:.18em; text-transform:uppercase; }
 .nav__links a{ position:relative; }

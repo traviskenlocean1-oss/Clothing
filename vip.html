@@ -264,6 +264,13 @@
     return Math.max(0, Math.min(1, (window.scrollY - t) / (h - pinH)));
   }
 
+  // Once the photo reveal completes, freeze scroll input briefly so it
+  // doesn't fly straight past into Early Arrivals — gives a beat to actually
+  // see the lounge photo. Re-arms if the user scrolls back up out of the
+  // reveal, so it holds again on a second pass.
+  let holdArmed = true, holding = false, holdUntil = 0;
+  const HOLD_MS = 1100;
+
   let raf = false;
   function scrubTick() {
     const p = scrubProg();
@@ -275,8 +282,25 @@
     if (scrubFlash) scrubFlash.style.opacity = revealP < 0.4 ? revealP / 0.4 : Math.max(0, 1 - (revealP - 0.4) / 0.6);
     if (scrubPhoto) scrubPhoto.style.opacity = Math.max(0, Math.min(1, (revealP - 0.25) / 0.75));
     if (scrubBar) scrubBar.style.transform = `scaleX(${p})`;
+    if (revealP >= 0.999 && holdArmed && !holding) {
+      holding = true;
+      holdArmed = false;
+      holdUntil = performance.now() + HOLD_MS;
+    }
+    if (revealP < 0.9) holdArmed = true;
     raf = false;
   }
+
+  function blockWhileHolding(e) {
+    if (!holding) return;
+    if (performance.now() > holdUntil) { holding = false; return; }
+    e.preventDefault();
+  }
+  window.addEventListener('wheel', blockWhileHolding, { passive: false });
+  window.addEventListener('touchmove', blockWhileHolding, { passive: false });
+  window.addEventListener('keydown', (e) => {
+    if (['ArrowDown', 'PageDown', ' '].includes(e.key)) blockWhileHolding(e);
+  });
 
   window.addEventListener('scroll', () => { if (!raf) { raf = true; requestAnimationFrame(scrubTick); } }, { passive: true });
   window.addEventListener('resize', sizeHeroCanvas);
