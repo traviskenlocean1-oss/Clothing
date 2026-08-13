@@ -7,12 +7,17 @@ window.PL_PRODUCTS = {
     tags: ['front-graphics','back-graphics','hearts'],
     desc: 'Wide-leg heavyweight sweatpants with a rhinestone flame running up each leg and a stitched heart front and center. "Psychotic Forever" on the back.'
   },
-  'rhinestone-flame-hoodie': {
-    name: 'Rhinestone Flame Hoodie', price: 92, type: 'hoodie',
-    front: 'assets/img/products/rhinestone-flame-hoodie/front.png',
-    back: 'assets/img/products/rhinestone-flame-hoodie/back.png',
-    tags: ['front-graphics','back-graphics','hearts','hoodies'],
-    desc: 'Zip hoodie with rhinestone flame sleeves and a bejeweled dripping heart pocket up front, an oversized stitched heart and "Psychotic Forever" across the back.'
+  'flame-zip-hoodie': {
+    name: 'Flame Sleeve Zip Hoodie', price: 92, type: 'hoodie',
+    front: 'assets/img/products/flame-zip-hoodie/front.png',
+    tags: ['front-graphics','hearts','hoodies'],
+    desc: 'Zip hoodie with rhinestone flame sleeves and a bejeweled dripping heart pocket up front.'
+  },
+  'love-hurts-hoodie': {
+    name: 'Love Hurts Hoodie', price: 92, type: 'hoodie',
+    front: 'assets/img/products/love-hurts-hoodie/front.png',
+    tags: ['front-graphics','hearts','hoodies'],
+    desc: 'Pullover hoodie with rhinestone flame sleeves and an oversized stitched heart graphic, "Love Hurts, Psychotic Forever."'
   },
   'chaos-heart-tee': {
     name: 'Chaos Heart Tee', price: 58, type: 'tee',
