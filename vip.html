@@ -55,7 +55,7 @@
     <li><a href="index.html">Home</a></li>
     <li><a href="shop.html">Shop</a></li>
     <li><a href="about.html">About</a></li>
-    <li><a href="vip.html" class="nav__vip is-active">VIP</a></li>
+    <li><a href="vip.html">VIP</a></li>
   </ul>
   <div class="nav__right">
     <button class="nav__cart" data-cart-open aria-label="Open cart">
@@ -75,11 +75,9 @@
 <section class="dark vip-drops">
   <div class="section-head reveal">
     <span class="eyebrow">Members Only</span>
-    <h2 class="display">New Releases</h2>
+    <h2 class="display">Early Arrivals</h2>
   </div>
   <div class="vip-drops__grid">
-    <div class="vip-drops__card reveal"><span>Coming Soon</span></div>
-    <div class="vip-drops__card reveal"><span>Coming Soon</span></div>
     <div class="vip-drops__card reveal"><span>Coming Soon</span></div>
     <div class="vip-drops__card reveal"><span>Coming Soon</span></div>
   </div>
@@ -198,8 +196,18 @@
     lastDrawnFrame = idx;
     const cw = canvas.width, ch = canvas.height;
     const iw = img.naturalWidth, ih = img.naturalHeight;
-    const scale = Math.max(cw / iw, ch / ih);
+    // Capped cover-crop: on a viewport that's unusually wide/short relative
+    // to this 16:9 footage, a pure Math.max cover crop scales up enough to
+    // slice a lot off the top and bottom — which is exactly where the
+    // "Welcome to VIP" sign lives. Capping how far past fit-width the scale
+    // can go bounds that vertical loss; on any viewport short enough to still
+    // exceed the cap, the dark canvas background shows as a thin letterbox
+    // instead of cropping the sign away.
+    const fitW = cw / iw;
+    const scale = Math.min(Math.max(fitW, ch / ih), fitW * 1.25);
     const dw = iw * scale, dh = ih * scale;
+    ctx.fillStyle = '#0c0c0c';
+    ctx.fillRect(0, 0, cw, ch);
     ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
   }
 
