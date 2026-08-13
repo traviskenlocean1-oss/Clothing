@@ -171,6 +171,13 @@
   const scrubPhoto = document.getElementById('scrub-photo');
   const scrubFlash = document.getElementById('scrub-flash');
   const VIDEO_END  = 0.87;
+  // The source footage's own last ~55 frames are its baked-in "Welcome to
+  // VIP" reveal (the old heart/couches shot) — playing those and THEN
+  // flashing to the new photo showed the old shot first every time. Cutting
+  // the video off at frame 96 (still mid-stairs, bright light, nothing of
+  // the old reveal visible yet — confirmed by eye) means only the new photo
+  // is ever seen as a "reveal."
+  const VIDEO_LAST_FRAME = 96;
 
   const HERO_FRAME_COUNT = 152;
   const heroFramePath = i => `assets/img/vip-hero-frames/frame-${String(i).padStart(3, '0')}.jpg`;
@@ -194,9 +201,11 @@
   // Loading an early priority window first, then the rest once the browser
   // is idle, keeps the frames a user actually hits early on ready in time.
   const PRIORITY_FRAMES = 30;
-  for (let i = 1; i <= Math.min(PRIORITY_FRAMES, HERO_FRAME_COUNT); i++) loadHeroFrame(i);
+  for (let i = 1; i <= Math.min(PRIORITY_FRAMES, VIDEO_LAST_FRAME); i++) loadHeroFrame(i);
   const loadRemainingFrames = () => {
-    for (let i = PRIORITY_FRAMES + 1; i <= HERO_FRAME_COUNT; i++) loadHeroFrame(i);
+    // Only frames 1..VIDEO_LAST_FRAME are ever drawn now — no point fetching
+    // the rest of the source sequence.
+    for (let i = PRIORITY_FRAMES + 1; i <= VIDEO_LAST_FRAME; i++) loadHeroFrame(i);
   };
   if ('requestIdleCallback' in window) requestIdleCallback(loadRemainingFrames, { timeout: 1500 });
   else setTimeout(loadRemainingFrames, 300);
@@ -259,8 +268,8 @@
   function scrubTick() {
     const p = scrubProg();
     const videoP = Math.min(1, p / VIDEO_END);
-    if (videoP < 1 || lastRequestedFrame < HERO_FRAME_COUNT) {
-      requestHeroFrame(1 + videoP * (HERO_FRAME_COUNT - 1));
+    if (videoP < 1 || lastRequestedFrame < VIDEO_LAST_FRAME) {
+      requestHeroFrame(1 + videoP * (VIDEO_LAST_FRAME - 1));
     }
     const revealP = Math.max(0, Math.min(1, (p - VIDEO_END) / (1 - VIDEO_END)));
     if (scrubFlash) scrubFlash.style.opacity = revealP < 0.4 ? revealP / 0.4 : Math.max(0, 1 - (revealP - 0.4) / 0.6);
