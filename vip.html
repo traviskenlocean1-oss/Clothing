@@ -176,7 +176,7 @@
   const heroFramePath = i => `assets/img/vip-hero-frames/frame-${String(i).padStart(3, '0')}.jpg`;
   const heroFrames = new Array(HERO_FRAME_COUNT + 1);
   const frameDecoded = new Array(HERO_FRAME_COUNT + 1).fill(false);
-  for (let i = 1; i <= HERO_FRAME_COUNT; i++) {
+  function loadHeroFrame(i) {
     const img = new Image();
     img.src = heroFramePath(i);
     const markReady = () => { frameDecoded[i] = true; if (i === 1) drawHeroFrame(1); };
@@ -187,6 +187,19 @@
     }
     heroFrames[i] = img;
   }
+  // Firing all 152 requests at once makes them compete for the browser's
+  // per-origin connection limit, so frames the user reaches in the first
+  // couple seconds of scrolling often aren't decoded yet — drawHeroFrame
+  // falls back to the last-decoded frame and the scrub visibly stalls.
+  // Loading an early priority window first, then the rest once the browser
+  // is idle, keeps the frames a user actually hits early on ready in time.
+  const PRIORITY_FRAMES = 30;
+  for (let i = 1; i <= Math.min(PRIORITY_FRAMES, HERO_FRAME_COUNT); i++) loadHeroFrame(i);
+  const loadRemainingFrames = () => {
+    for (let i = PRIORITY_FRAMES + 1; i <= HERO_FRAME_COUNT; i++) loadHeroFrame(i);
+  };
+  if ('requestIdleCallback' in window) requestIdleCallback(loadRemainingFrames, { timeout: 1500 });
+  else setTimeout(loadRemainingFrames, 300);
 
   let lastDrawnFrame = -1, lastRequestedFrame = 1;
 
