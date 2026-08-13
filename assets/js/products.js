@@ -37,13 +37,16 @@ window.PL_PRODUCTS = {
   'cream-heart-tee': {
     name: 'Cream Heart Tee', price: 50, type: 'tee',
     front: 'assets/img/products/cream-heart-tee/front.png',
-    gallery: [
-      'assets/img/products/wordmark-heart-tee/front.jpg',
-      'assets/img/products/wordmark-heart-tee/extra-1.jpg',
-      'assets/img/products/wordmark-heart-tee/extra-2.jpg'
-    ],
     tags: ['front-graphics','hearts'],
     desc: 'Vintage cream tee with a distressed wordmark and stitched heart corner hit up front.'
+  },
+  'gray-wordmark-heart-tee': {
+    name: 'Gray Wordmark Heart Tee', price: 48, type: 'tee',
+    front: 'assets/img/products/wordmark-heart-tee/extra-1.jpg',
+    back: 'assets/img/products/wordmark-heart-tee/back.jpg',
+    gallery: ['assets/img/products/wordmark-heart-tee/extra-2.jpg'],
+    tags: ['front-graphics','back-graphics','hearts','logo'],
+    desc: 'Charcoal acid-wash tee — clean wordmark up front, an oversized dripping stitched heart across the back.'
   },
   'wordmark-only-tee': {
     name: 'Wordmark Tee', price: 46, type: 'tee',
