@@ -3,23 +3,14 @@
    =========================================================== */
 
 :root{
-  /* Brand refresh: white + red dominant, charcoal/black secondary. --cream
-     is now a near-imperceptible off-white (was a warm #F6F1E8) — kept as
-     its own token rather than merged into --white so light sections can
-     still separate slightly from pure-white cards/panels.
-     --blue/--pink/--green are UNCHANGED — those are product heart-color
-     identity (shop swatches, heart icons), not site branding, and nothing
-     here should touch them. */
-  --cream:#F7F7F5;
+  --cream:#F6F1E8;
   --black:#111111;
-  --charcoal:#1C1C1C;
   --white:#FFFFFF;
   --gray:#9B9B9B;
-  --red:#E3121F;
   --blue:#4FA8FF;
   --pink:#FF6A8B;
   --green:#58C44D;
-  --red-shadow:#5C0A0E;
+  --red-shadow:#7A1F1F;
 
   --ink:var(--black);
   --paper:var(--cream);
@@ -177,12 +168,12 @@ section{ position:relative; }
   background:linear-gradient(180deg, rgba(0,0,0,.45) 0%, transparent 100%);
   transition:padding .4s var(--ease), background .4s var(--ease);
 }
-.nav.scrolled{ padding:1rem var(--gutter); background:rgba(28,28,28,.92); backdrop-filter:blur(6px); }
+.nav.scrolled{ padding:1rem var(--gutter); background:rgba(10,10,10,.92); backdrop-filter:blur(6px); }
 .nav__logo{ font-family:var(--font-display); font-size:1.1rem; letter-spacing:.08em; }
 .nav__links{ display:flex; gap:2.4rem; font-size:.78rem; letter-spacing:.18em; text-transform:uppercase; }
 .nav__links a{ position:relative; }
 .nav__links a::after{
-  content:""; position:absolute; left:0; bottom:-4px; width:100%; height:1px; background:var(--red);
+  content:""; position:absolute; left:0; bottom:-4px; width:100%; height:1px; background:currentColor;
   transform:scaleX(0); transform-origin:left; transition:transform .35s var(--ease);
 }
 .nav__links a:hover::after{ transform:scaleX(1); }
@@ -237,7 +228,7 @@ section{ position:relative; }
   position:absolute; inset:0; pointer-events:none;
   background:linear-gradient(180deg, rgba(0,0,0,0) 75%, rgba(0,0,0,.35) 100%);
 }
-.scrub-bar{ position:absolute; bottom:0; left:0; height:3px; width:100%; background:var(--red); box-shadow:0 0 12px var(--red); transform:scaleX(0); transform-origin:left; }
+.scrub-bar{ position:absolute; bottom:0; left:0; height:3px; width:100%; background:var(--pink); box-shadow:0 0 12px var(--pink); transform:scaleX(0); transform-origin:left; }
 .hero__content{ position:relative; z-index:2; display:flex; flex-direction:column; align-items:center; gap:1rem; padding-bottom:1.6rem; transition:opacity .8s var(--ease); }
 .hero__content > *{
   opacity:0; transform:translateY(36px);
@@ -442,7 +433,7 @@ footer.site-footer{ padding:1.6rem var(--gutter) 2rem; }
   padding:.6em 1.4em; border:1px solid var(--black); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase;
   transition:background .3s var(--ease), color .3s var(--ease);
 }
-.filter-pill.is-active,.filter-pill:hover{ background:var(--red); color:var(--white); }
+.filter-pill.is-active,.filter-pill:hover{ background:var(--black); color:var(--cream); }
 
 .product-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:3.2rem 2.4rem; padding:0 var(--gutter) 6rem; }
 .product-card{ position:relative; }
@@ -492,7 +483,7 @@ footer.site-footer{ padding:1.6rem var(--gutter) 2rem; }
 .product-info__meta{ display:flex; gap:1.2rem; font-size:.78rem; letter-spacing:.1em; color:var(--gray); text-transform:uppercase; }
 .size-row{ display:flex; gap:.6rem; }
 .size-swatch{ width:3em; height:3em; border:1px solid var(--black); display:flex; align-items:center; justify-content:center; font-size:.8rem; }
-.size-swatch.is-active,.size-swatch:hover{ background:var(--red); color:var(--white); }
+.size-swatch.is-active,.size-swatch:hover{ background:var(--black); color:var(--cream); }
 .qty-row{ display:flex; align-items:center; gap:1rem; }
 .qty-row button{ width:2.4em; height:2.4em; border:1px solid var(--black); }
 .accordion-item{ border-top:1px solid rgba(0,0,0,.15); }
@@ -654,7 +645,7 @@ footer.site-footer{ padding:1.6rem var(--gutter) 2rem; }
   transition:border-color .3s var(--ease);
 }
 .form-field input::placeholder{ color:#8a8478; }
-.form-field input:focus, .form-field select:focus{ outline:none; border-color:var(--red); }
+.form-field input:focus, .form-field select:focus{ outline:none; border-color:var(--black); }
 
 .order-panel{
   background:var(--white); border:1px solid rgba(0,0,0,.08); border-radius:10px;
