@@ -34,17 +34,14 @@ window.PL_PRODUCTS = {
     tags: ['front-graphics','back-graphics','logo'],
     desc: 'Olive heavyweight tee with a lightning-struck monogram and studded neckline. Distressed spray-paint monogram repeats on the back.'
   },
-  'wordmark-heart-tee': {
-    name: 'Wordmark Heart Tee', price: 48, type: 'tee',
-    front: 'assets/img/products/wordmark-heart-tee/front.jpg',
-    back: 'assets/img/products/wordmark-heart-tee/back.jpg',
-    gallery: ['assets/img/products/wordmark-heart-tee/extra-1.jpg', 'assets/img/products/wordmark-heart-tee/extra-2.jpg'],
-    tags: ['front-graphics','back-graphics','hearts','logo'],
-    desc: 'Charcoal acid-wash tee — clean wordmark up front, an oversized dripping stitched heart across the back.'
-  },
   'cream-heart-tee': {
     name: 'Cream Heart Tee', price: 50, type: 'tee',
     front: 'assets/img/products/cream-heart-tee/front.png',
+    gallery: [
+      'assets/img/products/wordmark-heart-tee/front.jpg',
+      'assets/img/products/wordmark-heart-tee/extra-1.jpg',
+      'assets/img/products/wordmark-heart-tee/extra-2.jpg'
+    ],
     tags: ['front-graphics','hearts'],
     desc: 'Vintage cream tee with a distressed wordmark and stitched heart corner hit up front.'
   },
