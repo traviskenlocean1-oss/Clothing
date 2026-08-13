@@ -198,15 +198,13 @@
     lastDrawnFrame = idx;
     const cw = canvas.width, ch = canvas.height;
     const iw = img.naturalWidth, ih = img.naturalHeight;
-    // Contain-fit, not cover-crop: the previous capped-cover approach still
-    // cropped hard on wide/short desktop windows (browser chrome eating
-    // vertical space pushes the viewport well past 16:9), slicing into the
-    // "Welcome to VIP" sign and lounge composition. Scaling to the SMALLER
-    // of the two fit ratios guarantees the full frame is always visible,
-    // never cropped, on any window shape — the dark fill below becomes a
-    // thin letterbox/pillarbox bar instead, which reads as intentional
-    // against this near-black scene rather than as a bug.
-    const scale = Math.min(cw / iw, ch / ih);
+    // Reverted to plain edge-to-edge cover-crop. Contain-fit (tried
+    // 2026-08-13) guarantees a letterbox/pillarbox bar on any window that
+    // isn't exactly 16:9 — it just moved the bar from top/bottom to the
+    // sides depending on window shape, which read as more broken, not less.
+    // No formula gives "zero bars" and "zero extra crop" at the same time on
+    // an arbitrary window shape; full-bleed-always wins that trade-off here.
+    const scale = Math.max(cw / iw, ch / ih);
     const dw = iw * scale, dh = ih * scale;
     ctx.fillStyle = '#0c0c0c';
     ctx.fillRect(0, 0, cw, ch);

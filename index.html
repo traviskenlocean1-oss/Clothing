@@ -313,18 +313,12 @@
     lastDrawnFrame = idx;
     const cw = canvas.width, ch = canvas.height;
     const iw = img.naturalWidth, ih = img.naturalHeight;
-    // Contain-fit, not cover-crop — reversed from the old "always edge-to-edge
-    // cover, no letterbox ever" policy. That policy cropped hard on any
-    // viewport whose aspect strays far from this 16:9 footage: portrait
-    // mobile sliced most of the "Built From Broken Hearts" wordmark off both
-    // edges, and wide/short desktop windows sliced the top/bottom instead.
-    // Scaling to the SMALLER of the two fit ratios keeps the full frame
-    // visible on any window shape, at the cost of a thin dark letterbox bar
-    // in extreme cases — invisible against this near-black scene.
-    const scale = Math.min(cw / iw, ch / ih);
+    // Reverted to plain edge-to-edge cover-crop (see vip.html for the same
+    // revert + reasoning, 2026-08-13). Contain-fit avoids cropping the
+    // wordmark but trades it for a visible bar on any non-16:9 window —
+    // full-bleed-always is the better default for this hero.
+    const scale = Math.max(cw / iw, ch / ih);
     const dw = iw * scale, dh = ih * scale;
-    ctx.fillStyle = '#0b0b0b';
-    ctx.fillRect(0, 0, cw, ch);
     ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
   }
 
