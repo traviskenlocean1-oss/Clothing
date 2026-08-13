@@ -291,7 +291,7 @@
   // Mobile gets its own frame sequence shot natively in 9:16 — the desktop
   // set is 16:9 footage, which has no clean crop against a portrait screen.
   const isMobileHero = window.matchMedia('(max-width:768px)').matches;
-  const HERO_FRAME_COUNT = isMobileHero ? 152 : 109;
+  const HERO_FRAME_COUNT = isMobileHero ? 152 : 141;
   const heroFramePath = i => isMobileHero
     ? `assets/img/hero-frames-mobile/frame-${String(i).padStart(3, '0')}.jpg`
     : `assets/img/hero-frames/frame-${String(i).padStart(3, '0')}.jpg`;
