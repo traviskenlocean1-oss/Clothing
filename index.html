@@ -171,10 +171,11 @@
     if (!track) return;
     const entries = Object.entries(window.PL_PRODUCTS);
     const cardHTML = ([slug, p]) => {
-      const media = p.front && p.back
-        ? `<div class="tee tee--front"><img src="${p.front}" alt="${p.name} — front" loading="lazy"></div>
-           <div class="tee tee--back"><img src="${p.back}" alt="${p.name} — back" loading="lazy"></div>`
-        : `<div class="tee tee--front"><img src="${p.front || p.back}" alt="${p.name}" loading="lazy"></div>`;
+      // Always render both layers — see shop.html for why: a lone .tee--front
+      // still gets faded out on hover with nothing behind it to fade in.
+      const media = `
+        <div class="tee tee--front"><img src="${p.front || p.back}" alt="${p.name}${p.front && p.back ? ' — front' : ''}" loading="lazy"></div>
+        <div class="tee tee--back"><img src="${p.back || p.front}" alt="${p.name}${p.front && p.back ? ' — back' : ''}" loading="lazy"></div>`;
       return `<a class="scroll-card" href="product.html?p=${slug}">${media}<span class="scroll-card__label">${p.name}</span></a>`;
     };
     track.innerHTML = entries.map(cardHTML).join('') + entries.map(cardHTML).join('');

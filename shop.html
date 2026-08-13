@@ -91,10 +91,14 @@
     el.dataset.price = p.price;
     el.dataset.image = primary;
     el.dataset.tags = p.tags.join(',');
-    const media = p.front && p.back
-      ? `<div class="tee tee--front"><img src="${p.front}" alt="${p.name} — front" loading="lazy"></div>
-         <div class="tee tee--back"><img src="${p.back}" alt="${p.name} — back" loading="lazy"></div>`
-      : `<div class="tee tee--front"><img src="${primary}" alt="${p.name}" loading="lazy"></div>`;
+    // Always render both layers, even for single-image products — with only
+    // a .tee--front div, the hover rule that fades it out on
+    // .product-card:hover still fires with no .tee--back to fade in behind
+    // it, so the card just goes blank on hover. Reusing the same image for
+    // both layers when there's no back keeps hover a no-op instead.
+    const media = `
+      <div class="tee tee--front"><img src="${p.front || p.back}" alt="${p.name}${p.front && p.back ? ' — front' : ''}" loading="lazy"></div>
+      <div class="tee tee--back"><img src="${p.back || p.front}" alt="${p.name}${p.front && p.back ? ' — back' : ''}" loading="lazy"></div>`;
     el.innerHTML = `
       <div class="product-card__frame">
         <a href="product.html?p=${slug}" class="product-card__media">${media}</a>
