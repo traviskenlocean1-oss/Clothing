@@ -32,9 +32,7 @@
   }
   document.documentElement.appendChild(o);
 })();
-</script>
-<script type="module" src="https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
-<script type="application/ld+json">
+</script><script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "ClothingStore",
@@ -165,45 +163,24 @@
     <h2 class="display">Collection Preview</h2>
   </div>
   <div class="scroller">
-    <div class="scroller__track">
-      <a class="scroll-card" href="product.html?p=blue-heart-tee" data-tee data-shirt="#2f5fb0" data-heart="assets/img/hearts/heart-blue.png">
-        <span class="scroll-card__label">Blue Tee</span>
-      </a>
-      <a class="scroll-card" href="product.html?p=green-heart-tee" data-tee data-shirt="#2e7d32" data-heart="assets/img/hearts/heart-green.png">
-        <span class="scroll-card__label">Green Tee</span>
-      </a>
-      <a class="scroll-card" href="product.html?p=pink-heart-tee" data-tee data-shirt="#b23a5c" data-heart="assets/img/hearts/heart-pink.png">
-        <span class="scroll-card__label">Pink Tee</span>
-      </a>
-      <a class="scroll-card" href="product.html?p=logo-tee" data-tee data-shirt="#111111" data-heart="assets/img/logo/monogram-b.png">
-        <span class="scroll-card__label">Logo Tee</span>
-      </a>
-      <a class="scroll-card" href="product.html?p=back-graphic-tee" data-tee data-shirt="#111111" data-heart="assets/img/hearts/heart-red.png">
-        <span class="scroll-card__label">Back Graphic Tee</span>
-      </a>
-      <a class="scroll-card" href="product.html?p=white-heart-tee" data-tee data-shirt="#e7e2d6" data-heart="assets/img/hearts/heart-white.png">
-        <span class="scroll-card__label">White Heart Tee</span>
-      </a>
-      <a class="scroll-card" href="product.html?p=blue-heart-tee" data-tee data-shirt="#2f5fb0" data-heart="assets/img/hearts/heart-blue.png">
-        <span class="scroll-card__label">Blue Tee</span>
-      </a>
-      <a class="scroll-card" href="product.html?p=green-heart-tee" data-tee data-shirt="#2e7d32" data-heart="assets/img/hearts/heart-green.png">
-        <span class="scroll-card__label">Green Tee</span>
-      </a>
-      <a class="scroll-card" href="product.html?p=pink-heart-tee" data-tee data-shirt="#b23a5c" data-heart="assets/img/hearts/heart-pink.png">
-        <span class="scroll-card__label">Pink Tee</span>
-      </a>
-      <a class="scroll-card" href="product.html?p=logo-tee" data-tee data-shirt="#111111" data-heart="assets/img/logo/monogram-b.png">
-        <span class="scroll-card__label">Logo Tee</span>
-      </a>
-      <a class="scroll-card" href="product.html?p=back-graphic-tee" data-tee data-shirt="#111111" data-heart="assets/img/hearts/heart-red.png">
-        <span class="scroll-card__label">Back Graphic Tee</span>
-      </a>
-      <a class="scroll-card" href="product.html?p=white-heart-tee" data-tee data-shirt="#e7e2d6" data-heart="assets/img/hearts/heart-white.png">
-        <span class="scroll-card__label">White Heart Tee</span>
-      </a>
-    </div>
+    <div class="scroller__track" id="scroller-track"></div>
   </div>
+  <script src="assets/js/products.js"></script>
+  <script>
+  (function(){
+    const track = document.getElementById('scroller-track');
+    if (!track) return;
+    const entries = Object.entries(window.PL_PRODUCTS);
+    const cardHTML = ([slug, p]) => {
+      const media = p.front && p.back
+        ? `<div class="tee tee--front"><img src="${p.front}" alt="${p.name} — front" loading="lazy"></div>
+           <div class="tee tee--back"><img src="${p.back}" alt="${p.name} — back" loading="lazy"></div>`
+        : `<div class="tee tee--front"><img src="${p.front || p.back}" alt="${p.name}" loading="lazy"></div>`;
+      return `<a class="scroll-card" href="product.html?p=${slug}">${media}<span class="scroll-card__label">${p.name}</span></a>`;
+    };
+    track.innerHTML = entries.map(cardHTML).join('') + entries.map(cardHTML).join('');
+  })();
+  </script>
 </section>
 
 <section class="newsletter dark grain">

@@ -363,6 +363,7 @@ section{ position:relative; }
 }
 .scroll-card .tee{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; transition:opacity .4s var(--ease); }
 .scroll-card .tee--back{ opacity:0; }
+.tee img{ width:100%; height:100%; object-fit:contain; padding:6%; }
 .scroll-card:hover .tee--front{ opacity:0; }
 .scroll-card:hover .tee--back{ opacity:1; }
 .scroll-card__label{ position:absolute; bottom:1.2rem; left:1.2rem; color:var(--black); font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; }
@@ -468,14 +469,8 @@ footer.site-footer{ padding:1.6rem var(--gutter) 2rem; }
 .product-gallery__arrow:hover{ background:var(--white); }
 .product-gallery__arrow--prev{ left:1rem; }
 .product-gallery__arrow--next{ right:1rem; }
-.tee-3d{ width:100%; height:100%; --poster-color:transparent; }
-.tee-3d-decal{
-  position:absolute; top:34%; left:50%; width:16%;
-  transform:translate(-50%,-50%);
-  pointer-events:none; filter:drop-shadow(0 4px 8px rgba(0,0,0,.25));
-}
-.tee-3d-decal--hoodie{ top:44%; width:14%; }
 .product-gallery__thumb{ position:relative; aspect-ratio:1/1; background:var(--white); border:1px solid rgba(0,0,0,.08); cursor:pointer; opacity:.6; transition:opacity .3s; overflow:hidden; }
+.product-gallery__thumb img{ width:100%; height:100%; object-fit:cover; }
 .product-gallery__thumb:hover,.product-gallery__thumb.is-active{ opacity:1; }
 .product-info{ position:sticky; top:8rem; align-self:start; display:flex; flex-direction:column; gap:1.4rem; }
 .product-info__name{ font-family:var(--font-display); font-size:2.4rem; }

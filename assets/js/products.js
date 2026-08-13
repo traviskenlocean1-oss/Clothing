@@ -1,58 +1,57 @@
 /* Psychotic Love — shared product data (single source, used by shop grid + product page) */
 window.PL_PRODUCTS = {
-  'blue-heart-tee': {
-    name: 'Blue Heart Tee', price: 50, shirt: '#2f5fb0',
-    heart: 'assets/img/hearts/heart-blue.png', tags: ['front-graphics','hearts'],
-    desc: 'Designed with distressed artwork and a stitched blue heart, this heavyweight tee represents loyalty through the chaos.'
+  'flame-zip-hoodie': {
+    name: 'Flame Sleeve Zip Hoodie', price: 98, type: 'hoodie',
+    front: 'assets/img/products/flame-zip-hoodie/front.jpg',
+    tags: ['front-graphics','hearts','hoodies'],
+    desc: 'Heavyweight zip hoodie with flame-print sleeves and a rhinestone-studded dripping heart across the front pocket. Built From Broken Hearts, worn loud.'
   },
-  'green-heart-tee': {
-    name: 'Green Heart Tee', price: 50, shirt: '#2e7d32',
-    heart: 'assets/img/hearts/heart-green.png', tags: ['front-graphics','hearts'],
-    desc: 'Designed with distressed artwork and a stitched green heart, this heavyweight tee represents growth through the chaos.'
+  'love-hurts-sweatpants': {
+    name: 'Love Hurts Flame Sweatpants', price: 72, type: 'sweatpants',
+    front: 'assets/img/products/love-hurts-sweatpants/front.jpg',
+    back: 'assets/img/products/love-hurts-sweatpants/back.jpg',
+    tags: ['front-graphics','back-graphics','hearts'],
+    desc: 'Wide-leg heavyweight sweatpants with a rhinestone flame running up each leg and a stitched heart front and center. "Love Hurts, Forever" on the back.'
   },
-  'pink-heart-tee': {
-    name: 'Pink Heart Tee', price: 50, shirt: '#b23a5c',
-    heart: 'assets/img/hearts/heart-pink.png', tags: ['front-graphics','hearts'],
-    desc: 'Designed with distressed artwork and a stitched pink heart, this heavyweight tee represents passion through the chaos.'
+  'rhinestone-flame-hoodie': {
+    name: 'Rhinestone Flame Hoodie', price: 92, type: 'hoodie',
+    back: 'assets/img/products/rhinestone-flame-hoodie/back.jpg',
+    tags: ['back-graphics','hoodies'],
+    desc: 'Pullover hoodie with rhinestone flame sleeves and an oversized "Love Hurts" back graphic. Back print only — no front graphic on this one.'
   },
-  'logo-tee': {
-    name: 'Logo Tee', price: 48, shirt: '#111111',
-    heart: 'assets/img/logo/monogram-b.png', tags: ['front-graphics','logo'],
-    desc: 'A clean canvas carrying the Psychotic Love monogram front and center. Minimal, heavyweight, built to last.'
+  'chaos-heart-tee': {
+    name: 'Chaos Heart Tee', price: 58, type: 'tee',
+    front: 'assets/img/products/chaos-heart-tee/front.png',
+    back: 'assets/img/products/chaos-heart-tee/back.jpg',
+    tags: ['front-graphics','back-graphics','hearts'],
+    desc: 'Oversized purple tee with a cracked, stitched heart and lightning graphic front and back. "Built On Chaos, Driven By Purpose."'
   },
-  'back-graphic-tee': {
-    name: 'Back Graphic Tee', price: 52, shirt: '#111111',
-    heart: 'assets/img/hearts/heart-red.png', tags: ['back-graphics','hearts'],
-    desc: 'The story lives on your back with this oversized stitched heart graphic across heavyweight cotton.'
+  'lightning-monogram-tee': {
+    name: 'Lightning Monogram Tee', price: 54, type: 'tee',
+    front: 'assets/img/products/lightning-monogram-tee/front.jpg',
+    back: 'assets/img/products/lightning-monogram-tee/back.jpg',
+    tags: ['front-graphics','back-graphics','logo'],
+    desc: 'Olive heavyweight tee with a lightning-struck monogram and studded neckline. Distressed spray-paint monogram repeats on the back.'
   },
-  'white-heart-tee': {
-    name: 'White Heart Tee', price: 50, shirt: '#e7e2d6',
-    heart: 'assets/img/hearts/heart-white.png', tags: ['front-graphics','hearts'],
-    desc: 'Vintage cream cotton carrying a stitched white heart — resilience represented in restraint.'
+  'wordmark-heart-tee': {
+    name: 'Wordmark Heart Tee', price: 48, type: 'tee',
+    front: 'assets/img/products/wordmark-heart-tee/front.jpg',
+    back: 'assets/img/products/wordmark-heart-tee/back.jpg',
+    tags: ['front-graphics','back-graphics','hearts','logo'],
+    desc: 'Charcoal acid-wash tee — clean wordmark up front, an oversized dripping stitched heart across the back.'
   },
-  'gray-heart-tee': {
-    name: 'Gray Heart Tee', price: 50, shirt: '#8a8a8a',
-    heart: 'assets/img/hearts/heart-coral.png', tags: ['front-graphics','hearts'],
-    desc: 'Heather-gray heavyweight cotton with a stitched coral heart — a quiet base for a loud graphic.'
+  'cream-heart-tee': {
+    name: 'Cream Heart Tee', price: 50, type: 'tee',
+    front: 'assets/img/products/cream-heart-tee/front.png',
+    back: 'assets/img/products/cream-heart-tee/back.png',
+    tags: ['front-graphics','back-graphics','hearts'],
+    desc: 'Vintage cream tee with a distressed wordmark and stitched heart corner hit up front, oversized stitched heart on the back.'
   },
-  'black-heart-tee': {
-    name: 'Black Heart Tee', price: 50, shirt: '#111111',
-    heart: 'assets/img/hearts/heart-gray.png', tags: ['front-graphics','hearts'],
-    desc: 'Jet black heavyweight cotton with a stitched gray heart — built for the ones who keep it low-key.'
-  },
-  'white-heart-hoodie': {
-    name: 'White Heart Hoodie', price: 85, shirt: '#e7e2d6',
-    heart: 'assets/img/hearts/heart-blue.png', tags: ['hoodies','hearts'], garment: 'hoodie',
-    desc: 'Vintage cream fleece hoodie with a stitched blue heart — heavyweight warmth without losing the edge.'
-  },
-  'black-heart-hoodie': {
-    name: 'Black Heart Hoodie', price: 85, shirt: '#111111',
-    heart: 'assets/img/hearts/heart-green.png', tags: ['hoodies','hearts'], garment: 'hoodie',
-    desc: 'Jet black fleece hoodie with a stitched green heart — the flagship silhouette, built heavy.'
-  },
-  'gray-heart-hoodie': {
-    name: 'Gray Heart Hoodie', price: 85, shirt: '#8a8a8a',
-    heart: 'assets/img/hearts/heart-pink.png', tags: ['hoodies','hearts'], garment: 'hoodie',
-    desc: 'Heather-gray fleece hoodie with a stitched pink heart — soft goods, sharp attitude.'
+  'clean-wordmark-hoodie': {
+    name: 'Clean Wordmark Hoodie', price: 88, type: 'hoodie',
+    front: 'assets/img/products/clean-wordmark-hoodie/front.png',
+    back: 'assets/img/products/clean-wordmark-hoodie/back.png',
+    tags: ['front-graphics','back-graphics','hoodies','logo'],
+    desc: 'Jet black heavyweight hoodie, no flames or studs — just the wordmark up front and a plain stitched heart on the back. Built for the ones who keep it low-key.'
   }
 };

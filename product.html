@@ -28,9 +28,7 @@
   }
   document.documentElement.appendChild(o);
 })();
-</script>
-<script type="module" src="https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
-</head>
+</script></head>
 <body>
 
 <div class="cart-overlay" data-cart-close></div>
@@ -195,108 +193,68 @@
 <script src="assets/js/main.js"></script>
 <script>
 (function(){
-  const slug = new URLSearchParams(location.search).get('p') || 'blue-heart-tee';
-  const p = window.PL_PRODUCTS[slug] || window.PL_PRODUCTS['blue-heart-tee'];
+  const slug = new URLSearchParams(location.search).get('p') || Object.keys(window.PL_PRODUCTS)[0];
+  const p = window.PL_PRODUCTS[slug] || window.PL_PRODUCTS[Object.keys(window.PL_PRODUCTS)[0]];
   const root = document.getElementById('product-root');
+  const primary = p.front || p.back;
   root.dataset.product = slug;
   root.dataset.name = p.name;
   root.dataset.price = p.price;
-  root.dataset.shirt = p.shirt;
-  root.dataset.heart = p.heart;
-  root.dataset.garment = p.garment || 'tshirt';
+  root.dataset.image = primary;
 
   document.getElementById('page-title').textContent = `${p.name} | Psychotic Love`;
   document.getElementById('p-name').textContent = p.name;
   document.getElementById('p-price').textContent = `$${p.price}`;
   document.getElementById('p-desc').textContent = p.desc;
 
-  function hexToRgba(hex){
-    const n = parseInt(hex.replace('#',''), 16);
-    return [((n>>16)&255)/255, ((n>>8)&255)/255, (n&255)/255, 1];
-  }
-  const garmentCfg = window.GARMENT_CONFIG[p.garment || 'tshirt'];
-
   const gallery = document.getElementById('gallery');
+  const views = [
+    p.front ? { key: 'front', src: p.front, label: `${p.name} — front` } : null,
+    p.back ? { key: 'back', src: p.back, label: `${p.name} — back` } : null
+  ].filter(Boolean);
   gallery.innerHTML = `
     <div class="product-gallery__main" id="g-main">
       <div class="product-gallery__view" id="g-view"></div>
-      <button class="product-gallery__arrow product-gallery__arrow--prev" data-arrow="prev" aria-label="Previous view">&#8249;</button>
-      <button class="product-gallery__arrow product-gallery__arrow--next" data-arrow="next" aria-label="Next view">&#8250;</button>
+      ${views.length > 1 ? `
+        <button class="product-gallery__arrow product-gallery__arrow--prev" data-arrow="prev" aria-label="Previous view">&#8249;</button>
+        <button class="product-gallery__arrow product-gallery__arrow--next" data-arrow="next" aria-label="Next view">&#8250;</button>
+      ` : ''}
     </div>
-    <div class="product-gallery__thumb is-active" data-view="3d"></div>
-    <div class="product-gallery__thumb" data-view="back"></div>
-    <div class="product-gallery__thumb" data-view="detail"></div>
-    <div class="product-gallery__thumb" data-view="logo"></div>
+    ${views.length > 1 ? views.map((v,i) => `<div class="product-gallery__thumb${i===0?' is-active':''}" data-view="${v.key}"><img src="${v.src}" alt="${v.label}"></div>`).join('') : ''}
   `;
-  const mainEl = document.getElementById('g-main');
-  const viewOrder = ['3d', 'back', 'detail', 'logo'];
-  const views = {
-    '3d': () => `
-      <model-viewer class="tee-3d" src="${garmentCfg.src}"
-        camera-orbit="${garmentCfg.orbit}" camera-controls disable-zoom shadow-intensity="1" exposure="1" auto-rotate-delay="0"
-        rotation-per-second="28deg" interaction-prompt="none"></model-viewer>
-      <img src="${p.heart}" alt="${p.name} logo" class="tee-3d-decal ${garmentCfg.decalClass}">
-    `,
-    back: () => `
-      <model-viewer class="tee-3d" src="${garmentCfg.src}"
-        camera-orbit="${garmentCfg.backOrbit}" camera-controls disable-zoom shadow-intensity="1" exposure="1" auto-rotate-delay="0"
-        rotation-per-second="28deg" interaction-prompt="none"></model-viewer>
-    `,
-    detail: () => `<img src="${p.heart}" alt="${p.name} heart detail" style="width:50%;filter:drop-shadow(0 14px 26px rgba(0,0,0,.4))">`,
-    logo: () => `<img src="assets/img/logo/wordmark-white.png" alt="Psychotic Love wordmark" style="width:26%;filter:drop-shadow(0 14px 26px rgba(0,0,0,.4))">`
-  };
-  function wireModelViewer(container){
-    const mv = container.querySelector('model-viewer');
-    if(!mv) return;
-    mv.addEventListener('load', () => {
-      mv.model?.materials?.forEach(material => {
-        material.pbrMetallicRoughness?.setBaseColorFactor(hexToRgba(p.shirt));
-      });
-    });
-    mv.addEventListener('pointerenter', () => mv.setAttribute('auto-rotate', ''));
-    mv.addEventListener('pointerleave', () => mv.removeAttribute('auto-rotate'));
-  }
   const viewEl = document.getElementById('g-view');
-  let currentView = viewOrder[0];
-  function setView(name){
-    currentView = name;
-    viewEl.innerHTML = views[name]();
-    wireModelViewer(viewEl);
-    document.querySelectorAll('.product-gallery__thumb').forEach(t => t.classList.toggle('is-active', t.dataset.view === name));
+  let currentView = views[0].key;
+  function setView(key){
+    currentView = key;
+    const v = views.find(v => v.key === key);
+    viewEl.innerHTML = `<img src="${v.src}" alt="${v.label}" style="width:100%;height:100%;object-fit:contain">`;
+    document.querySelectorAll('.product-gallery__thumb').forEach(t => t.classList.toggle('is-active', t.dataset.view === key));
   }
   document.querySelectorAll('[data-arrow]').forEach(btn => {
     btn.addEventListener('click', () => {
       const dir = btn.dataset.arrow === 'next' ? 1 : -1;
-      const idx = viewOrder.indexOf(currentView);
-      const nextIdx = (idx + dir + viewOrder.length) % viewOrder.length;
-      setView(viewOrder[nextIdx]);
+      const idx = views.findIndex(v => v.key === currentView);
+      setView(views[(idx + dir + views.length) % views.length].key);
     });
   });
   document.querySelectorAll('.product-gallery__thumb').forEach(t => {
-    t.style.display = 'flex'; t.style.alignItems = 'center'; t.style.justifyContent = 'center';
-    if(t.dataset.view === '3d' || t.dataset.view === 'back'){
-      t.innerHTML = views[t.dataset.view]();
-      wireModelViewer(t);
-    } else {
-      t.innerHTML = views[t.dataset.view]().replace('width="70%"','width="60%"');
-    }
     t.addEventListener('click', () => setView(t.dataset.view));
   });
-  setView('3d');
+  setView(views[0].key);
 
   const related = document.getElementById('related');
   Object.entries(window.PL_PRODUCTS).filter(([s]) => s !== slug).slice(0,4).forEach(([s, rp]) => {
+    const rprimary = rp.front || rp.back;
     const el = document.createElement('article');
     el.className = 'product-card';
     el.innerHTML = `
-      <a href="product.html?p=${s}" class="product-card__media" data-tee data-garment="${rp.garment || 'tshirt'}" data-shirt="${rp.shirt}" data-heart="${rp.heart}"></a>
+      <a href="product.html?p=${s}" class="product-card__media"><div class="tee tee--front"><img src="${rprimary}" alt="${rp.name}" loading="lazy"></div></a>
       <div class="product-card__info">
         <a href="product.html?p=${s}" class="product-card__name">${rp.name}</a>
         <span class="product-card__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
         <span class="product-card__price">$${rp.price}</span>
       </div>`;
     related.appendChild(el);
-    window.observeTee(el.querySelector('[data-tee]'));
   });
 })();
 </script>

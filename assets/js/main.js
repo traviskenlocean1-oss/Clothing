@@ -64,98 +64,6 @@ if (revealItems.length) {
   revealItems.forEach(el => io.observe(el));
 }
 
-/* ---------- 3D tee mockup (real GLB models, lazy-mounted, hover-to-spin) ---------- */
-function hexToRgba(hex){
-  const n = parseInt(hex.replace('#',''), 16);
-  return [((n>>16)&255)/255, ((n>>8)&255)/255, (n&255)/255, 1];
-}
-window.hexToRgba = hexToRgba;
-const GARMENT_CONFIG = {
-  tshirt: { src: 'assets/models/tshirt-basic.glb', orbit: '0deg 78deg 100%', backOrbit: '180deg 78deg 100%', decalClass: '' },
-  hoodie: { src: 'assets/models/hoodie-basic.glb', orbit: '90deg 78deg 100%', backOrbit: '270deg 78deg 100%', decalClass: 'tee-3d-decal--hoodie' }
-};
-window.GARMENT_CONFIG = GARMENT_CONFIG;
-function mount3DTee(el){
-  if (el.dataset.teeMounted) return;
-  el.dataset.teeMounted = '1';
-  const shirt = el.dataset.shirt || '#111111';
-  const heart = el.dataset.heart;
-  const garment = GARMENT_CONFIG[el.dataset.garment] ? el.dataset.garment : 'tshirt';
-  const cfg = GARMENT_CONFIG[garment];
-  // The auto-scrolling carousel's cards are decorative/non-interactive (they
-  // fly past on their own), so skip the interaction and shadow-rendering
-  // overhead that's only worth paying for on a card the user can actually
-  // stop and orbit — smaller per-instance GPU cost with several of these
-  // rendering at once.
-  const lightweight = !!el.closest('.scroller');
-  const extraAttrs = lightweight ? 'shadow-intensity="0"' : 'camera-controls shadow-intensity="1"';
-  el.innerHTML = `
-    <model-viewer class="tee-3d" src="${cfg.src}"
-      camera-orbit="${cfg.orbit}" disable-zoom ${extraAttrs} exposure="1"
-      rotation-per-second="28deg" interaction-prompt="none"></model-viewer>
-    <img src="${heart}" alt="" class="tee-3d-decal ${cfg.decalClass}">
-  `;
-  const mv = el.querySelector('model-viewer');
-  mv.addEventListener('load', () => {
-    mv.model?.materials?.forEach(material => {
-      material.pbrMetallicRoughness?.setBaseColorFactor(hexToRgba(shirt));
-    });
-    // Recover from WebGL context loss — can happen under GPU memory pressure
-    // (more of a risk on mobile, with several <model-viewer> instances
-    // rendering at once) and would otherwise show as this card silently
-    // reverting to an unstyled/default model with no error. model-viewer
-    // doesn't reliably restore scene/material state on every device after
-    // contextrestored, so treat any loss as "rebuild this card from scratch."
-    const glCanvas = mv.shadowRoot && mv.shadowRoot.querySelector('canvas');
-    if (glCanvas && !glCanvas.dataset.contextLossWired) {
-      glCanvas.dataset.contextLossWired = '1';
-      glCanvas.addEventListener('webglcontextlost', (ev) => {
-        ev.preventDefault();
-        console.warn('[tee] WebGL context lost — remounting', el);
-        delete el.dataset.teeMounted;
-        el.innerHTML = '';
-        mount3DTee(el);
-      });
-    }
-  });
-  mv.addEventListener('pointerenter', () => mv.setAttribute('auto-rotate', ''));
-  mv.addEventListener('pointerleave', () => mv.removeAttribute('auto-rotate'));
-}
-const teeObserver = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      mount3DTee(e.target);
-    } else if (e.target.dataset.teeMounted && !e.target.closest('.scroller')) {
-      /* release the WebGL context once scrolled well out of view — grids with
-         many products can otherwise exceed the browser's simultaneous-context limit.
-         Skipped for the auto-scrolling carousel: its cards constantly cross in and
-         out of the rootMargin on their own (no user scroll involved), so unmounting
-         here raced with each model's load time — a card would get destroyed and
-         re-mounted before its glb ever finished loading, which looked like it
-         "glitching back" to the previous shirt. It's a small, fixed set of cards,
-         so mounting them once and leaving them is cheap and glitch-free. */
-      e.target.innerHTML = '';
-      delete e.target.dataset.teeMounted;
-    }
-  });
-}, { rootMargin: '250px' });
-window.observeTee = (el) => teeObserver.observe(el);
-
-document.querySelectorAll('[data-tee]').forEach(el => {
-  if (el.closest('.scroller')) {
-    /* IntersectionObserver checks are throttled to the browser's own pace,
-       not every animation frame — fine for a page the user scrolls by hand,
-       but this carousel's cards cross the whole viewport in ~2s on their
-       own, fast enough that some entries/exits happen between checks and
-       never fire at all (some cards just never got their model mounted).
-       It's a small, fixed set, so load them all immediately instead of
-       depending on visibility timing. */
-    mount3DTee(el);
-  } else {
-    teeObserver.observe(el);
-  }
-});
-
 /* ---------- accordion (product page) ---------- */
 document.querySelectorAll('.accordion-item > button').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -204,6 +112,7 @@ function readCardItem(card){
     color: card.dataset.shirt || '#111111',
     heart: card.dataset.heart || '',
     garment: card.dataset.garment || 'tshirt',
+    image: card.dataset.image || '',
     size: sizeEl ? sizeEl.textContent.trim() : 'M',
     qty: qtyEl ? parseInt(qtyEl.value) : 1
   };
