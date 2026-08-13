@@ -245,11 +245,16 @@
 
   const related = document.getElementById('related');
   Object.entries(window.PL_PRODUCTS).filter(([s]) => s !== slug).slice(0,4).forEach(([s, rp]) => {
-    const rprimary = rp.front || rp.back;
     const el = document.createElement('article');
     el.className = 'product-card';
+    // Same fix as the shop grid/carousel: always render both layers, reusing
+    // the single image on both when there's no back, so hover never fades
+    // the front out with nothing behind it to fade in.
     el.innerHTML = `
-      <a href="product.html?p=${s}" class="product-card__media"><div class="tee tee--front"><img src="${rprimary}" alt="${rp.name}" loading="lazy"></div></a>
+      <a href="product.html?p=${s}" class="product-card__media">
+        <div class="tee tee--front"><img src="${rp.front || rp.back}" alt="${rp.name}" loading="lazy"></div>
+        <div class="tee tee--back"><img src="${rp.back || rp.front}" alt="${rp.name}" loading="lazy"></div>
+      </a>
       <div class="product-card__info">
         <a href="product.html?p=${s}" class="product-card__name">${rp.name}</a>
         <span class="product-card__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
