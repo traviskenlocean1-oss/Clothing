@@ -74,14 +74,12 @@
   </div>
 </section>
 
-<section class="dark vip-releases">
-  <div class="vip-releases__card reveal">
-    <div class="vip-releases__text">
-      <span class="eyebrow">2026 Collection</span>
-      <h2 class="display">New<br>Releases</h2>
-    </div>
-    <div class="vip-releases__media" aria-hidden="true"></div>
+<section class="vip-releases">
+  <div class="vip-releases__text reveal">
+    <span class="eyebrow">2026 Collection</span>
+    <h2 class="display">New<br>Releases</h2>
   </div>
+  <div class="vip-releases__media" aria-hidden="true"></div>
 </section>
 
 <section class="dark vip-drops">
@@ -288,16 +286,21 @@
     if (videoP < 1 || lastRequestedFrame < VIDEO_LAST_FRAME) {
       requestHeroFrame(1 + videoP * (VIDEO_LAST_FRAME - 1));
     }
+    // Flash+photo now resolve in the first third of the reveal window
+    // instead of stretching all the way to the end of scroll — the white
+    // wash was lingering right up to the bottom of the pin, so most of the
+    // reveal window read as "still transitioning" instead of "arrived."
     const revealP = Math.max(0, Math.min(1, (p - VIDEO_END) / (1 - VIDEO_END)));
-    if (scrubFlash) scrubFlash.style.opacity = revealP < 0.4 ? revealP / 0.4 : Math.max(0, 1 - (revealP - 0.4) / 0.6);
-    if (scrubPhoto) scrubPhoto.style.opacity = Math.max(0, Math.min(1, (revealP - 0.25) / 0.75));
+    const FLASH_PEAK = 0.12, FLASH_END = 0.30, PHOTO_START = 0.04, PHOTO_FULL = 0.30;
+    if (scrubFlash) scrubFlash.style.opacity = revealP < FLASH_PEAK ? revealP / FLASH_PEAK : Math.max(0, 1 - (revealP - FLASH_PEAK) / (FLASH_END - FLASH_PEAK));
+    if (scrubPhoto) scrubPhoto.style.opacity = Math.max(0, Math.min(1, (revealP - PHOTO_START) / (PHOTO_FULL - PHOTO_START)));
     if (scrubBar) scrubBar.style.transform = `scaleX(${p})`;
-    if (revealP >= 0.999 && holdArmed && !holding) {
+    if (revealP >= PHOTO_FULL && holdArmed && !holding) {
       holding = true;
       holdArmed = false;
       holdUntil = performance.now() + HOLD_MS;
     }
-    if (revealP < 0.9) holdArmed = true;
+    if (revealP < 0.15) holdArmed = true;
     raf = false;
   }
 
