@@ -68,6 +68,8 @@
 <section class="scrub-wrap vip-scrub-wrap" id="scrub-wrap">
   <div class="scrub-pin grain" id="scrub-pin">
     <canvas class="scrub-canvas" id="scrub-canvas"></canvas>
+    <img class="scrub-photo" id="scrub-photo" src="assets/img/brand/vip-lounge-final.jpg" alt="Welcome to VIP">
+    <div class="scrub-flash" id="scrub-flash"></div>
     <div class="scrub-bar" id="scrub-bar"></div>
   </div>
 </section>
@@ -154,14 +156,21 @@
 <script>
 // VIP HERO — same scroll-scrub canvas frame-sequence technique as the
 // storefront hero (see index.html). 152 frames @ 15fps from the corrected
-// gate-to-lounge walkthrough.
+// gate-to-lounge walkthrough, playing out over the first VIDEO_END share of
+// the scroll. Past that, instead of relying on the video's own last frames
+// (a moving 16:9 shot fighting cover-crop on every window shape), the pin
+// flashes to white and reveals a single purpose-composed "Welcome to VIP"
+// photo — matted, never cropped, since it's a photo reveal, not footage.
 (function(){
   const scrubWrap = document.getElementById('scrub-wrap');
   const scrubPin  = document.getElementById('scrub-pin');
   const canvas    = document.getElementById('scrub-canvas');
   if (!scrubWrap || !scrubPin || !canvas) return;
   const ctx      = canvas.getContext('2d');
-  const scrubBar = document.getElementById('scrub-bar');
+  const scrubBar   = document.getElementById('scrub-bar');
+  const scrubPhoto = document.getElementById('scrub-photo');
+  const scrubFlash = document.getElementById('scrub-flash');
+  const VIDEO_END  = 0.87;
 
   const HERO_FRAME_COUNT = 152;
   const heroFramePath = i => `assets/img/vip-hero-frames/frame-${String(i).padStart(3, '0')}.jpg`;
@@ -236,9 +245,13 @@
   let raf = false;
   function scrubTick() {
     const p = scrubProg();
-    if (p < 1 || lastRequestedFrame < HERO_FRAME_COUNT) {
-      requestHeroFrame(1 + p * (HERO_FRAME_COUNT - 1));
+    const videoP = Math.min(1, p / VIDEO_END);
+    if (videoP < 1 || lastRequestedFrame < HERO_FRAME_COUNT) {
+      requestHeroFrame(1 + videoP * (HERO_FRAME_COUNT - 1));
     }
+    const revealP = Math.max(0, Math.min(1, (p - VIDEO_END) / (1 - VIDEO_END)));
+    if (scrubFlash) scrubFlash.style.opacity = revealP < 0.4 ? revealP / 0.4 : Math.max(0, 1 - (revealP - 0.4) / 0.6);
+    if (scrubPhoto) scrubPhoto.style.opacity = Math.max(0, Math.min(1, (revealP - 0.25) / 0.75));
     if (scrubBar) scrubBar.style.transform = `scaleX(${p})`;
     raf = false;
   }

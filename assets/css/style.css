@@ -230,6 +230,14 @@ section{ position:relative; }
 }
 .scrub-bar{ position:absolute; bottom:0; left:0; height:3px; width:100%; background:var(--pink); box-shadow:0 0 12px var(--pink); transform:scaleX(0); transform-origin:left; }
 
+/* Static end-photo reveal, sits behind .scrub-bar so the progress line stays
+   visible. Deliberately object-fit:contain (matted on the pin's own dark
+   background), not cover — this is a purpose-composed final photo, not
+   environmental footage, so it's shown exactly as framed rather than
+   fighting the same crop-vs-window-shape problem as the video frames. */
+.scrub-photo{ position:absolute; inset:0; width:100%; height:100%; object-fit:contain; opacity:0; pointer-events:none; }
+.scrub-flash{ position:absolute; inset:0; background:#fff; opacity:0; pointer-events:none; }
+
 /* ---------- VIP page ---------- */
 /* Soft atmosphere behind Early Arrivals/New Arrivals/marquee/footer — one
    continuous glow (fixed so it doesn't tile per-section) rather than each
