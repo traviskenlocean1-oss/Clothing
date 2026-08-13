@@ -210,7 +210,8 @@
   const gallery = document.getElementById('gallery');
   const views = [
     p.front ? { key: 'front', src: p.front, label: `${p.name} — front` } : null,
-    p.back ? { key: 'back', src: p.back, label: `${p.name} — back` } : null
+    p.back ? { key: 'back', src: p.back, label: `${p.name} — back` } : null,
+    ...(p.gallery || []).map((src, i) => ({ key: `extra-${i}`, src, label: `${p.name} — detail` }))
   ].filter(Boolean);
   gallery.innerHTML = `
     <div class="product-gallery__main" id="g-main">

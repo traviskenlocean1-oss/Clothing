@@ -1,11 +1,5 @@
 /* Psychotic Love — shared product data (single source, used by shop grid + product page) */
 window.PL_PRODUCTS = {
-  'flame-zip-hoodie': {
-    name: 'Flame Sleeve Zip Hoodie', price: 98, type: 'hoodie',
-    front: 'assets/img/products/flame-zip-hoodie/front.jpg',
-    tags: ['front-graphics','hearts','hoodies'],
-    desc: 'Heavyweight zip hoodie with flame-print sleeves and a rhinestone-studded dripping heart across the front pocket. Built From Broken Hearts, worn loud.'
-  },
   'love-hurts-sweatpants': {
     name: 'Love Hurts Flame Sweatpants', price: 72, type: 'sweatpants',
     front: 'assets/img/products/love-hurts-sweatpants/front.jpg',
@@ -13,16 +7,11 @@ window.PL_PRODUCTS = {
     tags: ['front-graphics','back-graphics','hearts'],
     desc: 'Wide-leg heavyweight sweatpants with a rhinestone flame running up each leg and a stitched heart front and center. "Love Hurts, Forever" on the back.'
   },
-  'rhinestone-flame-hoodie': {
-    name: 'Rhinestone Flame Hoodie', price: 92, type: 'hoodie',
-    back: 'assets/img/products/rhinestone-flame-hoodie/back.jpg',
-    tags: ['back-graphics','hoodies'],
-    desc: 'Pullover hoodie with rhinestone flame sleeves and an oversized "Love Hurts" back graphic. Back print only — no front graphic on this one.'
-  },
   'chaos-heart-tee': {
     name: 'Chaos Heart Tee', price: 58, type: 'tee',
     front: 'assets/img/products/chaos-heart-tee/front.png',
     back: 'assets/img/products/chaos-heart-tee/back.jpg',
+    gallery: ['assets/img/products/chaos-heart-tee/extra-1.jpg'],
     tags: ['front-graphics','back-graphics','hearts'],
     desc: 'Oversized purple tee with a cracked, stitched heart and lightning graphic front and back. "Built On Chaos, Driven By Purpose."'
   },
@@ -37,15 +26,22 @@ window.PL_PRODUCTS = {
     name: 'Wordmark Heart Tee', price: 48, type: 'tee',
     front: 'assets/img/products/wordmark-heart-tee/front.jpg',
     back: 'assets/img/products/wordmark-heart-tee/back.jpg',
+    gallery: ['assets/img/products/wordmark-heart-tee/extra-1.jpg', 'assets/img/products/wordmark-heart-tee/extra-2.jpg'],
     tags: ['front-graphics','back-graphics','hearts','logo'],
     desc: 'Charcoal acid-wash tee — clean wordmark up front, an oversized dripping stitched heart across the back.'
   },
   'cream-heart-tee': {
     name: 'Cream Heart Tee', price: 50, type: 'tee',
     front: 'assets/img/products/cream-heart-tee/front.png',
-    back: 'assets/img/products/cream-heart-tee/back.png',
-    tags: ['front-graphics','back-graphics','hearts'],
-    desc: 'Vintage cream tee with a distressed wordmark and stitched heart corner hit up front, oversized stitched heart on the back.'
+    tags: ['front-graphics','hearts'],
+    desc: 'Vintage cream tee with a distressed wordmark and stitched heart corner hit up front.'
+  },
+  'wordmark-only-tee': {
+    name: 'Wordmark Tee', price: 46, type: 'tee',
+    front: 'assets/img/products/wordmark-only-tee/front.png',
+    back: 'assets/img/products/wordmark-only-tee/back.png',
+    tags: ['front-graphics','back-graphics','hearts','logo'],
+    desc: 'Sand-cream tee with a clean distressed wordmark up front and an oversized stitched green heart on the back.'
   },
   'clean-wordmark-hoodie': {
     name: 'Clean Wordmark Hoodie', price: 88, type: 'hoodie',

@@ -41,6 +41,19 @@ window.addEventListener('resize', stretchBrandOutro);
     overlay.classList.add('is-covering');
     setTimeout(() => { window.location.href = href; }, 680);
   });
+
+  // Browser back/forward can restore this page from bfcache instead of doing
+  // a fresh load — when that happens the page is restored exactly as it was
+  // the instant we navigated away, mid-transition, with the overlay still
+  // opaque (.is-covering) from the click handler above. A bfcache restore
+  // doesn't re-run this IIFE, so nothing else would ever uncover it — this
+  // was the "back button doesn't bring me back, have to refresh" bug.
+  window.addEventListener('pageshow', (e) => {
+    if (e.persisted) {
+      overlay.classList.remove('is-covering');
+      overlay.classList.add('is-revealing');
+    }
+  });
 })();
 
 /* ---------- nav scroll state + mobile menu ---------- */
