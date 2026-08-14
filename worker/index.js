@@ -31,7 +31,11 @@ export default {
 
     if (url.pathname === '/vip' || url.pathname === '/vip.html') {
       const auth = await isAuthenticated(request, env);
-      const target = auth.authenticated ? '/vip.html' : '/vip-locked.html';
+      // Extensionless targets: requesting the ".html" filename directly from
+      // env.ASSETS.fetch returns Cloudflare's default 307 redirect to the
+      // extensionless URL instead of serving content, since that's this
+      // site's normal html_handling behavior for every page.
+      const target = auth.authenticated ? '/vip' : '/vip-locked';
       return env.ASSETS.fetch(new Request(new URL(target, url.origin), request));
     }
 

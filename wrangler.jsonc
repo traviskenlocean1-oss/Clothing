@@ -8,7 +8,12 @@
   // Re-enable once local dev doesn't need to watch the whole repo root.
   "observability": { "enabled": false },
   "main": "worker/index.js",
-  "assets": { "directory": ".", "binding": "ASSETS" },
+  // run_worker_first: by default Cloudflare's static-assets layer serves a
+  // matching file (like /vip -> vip.html) directly, without ever invoking
+  // the Worker's fetch() handler -- which silently bypassed the gate check
+  // entirely. Scoping this to just the gated paths keeps every other page
+  // on the fast direct-asset-serving path.
+  "assets": { "directory": ".", "binding": "ASSETS", "run_worker_first": ["/vip", "/vip.html"] },
   "compatibility_flags": ["nodejs_compat"],
   "kv_namespaces": [
     { "binding": "VIP_MEMBERS", "id": "f940257ce27642caaf93e981d8316fd3", "preview_id": "a9c0dbb59bcb48a1b755d1915821bc87" }
