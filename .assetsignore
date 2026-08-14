@@ -4,4 +4,7 @@
 .gitignore
 .assetsignore
 wrangler.jsonc
+node_modules
+.dev.vars
+worker
 assets/img/brand/source-logo-sheet.jpg

@@ -2,6 +2,7 @@
   "name": "psychotic-love",
   "compatibility_date": "2026-08-05",
   "observability": { "enabled": true },
-  "assets": { "directory": "." },
+  "main": "worker/index.js",
+  "assets": { "directory": ".", "binding": "ASSETS" },
   "compatibility_flags": ["nodejs_compat"]
 }
