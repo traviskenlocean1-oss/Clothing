@@ -134,18 +134,6 @@ export async function handleLoginTicket(request, env) {
   return json({ verified: true, name: member.name, isNewMember: false }, { headers: { 'Set-Cookie': cookie } });
 }
 
-async function completeRecovery(env, phone) {
-  const member = await getMemberByPhone(env, phone);
-  member.otp = null;
-  member.otpExpiry = null;
-  await saveMember(env, member);
-  const cookie = await sessionCookieHeader({ phone: member.phone, role: member.role }, env);
-  return json(
-    { verified: true, name: member.name, ticket: member.ticket, isNewMember: false },
-    { headers: { 'Set-Cookie': cookie } }
-  );
-}
-
 export async function handleRecover(request, env) {
   const { phone: rawPhone } = await request.json();
   const phone = normalizePhone(rawPhone);
@@ -156,35 +144,9 @@ export async function handleRecover(request, env) {
   if (!member || !member.verified) {
     return json({ error: 'No VIP account found for that number.' }, { status: 404 });
   }
-  const otp = generateOtp();
-  member.otp = otp;
-  member.otpExpiry = Date.now() + OTP_TTL_MS;
-  await saveMember(env, member);
-  const smsResult = await sendOtp(env, phone, otp);
-  if (smsResult.autoVerified) {
-    return await completeRecovery(env, phone);
-  }
-  return json({ pending: true, phone });
-}
-
-export async function handleRecoverVerify(request, env) {
-  const { phone: rawPhone, code } = await request.json();
-  const phone = normalizePhone(rawPhone);
-  if (!phone || !code) {
-    return json({ error: 'Phone and code are required.' }, { status: 400 });
-  }
-  const member = await getMemberByPhone(env, phone);
-  if (!member || !member.verified) {
-    return json({ error: 'No VIP account found for that number.' }, { status: 404 });
-  }
-  if (!member.otp) {
-    return json({ error: 'No pending recovery for that number.' }, { status: 404 });
-  }
-  if (Date.now() > member.otpExpiry) {
-    return json({ error: 'That code expired. Request a new one.' }, { status: 410 });
-  }
-  if (member.otp !== code) {
-    return json({ error: "That code doesn't match." }, { status: 401 });
-  }
-  return await completeRecovery(env, phone);
+  const cookie = await sessionCookieHeader({ phone: member.phone, role: member.role }, env);
+  return json(
+    { verified: true, name: member.name, ticket: member.ticket, isNewMember: false },
+    { headers: { 'Set-Cookie': cookie } }
+  );
 }

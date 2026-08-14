@@ -77,18 +77,11 @@
     </form>
 
     <form class="vip-auth__state" data-state="recover-phone">
-      <p class="vip-auth__hint">Enter the phone number on your account — we'll text you a new code.</p>
+      <p class="vip-auth__hint">Enter the phone number on your account — we'll look up your ticket.</p>
       <label>Phone Number<input type="tel" name="phone" required placeholder="(555) 555-0100"></label>
       <p class="vip-auth__error" role="alert"></p>
-      <button type="submit" class="btn btn-solid"><span>Send Code</span></button>
+      <button type="submit" class="btn btn-solid"><span>Find My Account</span></button>
       <button type="button" class="vip-auth__back" data-show="ticket">Back</button>
-    </form>
-
-    <form class="vip-auth__state" data-state="recover-otp">
-      <p class="vip-auth__hint">Enter the 6-digit code we texted you.</p>
-      <label>Code<input type="text" name="code" required inputmode="numeric" pattern="[0-9]{6}" maxlength="6"></label>
-      <p class="vip-auth__error" role="alert"></p>
-      <button type="submit" class="btn btn-solid"><span>Verify</span></button>
     </form>
 
     <form class="vip-auth__state" data-state="admin">

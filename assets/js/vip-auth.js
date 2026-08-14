@@ -56,7 +56,6 @@
   }
 
   let pendingPhone = null;
-  let recoverPhone = null;
 
   bindForm('signup', async (form) => {
     const payload = {
@@ -99,23 +98,7 @@
   });
 
   bindForm('recover-phone', async (form) => {
-    const phone = form.phone.value.trim();
-    const data = await postJson('/api/vip/recover', { phone });
-    if (data.ticket) {
-      showWelcome(data);
-    } else if (data.verified) {
-      location.href = '/vip';
-    } else {
-      recoverPhone = phone;
-      showState('recover-otp');
-    }
-  });
-
-  bindForm('recover-otp', async (form) => {
-    const data = await postJson('/api/vip/recover-verify', {
-      phone: recoverPhone,
-      code: form.code.value.trim()
-    });
+    const data = await postJson('/api/vip/recover', { phone: form.phone.value.trim() });
     showWelcome(data);
   });
 
