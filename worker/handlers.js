@@ -1,6 +1,6 @@
 // worker/handlers.js
-import { hashPassword, generateOtp, generateTicket, normalizePhone } from './crypto.js';
-import { getMemberByPhone, isUsernameTaken, saveMember } from './store.js';
+import { hashPassword, verifyPassword, generateOtp, generateTicket, normalizePhone } from './crypto.js';
+import { getMemberByPhone, getMemberByUsername, getMemberByTicket, isUsernameTaken, saveMember } from './store.js';
 import { sendOtp } from './sms.js';
 import { findAdminRole } from './admin.js';
 import { sessionCookieHeader } from './gate.js';
@@ -102,4 +102,34 @@ export async function handleAdminLogin(request, env) {
   }
   const cookie = await sessionCookieHeader({ phone, role }, env);
   return json({ verified: true, role }, { headers: { 'Set-Cookie': cookie } });
+}
+
+export async function handleLogin(request, env) {
+  const { username, password, rememberMe } = await request.json();
+  if (!username || !password) {
+    return json({ error: 'Username and password are required.' }, { status: 400 });
+  }
+  const member = await getMemberByUsername(env, username);
+  if (!member || !member.verified) {
+    return json({ error: 'Username or password is incorrect.' }, { status: 401 });
+  }
+  const valid = await verifyPassword(password, member.passwordHash);
+  if (!valid) {
+    return json({ error: 'Username or password is incorrect.' }, { status: 401 });
+  }
+  const cookie = await sessionCookieHeader({ phone: member.phone, role: member.role }, env, rememberMe !== false);
+  return json({ verified: true, name: member.name, isNewMember: false }, { headers: { 'Set-Cookie': cookie } });
+}
+
+export async function handleLoginTicket(request, env) {
+  const { ticket } = await request.json();
+  if (!ticket) {
+    return json({ error: 'Ticket code is required.' }, { status: 400 });
+  }
+  const member = await getMemberByTicket(env, ticket);
+  if (!member || !member.verified) {
+    return json({ error: "That ticket code doesn't match a VIP account." }, { status: 401 });
+  }
+  const cookie = await sessionCookieHeader({ phone: member.phone, role: member.role }, env);
+  return json({ verified: true, name: member.name, isNewMember: false }, { headers: { 'Set-Cookie': cookie } });
 }
