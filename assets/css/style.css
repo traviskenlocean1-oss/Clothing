@@ -304,14 +304,16 @@ body.vip-page .dark{ background:transparent; }
   .vip-releases__media{ display:none; }
 }
 
-.vip-drops{ padding:6rem var(--gutter) 5rem; }
+.vip-drops{ padding:6rem 0 5rem; }
+.vip-drops .section-head{ padding:0 var(--gutter); }
+/* Full-bleed, edge-to-edge, no gap between cards — one continuous wall of
+   photos filling the section width, not four separate boxed tiles. */
 .vip-drops__grid{
-  display:grid; grid-template-columns:repeat(4,1fr); gap:1.6rem; margin-top:3.5rem;
-  max-width:1680px; margin-left:auto; margin-right:auto;
+  display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-top:3.5rem;
+  height:90vh; max-height:1100px;
 }
 .vip-drops__card{
-  position:relative; aspect-ratio:3/4; border:1px solid rgba(255,255,255,.18);
-  overflow:hidden; background:#131313;
+  position:relative; height:100%; overflow:hidden; background:#131313;
 }
 .vip-drops__card img{ width:100%; height:100%; object-fit:cover; object-position:top; display:block; }
 .vip-drops__tag{
@@ -321,7 +323,7 @@ body.vip-page .dark{ background:transparent; }
   background:rgba(0,0,0,.55); backdrop-filter:blur(4px);
   padding:.4em .8em; border:1px solid rgba(255,255,255,.25);
 }
-@media (max-width:1100px){ .vip-drops__grid{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width:1100px){ .vip-drops__grid{ grid-template-columns:repeat(2,1fr); height:auto; } .vip-drops__card{ aspect-ratio:3/4; height:auto; } }
 @media (max-width:700px){ .vip-drops__grid{ grid-template-columns:1fr; } }
 
 .vip-marquee{ border-top:1px solid rgba(255,255,255,.1); border-bottom:1px solid rgba(255,255,255,.1); }
