@@ -7,4 +7,6 @@ wrangler.jsonc
 node_modules
 .dev.vars
 worker
+package.json
+package-lock.json
 assets/img/brand/source-logo-sheet.jpg
