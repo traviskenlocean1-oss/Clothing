@@ -10,3 +10,9 @@ worker
 package.json
 package-lock.json
 assets/img/brand/source-logo-sheet.jpg
+docs
+.dev.vars.example
+vitest.config.js
+.claude
+.superpowers
+.playwright-mcp

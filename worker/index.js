@@ -16,12 +16,20 @@ const ROUTES = {
 
 export default {
   async fetch(request, env, ctx) {
+    if (!env.SESSION_SECRET) {
+      return new Response('Server misconfigured', {
+        status: 503,
+        headers: { 'Content-Type': 'text/plain' }
+      });
+    }
+
     const url = new URL(request.url);
 
     if (request.method === 'POST' && ROUTES[url.pathname]) {
       try {
         return await ROUTES[url.pathname](request, env);
       } catch (err) {
+        console.error('[vip-auth]', url.pathname, err);
         return new Response(JSON.stringify({ error: 'Something went wrong. Try again.' }), {
           status: 500,
           headers: { 'Content-Type': 'application/json' }
@@ -30,12 +38,18 @@ export default {
     }
 
     if (url.pathname === '/vip' || url.pathname === '/vip.html') {
-      const auth = await isAuthenticated(request, env);
+      let target = '/vip-locked';
+      try {
+        const auth = await isAuthenticated(request, env);
+        target = auth.authenticated ? '/vip' : '/vip-locked';
+      } catch (err) {
+        console.error('[vip-auth]', url.pathname, err);
+        target = '/vip-locked';
+      }
       // Extensionless targets: requesting the ".html" filename directly from
       // env.ASSETS.fetch returns Cloudflare's default 307 redirect to the
       // extensionless URL instead of serving content, since that's this
       // site's normal html_handling behavior for every page.
-      const target = auth.authenticated ? '/vip' : '/vip-locked';
       return env.ASSETS.fetch(new Request(new URL(target, url.origin), request));
     }
 

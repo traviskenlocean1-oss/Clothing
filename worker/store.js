@@ -11,7 +11,7 @@ export async function getMemberByUsername(env, username) {
 }
 
 export async function getMemberByTicket(env, ticket) {
-  const phone = await env.VIP_MEMBERS.get(`ticket:${ticket}`);
+  const phone = await env.VIP_MEMBERS.get(`ticket:${ticket.toUpperCase()}`);
   if (!phone) return null;
   return getMemberByPhone(env, phone);
 }

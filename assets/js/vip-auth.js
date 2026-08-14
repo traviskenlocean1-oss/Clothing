@@ -94,7 +94,7 @@
   });
 
   bindForm('ticket', async (form) => {
-    await postJson('/api/vip/login-ticket', { ticket: form.ticket.value.trim() });
+    await postJson('/api/vip/login-ticket', { ticket: form.ticket.value.trim().toUpperCase() });
     location.href = '/vip';
   });
 

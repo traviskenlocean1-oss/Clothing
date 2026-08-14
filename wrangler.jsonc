@@ -1,12 +1,13 @@
 {
   "name": "psychotic-love",
   "compatibility_date": "2026-08-05",
-  // Disabled for now: with a real Worker script (added for the VIP gate),
-  // observability's local trace-store SQLite file lives inside the watched
-  // assets directory ("."), and wrangler dev's file watcher treats every
-  // write to it as a source change — triggering an endless reload loop.
-  // Re-enable once local dev doesn't need to watch the whole repo root.
-  "observability": { "enabled": false },
+  // Enabled: this Worker now handles real authentication (VIP gate), so
+  // production error visibility matters more than the local dev-loop
+  // annoyance below. Locally, observability's trace-store SQLite file lives
+  // inside the watched assets directory ("."), and wrangler dev's file
+  // watcher can treat writes to it as a source change, triggering extra
+  // reloads -- an acceptable local-only trade during development.
+  "observability": { "enabled": true },
   "main": "worker/index.js",
   // run_worker_first: by default Cloudflare's static-assets layer serves a
   // matching file (like /vip -> vip.html) directly, without ever invoking
