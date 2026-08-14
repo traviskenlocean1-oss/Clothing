@@ -1,7 +1,7 @@
 import { isAuthenticated } from './gate.js';
 import {
   handleSignup, handleVerifyOtp, handleAdminLogin,
-  handleLogin, handleLoginTicket, handleRecover
+  handleLogin, handleLoginTicket, handleRecover, handleLogout
 } from './handlers.js';
 
 const ROUTES = {
@@ -10,7 +10,8 @@ const ROUTES = {
   '/api/vip/admin-login': handleAdminLogin,
   '/api/vip/login': handleLogin,
   '/api/vip/login-ticket': handleLoginTicket,
-  '/api/vip/recover': handleRecover
+  '/api/vip/recover': handleRecover,
+  '/api/vip/logout': handleLogout
 };
 
 export default {

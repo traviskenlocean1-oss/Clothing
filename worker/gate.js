@@ -29,3 +29,9 @@ export async function sessionCookieHeader(payload, env, remember = true) {
   const persistence = remember ? ` Max-Age=${SESSION_MAX_AGE};` : '';
   return `vip_session=${value}; HttpOnly; Secure; SameSite=Lax;${persistence} Path=/`;
 }
+
+export function clearSessionCookieHeader() {
+  // Path must match the cookie set at login, or the browser treats this as
+  // a different cookie and leaves the real session in place.
+  return 'vip_session=; HttpOnly; Secure; SameSite=Lax; Max-Age=0; Path=/';
+}

@@ -58,7 +58,7 @@
     <li><a href="vip.html">VIP</a></li>
   </ul>
   <div class="nav__right">
-    <a href="#" class="nav__login">Login</a>
+    <a href="#" class="nav__login" id="vip-logout">Log Out</a>
     <button class="nav__cart" data-cart-open aria-label="Open cart">
       <span>Cart</span><span class="nav__cart-count">0</span>
     </button>
@@ -323,6 +323,13 @@
   sizeHeroCanvas();
   scrubTick();
 })();
+</script>
+<script>
+document.getElementById('vip-logout').addEventListener('click', async (e) => {
+  e.preventDefault();
+  await fetch('/api/vip/logout', { method: 'POST', credentials: 'same-origin' });
+  location.href = '/vip';
+});
 </script>
 </body>
 </html>
