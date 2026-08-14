@@ -944,7 +944,7 @@ footer.site-footer{ padding:1.6rem var(--gutter) 2rem; }
 .vip-auth__panel{
   position:relative; width:100%; max-width:420px;
   background:#0c0c0c; border:1px solid rgba(255,255,255,.12);
-  border-radius:14px; padding:2.2rem 2rem;
+  border-radius:0; padding:2.2rem 2rem;
   box-shadow:0 30px 60px -20px rgba(0,0,0,.7);
 }
 .vip-auth__brand{ font-size:.7rem; letter-spacing:.18em; text-transform:uppercase; color:var(--gray); text-align:center; }
@@ -958,7 +958,7 @@ footer.site-footer{ padding:1.6rem var(--gutter) 2rem; }
 .vip-auth__state input[type="text"],
 .vip-auth__state input[type="password"],
 .vip-auth__state input[type="tel"]{
-  background:#151515; border:1px solid rgba(255,255,255,.14); border-radius:8px;
+  background:#151515; border:1px solid rgba(255,255,255,.14); border-radius:0;
   color:var(--white); padding:.7rem .9rem; font-size:.95rem; font-family:var(--font-body);
 }
 .vip-auth__state input:focus-visible{ outline:2px solid var(--pink); outline-offset:1px; }
@@ -976,7 +976,7 @@ footer.site-footer{ padding:1.6rem var(--gutter) 2rem; }
 .vip-auth__welcome-heart{ width:48px; margin:0 auto 1rem; display:block; }
 .vip-auth__welcome-msg{ text-align:center; color:var(--white); font-size:1.05rem; margin:0 0 1.2rem; }
 .vip-auth__ticket-display{
-  background:#151515; border:1px dashed rgba(255,255,255,.25); border-radius:10px;
+  background:#151515; border:1px dashed rgba(255,255,255,.25); border-radius:0;
   padding:1rem; text-align:center; margin-bottom:1.4rem;
 }
 .vip-auth__ticket-label{ display:block; font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; color:var(--gray); }
