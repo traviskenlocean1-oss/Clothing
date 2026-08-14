@@ -1,11 +1,16 @@
-import { handleSignup, handleVerifyOtp, handleAdminLogin, handleLogin, handleLoginTicket } from './handlers.js';
+import {
+  handleSignup, handleVerifyOtp, handleAdminLogin,
+  handleLogin, handleLoginTicket, handleRecover, handleRecoverVerify
+} from './handlers.js';
 
 const ROUTES = {
   '/api/vip/signup': handleSignup,
   '/api/vip/verify-otp': handleVerifyOtp,
   '/api/vip/admin-login': handleAdminLogin,
   '/api/vip/login': handleLogin,
-  '/api/vip/login-ticket': handleLoginTicket
+  '/api/vip/login-ticket': handleLoginTicket,
+  '/api/vip/recover': handleRecover,
+  '/api/vip/recover-verify': handleRecoverVerify
 };
 
 export default {
