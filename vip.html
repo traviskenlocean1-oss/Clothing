@@ -210,21 +210,16 @@
     }
     heroFrames[i] = img;
   }
-  // Firing all 152 requests at once makes them compete for the browser's
-  // per-origin connection limit, so frames the user reaches in the first
-  // couple seconds of scrolling often aren't decoded yet — drawHeroFrame
-  // falls back to the last-decoded frame and the scrub visibly stalls.
-  // Loading an early priority window first, then the rest once the browser
-  // is idle, keeps the frames a user actually hits early on ready in time.
-  const PRIORITY_FRAMES = 30;
-  for (let i = 1; i <= Math.min(PRIORITY_FRAMES, VIDEO_LAST_FRAME); i++) loadHeroFrame(i);
-  const loadRemainingFrames = () => {
-    // Only frames 1..VIDEO_LAST_FRAME are ever drawn now — no point fetching
-    // the rest of the source sequence.
-    for (let i = PRIORITY_FRAMES + 1; i <= VIDEO_LAST_FRAME; i++) loadHeroFrame(i);
-  };
-  if ('requestIdleCallback' in window) requestIdleCallback(loadRemainingFrames, { timeout: 1500 });
-  else setTimeout(loadRemainingFrames, 300);
+  // Every frame the scrub can ever draw (1..VIDEO_LAST_FRAME) loads
+  // immediately. A previous version split this into a 30-frame priority
+  // batch plus an idle-time trickle for the rest, to avoid competing for
+  // the browser's per-origin connection limit -- but that meant scrolling
+  // faster than the trickle finished stalled the scrub on the last-ready
+  // frame and then visibly jumped once the remaining frames caught up.
+  // Cloudflare serves over HTTP/2, which multiplexes far past the old
+  // HTTP/1.1 six-connection limit that assumption was based on, so firing
+  // every request up front is cheap and removes the stall entirely.
+  for (let i = 1; i <= VIDEO_LAST_FRAME; i++) loadHeroFrame(i);
 
   let lastDrawnFrame = -1, lastRequestedFrame = 1;
 
