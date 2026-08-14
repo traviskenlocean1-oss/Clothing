@@ -76,11 +76,32 @@ async function hmac(secret, data) {
 }
 
 function base64url(str) {
-  return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  // UTF-8 encode to bytes, convert to binary string, then base64 encode
+  const utf8Bytes = new TextEncoder().encode(str);
+  let binaryStr = '';
+  for (let i = 0; i < utf8Bytes.length; i++) {
+    binaryStr += String.fromCharCode(utf8Bytes[i]);
+  }
+  // Use btoa to encode binary string, then convert to base64url
+  return btoa(binaryStr).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
 
 function base64urlDecode(str) {
-  return atob(str.replace(/-/g, '+').replace(/_/g, '/'));
+  // Restore base64url to standard base64 and add padding
+  const b64 = str.replace(/-/g, '+').replace(/_/g, '/');
+  const padded = b64 + '='.repeat((4 - (b64.length % 4)) % 4);
+
+  // Decode base64 to binary string
+  const binaryStr = atob(padded);
+
+  // Convert binary string back to UTF-8 bytes and decode
+  const utf8Bytes = new Uint8Array(binaryStr.length);
+  for (let i = 0; i < binaryStr.length; i++) {
+    utf8Bytes[i] = binaryStr.charCodeAt(i);
+  }
+
+  // Decode UTF-8 bytes to string
+  return new TextDecoder().decode(utf8Bytes);
 }
 
 export async function signSession(payload, secret) {

@@ -89,4 +89,12 @@ describe('signSession / verifySession', () => {
     const cookie = await signSession({ phone: '+15615550123', role: 'member', exp: Date.now() - 1000 }, 'test-secret');
     expect(await verifySession(cookie, 'test-secret')).toBeNull();
   });
+
+  it('round-trips a payload with non-ASCII characters', async () => {
+    const cookie = await signSession({ name: '🎉 José', email: 'user@例え.jp', role: 'member', exp: Date.now() + 10000 }, 'test-secret');
+    const payload = await verifySession(cookie, 'test-secret');
+    expect(payload.name).toBe('🎉 José');
+    expect(payload.email).toBe('user@例え.jp');
+    expect(payload.role).toBe('member');
+  });
 });
