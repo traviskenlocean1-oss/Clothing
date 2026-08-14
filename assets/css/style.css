@@ -184,6 +184,9 @@ body.vip-page .nav.scrolled{ background:linear-gradient(180deg, rgba(0,0,0,.45) 
 .nav__links a:hover::after{ transform:scaleX(1); }
 .nav__right{ display:flex; align-items:center; gap:1.6rem; }
 .nav__cart{ display:flex; align-items:center; gap:.5rem; font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; }
+/* VIP page only — design placeholder, not wired to real auth yet. */
+.nav__login{ font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; }
+.nav__login:hover{ opacity:.7; }
 .nav__cart-count{
   display:inline-flex; align-items:center; justify-content:center;
   width:1.3em; height:1.3em; border-radius:50%; border:1px solid currentColor; font-size:.7rem;
@@ -247,9 +250,10 @@ body.vip-page .nav.scrolled{ background:linear-gradient(180deg, rgba(0,0,0,.45) 
    continuous glow (fixed so it doesn't tile per-section) rather than each
    section sitting on its own flat black box. */
 body.vip-page{
-  background:radial-gradient(ellipse 900px 650px at 50% 10%, rgba(255,255,255,.055), transparent 60%), var(--black);
+  background:radial-gradient(ellipse 900px 650px at 50% 10%, rgba(255,255,255,.03), transparent 60%), #050505;
   background-attachment:fixed;
 }
+body.vip-page .scrub-pin{ background:#050505; }
 body.vip-page .dark{ background:transparent; }
 .vip-scrub-wrap{ height:650vh; }
 .vip-scrub-wrap .scrub-canvas{ filter:none; } /* footage is already color-locked — don't re-grade it */
@@ -291,7 +295,7 @@ body.vip-page .dark{ background:transparent; }
    banner: cream ground fading into black on the right, black type, small
    stacked year mark, discount line) ---------- */
 .vip-releases{
-  background:linear-gradient(90deg, var(--cream) 0%, var(--cream) 32%, var(--black) 72%);
+  background:linear-gradient(90deg, var(--cream) 0%, var(--cream) 32%, #050505 72%);
   min-height:640px;
   display:grid; grid-template-columns:1.1fr 1fr; align-items:center;
 }
@@ -316,14 +320,19 @@ body.vip-page .dark{ background:transparent; }
 .vip-drops{ padding:6rem 0 5rem; }
 .vip-drops .section-head{ padding:0 var(--gutter); }
 /* Full-bleed, edge-to-edge, no gap between cards — one continuous wall of
-   photos filling the section width, not four separate boxed tiles. */
+   photos filling the section width. Flex (not grid) so hovering one card
+   can grow it while its neighbors yield — same competitive-resize technique
+   as .heart-card elsewhere on the site. */
 .vip-drops__grid{
-  display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-top:3.5rem;
+  display:flex; margin-top:3.5rem;
   height:90vh; max-height:1100px;
 }
 .vip-drops__card{
-  position:relative; height:100%; overflow:hidden; background:#131313;
+  position:relative; height:100%; overflow:hidden; background:#050505;
+  flex:1; transition:flex .5s var(--ease);
 }
+.vip-drops__grid:has(.vip-drops__card:hover) .vip-drops__card{ flex:.8; }
+.vip-drops__grid:has(.vip-drops__card:hover) .vip-drops__card:hover{ flex:1.8; }
 .vip-drops__card img{ width:100%; height:100%; object-fit:cover; object-position:top; display:block; }
 .vip-drops__tag{
   position:absolute; left:1rem; bottom:1rem; z-index:2;
@@ -332,8 +341,54 @@ body.vip-page .dark{ background:transparent; }
   background:rgba(0,0,0,.55); backdrop-filter:blur(4px);
   padding:.4em .8em; border:1px solid rgba(255,255,255,.25);
 }
-@media (max-width:1100px){ .vip-drops__grid{ grid-template-columns:repeat(2,1fr); height:auto; } .vip-drops__card{ aspect-ratio:3/4; height:auto; } }
-@media (max-width:700px){ .vip-drops__grid{ grid-template-columns:1fr; } }
+@media (max-width:1100px){
+  .vip-drops__grid{ flex-wrap:wrap; height:auto; }
+  .vip-drops__card{ flex:1 1 50%; aspect-ratio:3/4; height:auto; }
+  .vip-drops__grid:has(.vip-drops__card:hover) .vip-drops__card,
+  .vip-drops__grid:has(.vip-drops__card:hover) .vip-drops__card:hover{ flex:1 1 50%; }
+}
+@media (max-width:700px){ .vip-drops__card{ flex-basis:100%; } }
+
+/* Second tier of placeholders under the AI model row — 2 big + 2 small
+   columns, same edge-to-edge no-gap treatment. */
+.vip-drops__grid--mixed{ margin-top:2px; height:60vh; max-height:760px; }
+.vip-drops__card--big{ flex:2; }
+.vip-drops__card--small{ flex:1; }
+.vip-drops__placeholder{
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-display); letter-spacing:.1em; text-transform:uppercase;
+  font-size:clamp(1.4rem,2vw,2rem); color:rgba(255,255,255,.5);
+}
+
+/* ---------- VIP Welcome / closing manifesto ---------- */
+.vip-welcome{
+  position:relative; overflow:hidden; text-align:center;
+  padding:9rem var(--gutter) 8rem; display:flex; flex-direction:column; align-items:center; gap:1.2rem;
+}
+.vip-welcome__glow{
+  position:absolute; left:50%; top:38%; width:520px; height:520px; transform:translate(-50%,-50%);
+  background:radial-gradient(circle, rgba(255,255,255,.09), transparent 70%);
+  animation:vip-welcome-pulse 4s ease-in-out infinite; pointer-events:none;
+}
+@keyframes vip-welcome-pulse{ 0%,100%{ opacity:.6; transform:translate(-50%,-50%) scale(.92); } 50%{ opacity:1; transform:translate(-50%,-50%) scale(1.08); } }
+.vip-welcome__heart{
+  position:relative; width:64px; height:auto; margin-bottom:.4rem;
+  filter:drop-shadow(0 0 18px rgba(255,255,255,.5));
+  animation:vip-welcome-pulse 4s ease-in-out infinite;
+}
+.vip-welcome .eyebrow{ position:relative; color:var(--gray); }
+.vip-welcome__headline{ position:relative; font-size:clamp(3rem,8vw,6.5rem); }
+.vip-welcome__tag{ position:relative; color:var(--gray); font-size:clamp(.95rem,1.4vw,1.15rem); letter-spacing:.04em; max-width:32rem; }
+/* More dramatic entrance than the standard .reveal fade-up — materializes
+   into focus rather than just sliding up, for the "gasp" moment requested. */
+.reveal--gasp{
+  opacity:0; transform:scale(.85) translateY(24px); filter:blur(6px);
+  transition:opacity 1.1s var(--ease), transform 1.1s var(--ease), filter 1.1s var(--ease);
+}
+.reveal--gasp.is-visible{ opacity:1; transform:scale(1) translateY(0); filter:blur(0); }
+.vip-welcome .reveal--gasp:nth-child(2){ transition-delay:.1s; }
+.vip-welcome .reveal--gasp:nth-child(3){ transition-delay:.22s; }
+.vip-welcome .reveal--gasp:nth-child(4){ transition-delay:.36s; }
 
 .vip-marquee{ border-top:1px solid rgba(255,255,255,.1); border-bottom:1px solid rgba(255,255,255,.1); }
 .vip-marquee .marquee__item{ color:var(--white); font-size:1rem; }
@@ -343,6 +398,9 @@ body.vip-page .dark{ background:transparent; }
 body.vip-page .section-head .display{ font-size:clamp(2.8rem,6.5vw,4.6rem); }
 body.vip-page .section-head{ margin-bottom:4.2rem; }
 body.vip-page .eyebrow{ font-size:.8rem; letter-spacing:.32em; }
+/* Same giant outro wordmark as every other page, but it was rendering
+   invisible here — var(--black) text on this page's black footer. */
+body.vip-page .brand-outro span{ color:var(--white); }
 .hero__content{ position:relative; z-index:2; display:flex; flex-direction:column; align-items:center; gap:1rem; padding-bottom:1.6rem; transition:opacity .8s var(--ease); }
 .hero__content > *{
   opacity:0; transform:translateY(36px);
@@ -862,5 +920,5 @@ footer.site-footer{ padding:1.6rem var(--gutter) 2rem; }
 
 @media (prefers-reduced-motion: reduce){
   .about-hero__bg{ animation:none; }
-  .reveal, .reveal--slow{ transition:opacity .3s ease; transform:none !important; }
+  .reveal, .reveal--slow, .reveal--gasp{ transition:opacity .3s ease; transform:none !important; filter:none !important; }
 }

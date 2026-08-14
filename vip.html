@@ -58,6 +58,7 @@
     <li><a href="vip.html">VIP</a></li>
   </ul>
   <div class="nav__right">
+    <a href="#" class="nav__login">Login</a>
     <button class="nav__cart" data-cart-open aria-label="Open cart">
       <span>Cart</span><span class="nav__cart-count">0</span>
     </button>
@@ -71,6 +72,20 @@
     <img class="scrub-photo" id="scrub-photo" src="assets/img/brand/vip-lounge-final.jpg" alt="Welcome to VIP">
     <div class="scrub-flash" id="scrub-flash"></div>
     <div class="scrub-bar" id="scrub-bar"></div>
+  </div>
+</section>
+
+<section class="dark grain vip-new">
+  <div class="section-head reveal">
+    <span class="eyebrow">Just Landed</span>
+  </div>
+  <div class="vip-new__cluster">
+    <a href="product.html?p=love-hurts-hoodie" class="vip-new__panel reveal"><img src="assets/img/products/love-hurts-hoodie/front.png" alt="Love Hurts Hoodie"></a>
+    <a href="product.html?p=flame-zip-hoodie" class="vip-new__panel reveal"><img src="assets/img/products/flame-zip-hoodie/front.png" alt="Flame Sleeve Zip Hoodie"></a>
+    <a href="product.html?p=chaos-heart-tee" class="vip-new__panel reveal"><img src="assets/img/products/chaos-heart-tee/front.png" alt="Chaos Heart Tee"></a>
+    <a href="product.html?p=lightning-monogram-tee" class="vip-new__panel reveal"><img src="assets/img/products/lightning-monogram-tee/front.jpg" alt="Lightning Monogram Tee"></a>
+    <a href="product.html?p=clean-wordmark-hoodie" class="vip-new__panel reveal"><img src="assets/img/products/clean-wordmark-hoodie/front.png" alt="Clean Wordmark Hoodie"></a>
+    <h2 class="display vip-new__headline">New<br>Arrivals</h2>
   </div>
 </section>
 
@@ -106,6 +121,12 @@
       <span class="vip-drops__tag">Coming Soon</span>
     </div>
   </div>
+  <div class="vip-drops__grid vip-drops__grid--mixed">
+    <div class="vip-drops__card vip-drops__card--big reveal"><span class="vip-drops__placeholder">Coming Soon</span></div>
+    <div class="vip-drops__card vip-drops__card--big reveal"><span class="vip-drops__placeholder">Coming Soon</span></div>
+    <div class="vip-drops__card vip-drops__card--small reveal"><span class="vip-drops__placeholder">Coming Soon</span></div>
+    <div class="vip-drops__card vip-drops__card--small reveal"><span class="vip-drops__placeholder">Coming Soon</span></div>
+  </div>
 </section>
 
 <div class="marquee vip-marquee">
@@ -137,6 +158,14 @@
     <span class="marquee__item vip-marquee__dot">&#9670;</span>
   </div>
 </div>
+
+<section class="dark grain vip-welcome">
+  <div class="vip-welcome__glow" aria-hidden="true"></div>
+  <img class="vip-welcome__heart reveal reveal--gasp" src="assets/img/hearts/heart-white.png" alt="">
+  <span class="eyebrow reveal reveal--gasp">You're Not Just A Customer</span>
+  <h2 class="display vip-welcome__headline reveal reveal--gasp">Welcome To<br>The Family</h2>
+  <p class="vip-welcome__tag reveal reveal--gasp">Built From Broken Hearts. Psychotic Forever.</p>
+</section>
 
 <footer class="site-footer dark" style="border-top:1px solid rgba(255,255,255,.08);">
   <div class="footer-grid">
@@ -258,7 +287,7 @@
     // an arbitrary window shape; full-bleed-always wins that trade-off here.
     const scale = Math.max(cw / iw, ch / ih);
     const dw = iw * scale, dh = ih * scale;
-    ctx.fillStyle = '#0c0c0c';
+    ctx.fillStyle = '#050505';
     ctx.fillRect(0, 0, cw, ch);
     ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
   }
