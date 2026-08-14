@@ -287,20 +287,29 @@ body.vip-page .dark{ background:transparent; }
   .vip-new__panel:not(:first-child){ margin-left:-1.4rem; }
 }
 
-/* ---------- VIP New Releases (full-bleed black promo banner) ---------- */
+/* ---------- VIP New Releases (matches the referenced Trikko-style drop
+   banner: cream ground fading into black on the right, black type, small
+   stacked year mark, discount line) ---------- */
 .vip-releases{
-  background:var(--black); min-height:640px;
+  background:linear-gradient(90deg, var(--cream) 0%, var(--cream) 32%, var(--black) 72%);
+  min-height:640px;
   display:grid; grid-template-columns:1.1fr 1fr; align-items:center;
 }
 .vip-releases__text{ padding:clamp(2.5rem,5vw,5rem) clamp(2rem,6vw,5.5rem); }
-.vip-releases__text .eyebrow{ color:var(--white); }
+.vip-releases__year{ color:var(--black); line-height:1.05; }
 .vip-releases__text .display{
-  font-size:clamp(4.5rem,11vw,9rem); margin-top:.8rem; color:var(--white);
+  font-size:clamp(4.5rem,11vw,9rem); margin-top:.8rem; color:var(--black);
 }
-/* Reserved for a future model/lookbook photo — left empty per direction, not a broken placeholder. */
-.vip-releases__media{ align-self:stretch; min-height:420px; background:#0a0a0a; border-left:1px solid rgba(255,255,255,.08); }
+.vip-releases__off{
+  font-family:var(--font-display); text-transform:uppercase; letter-spacing:.06em;
+  font-size:clamp(1.1rem,2vw,1.5rem); color:var(--black); margin-top:1.2rem;
+}
+/* Reserved for a future model/lookbook photo — transparent so the section's
+   own left-to-black gradient carries through underneath it until the photo
+   is dropped in, rather than a separate hard-edged box. */
+.vip-releases__media{ align-self:stretch; min-height:420px; background:transparent; }
 @media (max-width:800px){
-  .vip-releases{ grid-template-columns:1fr; }
+  .vip-releases{ grid-template-columns:1fr; background:var(--cream); }
   .vip-releases__media{ display:none; }
 }
 

@@ -10,12 +10,14 @@ window.PL_PRODUCTS = {
   'flame-zip-hoodie': {
     name: 'Flame Sleeve Zip Hoodie', price: 92, type: 'hoodie',
     front: 'assets/img/products/flame-zip-hoodie/front.png',
+    gallery: ['assets/img/vip-models/model-1.jpg'],
     tags: ['front-graphics','hearts','hoodies'],
     desc: 'Zip hoodie with rhinestone flame sleeves and a bejeweled dripping heart pocket up front.'
   },
   'love-hurts-hoodie': {
     name: 'Love Hurts Hoodie', price: 92, type: 'hoodie',
     front: 'assets/img/products/love-hurts-hoodie/front.png',
+    gallery: ['assets/img/vip-models/model-2.jpg'],
     tags: ['front-graphics','hearts','hoodies'],
     desc: 'Pullover hoodie with rhinestone flame sleeves and an oversized stitched heart graphic, "Love Hurts, Psychotic Forever."'
   },
@@ -23,7 +25,7 @@ window.PL_PRODUCTS = {
     name: 'Chaos Heart Tee', price: 58, type: 'tee',
     front: 'assets/img/products/chaos-heart-tee/front.png',
     back: 'assets/img/products/chaos-heart-tee/back.jpg',
-    gallery: ['assets/img/products/chaos-heart-tee/extra-1.jpg'],
+    gallery: ['assets/img/products/chaos-heart-tee/extra-1.jpg', 'assets/img/vip-models/model-3.jpg'],
     tags: ['front-graphics','back-graphics','hearts'],
     desc: 'Oversized purple tee with a cracked, stitched heart and lightning graphic front and back. "Built On Chaos, Driven By Purpose."'
   },
@@ -37,6 +39,7 @@ window.PL_PRODUCTS = {
   'cream-heart-tee': {
     name: 'Cream Heart Tee', price: 50, type: 'tee',
     front: 'assets/img/products/cream-heart-tee/front.png',
+    gallery: ['assets/img/vip-models/model-4.jpg'],
     tags: ['front-graphics','hearts'],
     desc: 'Vintage cream tee with a distressed wordmark and stitched heart corner hit up front.'
   },
