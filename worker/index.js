@@ -1,3 +1,4 @@
+import { isAuthenticated } from './gate.js';
 import {
   handleSignup, handleVerifyOtp, handleAdminLogin,
   handleLogin, handleLoginTicket, handleRecover, handleRecoverVerify
@@ -26,6 +27,12 @@ export default {
           headers: { 'Content-Type': 'application/json' }
         });
       }
+    }
+
+    if (url.pathname === '/vip' || url.pathname === '/vip.html') {
+      const auth = await isAuthenticated(request, env);
+      const target = auth.authenticated ? '/vip.html' : '/vip-locked.html';
+      return env.ASSETS.fetch(new Request(new URL(target, url.origin), request));
     }
 
     return env.ASSETS.fetch(request);
