@@ -9,5 +9,8 @@
   "observability": { "enabled": false },
   "main": "worker/index.js",
   "assets": { "directory": ".", "binding": "ASSETS" },
-  "compatibility_flags": ["nodejs_compat"]
+  "compatibility_flags": ["nodejs_compat"],
+  "kv_namespaces": [
+    { "binding": "VIP_MEMBERS", "id": "f940257ce27642caaf93e981d8316fd3", "preview_id": "a9c0dbb59bcb48a1b755d1915821bc87" }
+  ]
 }
