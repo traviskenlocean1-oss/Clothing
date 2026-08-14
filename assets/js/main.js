@@ -4,6 +4,16 @@
    input lag with a physical mouse wheel's discrete notches. GSAP/ScrollTrigger
    were also loaded but never actually used for anything, so both are dropped. */
 
+/* ---------- newsletter phone input: auto-advance between the 3 segments ---------- */
+document.querySelectorAll('.phone-input input').forEach((input, i, all) => {
+  input.addEventListener('input', () => {
+    if (input.value.length >= input.maxLength && all[i + 1]) all[i + 1].focus();
+  });
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Backspace' && !input.value && all[i - 1]) all[i - 1].focus();
+  });
+});
+
 /* ---------- hero entrance (staggered fade/rise on load) ---------- */
 requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.add('hero-loaded')));
 

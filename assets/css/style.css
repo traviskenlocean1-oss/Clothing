@@ -287,19 +287,18 @@ body.vip-page .dark{ background:transparent; }
   .vip-new__panel:not(:first-child){ margin-left:-1.4rem; }
 }
 
-/* ---------- VIP New Releases (full-bleed light promo banner, editorial
-   drop-style — matches the referenced light/cream layout directly instead
-   of a dark glass card) ---------- */
+/* ---------- VIP New Releases (full-bleed black promo banner) ---------- */
 .vip-releases{
-  background:var(--cream); min-height:520px;
+  background:var(--black); min-height:640px;
   display:grid; grid-template-columns:1.1fr 1fr; align-items:center;
 }
 .vip-releases__text{ padding:clamp(2.5rem,5vw,5rem) clamp(2rem,6vw,5.5rem); }
+.vip-releases__text .eyebrow{ color:var(--white); }
 .vip-releases__text .display{
-  font-size:clamp(3.8rem,9vw,7.5rem); margin-top:.8rem; color:var(--red-shadow);
+  font-size:clamp(4.5rem,11vw,9rem); margin-top:.8rem; color:var(--white);
 }
 /* Reserved for a future model/lookbook photo — left empty per direction, not a broken placeholder. */
-.vip-releases__media{ align-self:stretch; min-height:420px; background:#ECE6D8; border-left:1px solid rgba(0,0,0,.08); }
+.vip-releases__media{ align-self:stretch; min-height:420px; background:#0a0a0a; border-left:1px solid rgba(255,255,255,.08); }
 @media (max-width:800px){
   .vip-releases{ grid-template-columns:1fr; }
   .vip-releases__media{ display:none; }
@@ -307,15 +306,17 @@ body.vip-page .dark{ background:transparent; }
 
 .vip-drops{ padding:6rem var(--gutter) 5rem; }
 .vip-drops__grid{
-  display:grid; grid-template-columns:repeat(2,1fr); gap:2.4rem; margin-top:3.5rem;
+  display:grid; grid-template-columns:repeat(4,1fr); gap:1.6rem; margin-top:3.5rem;
+  max-width:1680px; margin-left:auto; margin-right:auto;
 }
 .vip-drops__card{
-  aspect-ratio:16/10; border:1px solid rgba(255,255,255,.18);
+  aspect-ratio:3/4; border:1px solid rgba(255,255,255,.18);
   display:flex; align-items:center; justify-content:center;
-  font-family:var(--font-display); letter-spacing:.14em; text-transform:uppercase;
-  font-size:clamp(1.7rem,3vw,2.4rem); color:rgba(255,255,255,.92);
+  font-family:var(--font-display); letter-spacing:.1em; text-transform:uppercase;
+  font-size:clamp(1.3rem,1.8vw,1.7rem); color:rgba(255,255,255,.92);
   background:#131313;
 }
+@media (max-width:1100px){ .vip-drops__grid{ grid-template-columns:repeat(2,1fr); } }
 @media (max-width:700px){ .vip-drops__grid{ grid-template-columns:1fr; } }
 
 .vip-marquee{ border-top:1px solid rgba(255,255,255,.1); border-bottom:1px solid rgba(255,255,255,.1); }
@@ -482,6 +483,10 @@ body.vip-page .eyebrow{ font-size:.8rem; letter-spacing:.32em; }
   padding:.8em .2em; min-width:280px; font-size:.95rem; color:inherit;
 }
 .newsletter input::placeholder{ color:var(--gray); }
+.phone-input{ display:flex; align-items:center; gap:.5rem; }
+.phone-input input{ min-width:0; width:3.4em; text-align:center; }
+.phone-input input[name="phone_line"]{ width:4.4em; }
+.phone-input__sep{ color:var(--gray); }
 
 /* ---------- footer ---------- */
 footer.site-footer{ padding:1.6rem var(--gutter) 2rem; }
