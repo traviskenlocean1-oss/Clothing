@@ -66,8 +66,10 @@
       phone: form.phone.value.trim()
     };
     const data = await postJson('/api/vip/signup', payload);
-    if (data.verified) {
+    if (data.ticket) {
       showWelcome(data);
+    } else if (data.verified) {
+      location.href = '/vip';
     } else {
       pendingPhone = payload.phone;
       showState('otp');
@@ -99,8 +101,10 @@
   bindForm('recover-phone', async (form) => {
     const phone = form.phone.value.trim();
     const data = await postJson('/api/vip/recover', { phone });
-    if (data.verified) {
+    if (data.ticket) {
       showWelcome(data);
+    } else if (data.verified) {
+      location.href = '/vip';
     } else {
       recoverPhone = phone;
       showState('recover-otp');
