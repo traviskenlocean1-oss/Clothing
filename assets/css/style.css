@@ -312,7 +312,10 @@ body.vip-page .dark{ background:transparent; }
 .vip-new__panel:nth-child(4){ transform:rotate(6deg) translateY(6px); z-index:2; }
 .vip-new__panel:nth-child(5){ transform:rotate(12deg) translateY(20px); z-index:1; }
 .vip-new__panel:hover{ transform:rotate(0deg) translateY(-14px) scale(1.06); box-shadow:0 26px 44px -16px rgba(0,0,0,.7); z-index:5; }
-.vip-drops{ padding:6rem 0 5rem; }
+/* No bottom padding — .vip-welcome's full-bleed photo now follows directly
+   and should butt right up against the mixed grid, not leave a dead-black
+   gap before the image starts. */
+.vip-drops{ padding:6rem 0 0; }
 .vip-drops .section-head{ padding:0 var(--gutter); }
 /* Full-bleed, edge-to-edge, no gap between cards — one continuous wall of
    photos filling the section width. Flex (not grid) so hovering one card
