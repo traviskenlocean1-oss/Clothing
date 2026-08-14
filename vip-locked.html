@@ -2,11 +2,116 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>VIP Access | Psychotic Love</title>
 <meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Alex+Brush&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="vip-page">
-<p style="color:#fff;text-align:center;margin-top:4rem;">VIP ACCESS LOCKED — placeholder, built out in Task 8.</p>
+
+<nav class="nav">
+  <a href="index.html" class="nav__logo">PSYCHOTIC <span class="script" data-text="Love">Love</span></a>
+  <ul class="nav__links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="vip.html">VIP</a></li>
+  </ul>
+  <div class="nav__right">
+    <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="vip-locked-hero">
+  <img class="gate-blur" src="assets/img/vip-hero-frames/frame-001.jpg" alt="">
+</div>
+
+<div class="vip-auth" id="vip-auth" aria-live="polite">
+  <div class="vip-auth__panel">
+    <div class="vip-auth__brand">Psychotic Love</div>
+    <h1 class="vip-auth__title display">VIP Access</h1>
+
+    <div class="vip-auth__state is-active" data-state="choice">
+      <button type="button" class="btn btn-solid vip-auth__choice" data-show="signup"><span>Sign Up</span></button>
+      <button type="button" class="btn vip-auth__choice" data-show="login"><span>Log In</span></button>
+      <button type="button" class="vip-auth__admin-toggle" data-show="admin">Admin?</button>
+    </div>
+
+    <form class="vip-auth__state" data-state="signup">
+      <label>Name<input type="text" name="name" required></label>
+      <label>Username<input type="text" name="username" required></label>
+      <label>Password<input type="password" name="password" required minlength="6"></label>
+      <label>Phone Number<input type="tel" name="phone" required placeholder="(555) 555-0100"></label>
+      <p class="vip-auth__error" role="alert"></p>
+      <button type="submit" class="btn btn-solid"><span>Continue</span></button>
+      <button type="button" class="vip-auth__back" data-show="choice">Back</button>
+    </form>
+
+    <form class="vip-auth__state" data-state="otp">
+      <p class="vip-auth__hint">Enter the 6-digit code we texted you.</p>
+      <label>Code<input type="text" name="code" required inputmode="numeric" pattern="[0-9]{6}" maxlength="6"></label>
+      <p class="vip-auth__error" role="alert"></p>
+      <button type="submit" class="btn btn-solid"><span>Verify</span></button>
+    </form>
+
+    <form class="vip-auth__state" data-state="login">
+      <label>Username<input type="text" name="username" required></label>
+      <label>Password<input type="password" name="password" required></label>
+      <label class="vip-auth__remember"><input type="checkbox" name="rememberMe" checked> Remember me</label>
+      <p class="vip-auth__error" role="alert"></p>
+      <button type="submit" class="btn btn-solid"><span>Log In</span></button>
+      <button type="button" class="vip-auth__link" data-show="ticket">Forgot password?</button>
+      <button type="button" class="vip-auth__back" data-show="choice">Back</button>
+    </form>
+
+    <form class="vip-auth__state" data-state="ticket">
+      <p class="vip-auth__hint">Enter your VIP ticket code.</p>
+      <label>Ticket Code<input type="text" name="ticket" required placeholder="PL-XXXXXX"></label>
+      <p class="vip-auth__error" role="alert"></p>
+      <button type="submit" class="btn btn-solid"><span>Log In</span></button>
+      <button type="button" class="vip-auth__link" data-show="recover-phone">Forgot ticket too?</button>
+      <button type="button" class="vip-auth__back" data-show="login">Back</button>
+    </form>
+
+    <form class="vip-auth__state" data-state="recover-phone">
+      <p class="vip-auth__hint">Enter the phone number on your account — we'll text you a new code.</p>
+      <label>Phone Number<input type="tel" name="phone" required placeholder="(555) 555-0100"></label>
+      <p class="vip-auth__error" role="alert"></p>
+      <button type="submit" class="btn btn-solid"><span>Send Code</span></button>
+      <button type="button" class="vip-auth__back" data-show="ticket">Back</button>
+    </form>
+
+    <form class="vip-auth__state" data-state="recover-otp">
+      <p class="vip-auth__hint">Enter the 6-digit code we texted you.</p>
+      <label>Code<input type="text" name="code" required inputmode="numeric" pattern="[0-9]{6}" maxlength="6"></label>
+      <p class="vip-auth__error" role="alert"></p>
+      <button type="submit" class="btn btn-solid"><span>Verify</span></button>
+    </form>
+
+    <form class="vip-auth__state" data-state="admin">
+      <p class="vip-auth__hint vip-auth__hint--admin">Admin Only</p>
+      <label>Phone Number<input type="tel" name="phone" required placeholder="(555) 555-0100"></label>
+      <p class="vip-auth__error" role="alert"></p>
+      <button type="submit" class="btn btn-solid"><span>Enter</span></button>
+      <button type="button" class="vip-auth__back" data-show="choice">Back</button>
+    </form>
+
+    <div class="vip-auth__state" data-state="welcome">
+      <img class="vip-auth__welcome-heart" src="assets/img/hearts/heart-white.png" alt="">
+      <p class="vip-auth__welcome-msg"></p>
+      <div class="vip-auth__ticket-display" hidden>
+        <span class="vip-auth__ticket-label">Your Ticket</span>
+        <span class="vip-auth__ticket-code"></span>
+        <span class="vip-auth__ticket-note">Keep this somewhere safe — you'll need it if you ever lose access.</span>
+      </div>
+      <button type="button" class="btn btn-solid vip-auth__enter"><span>Enter VIP</span></button>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/vip-auth.js"></script>
 </body>
 </html>
