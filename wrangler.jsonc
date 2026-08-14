@@ -1,7 +1,12 @@
 {
   "name": "psychotic-love",
   "compatibility_date": "2026-08-05",
-  "observability": { "enabled": true },
+  // Disabled for now: with a real Worker script (added for the VIP gate),
+  // observability's local trace-store SQLite file lives inside the watched
+  // assets directory ("."), and wrangler dev's file watcher treats every
+  // write to it as a source change — triggering an endless reload loop.
+  // Re-enable once local dev doesn't need to watch the whole repo root.
+  "observability": { "enabled": false },
   "main": "worker/index.js",
   "assets": { "directory": ".", "binding": "ASSETS" },
   "compatibility_flags": ["nodejs_compat"]
