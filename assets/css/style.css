@@ -263,9 +263,9 @@ body.vip-page .dark{ background:transparent; }
    banner: cream ground fading into black on the right, black type, small
    stacked year mark, discount line) ---------- */
 .vip-releases{
-  background:linear-gradient(90deg, var(--cream) 0%, var(--cream) 32%, #050505 72%);
+  background:linear-gradient(90deg, var(--cream) 0%, var(--cream) 18%, #050505 48%);
   min-height:640px;
-  display:grid; grid-template-columns:1.1fr 1fr; align-items:center;
+  display:grid; grid-template-columns:1fr 1.3fr; align-items:center;
 }
 .vip-releases__text{ padding:clamp(2.5rem,5vw,5rem) clamp(2rem,6vw,5.5rem); }
 .vip-releases__year{ color:var(--black); line-height:1.05; }
@@ -279,7 +279,7 @@ body.vip-page .dark{ background:transparent; }
 /* Holds the relocated New Arrivals angled panel cluster (moved here from
    its own standalone section — see .vip-new__cluster below). Stretches to
    the row's full height so the cluster centers within it. */
-.vip-releases__media{ align-self:stretch; min-height:420px; background:transparent; display:flex; align-items:center; justify-content:center; }
+.vip-releases__media{ align-self:stretch; min-height:420px; background:transparent; display:flex; align-items:center; justify-content:center; overflow:hidden; }
 @media (max-width:800px){
   .vip-releases{ grid-template-columns:1fr; background:var(--cream); }
   .vip-releases__media{ display:none; }
@@ -292,13 +292,13 @@ body.vip-page .dark{ background:transparent; }
 }
 .vip-new__panel{
   position:relative; display:block; flex:0 0 auto;
-  width:clamp(90px,11vw,150px); aspect-ratio:3/4;
+  width:clamp(130px,10vw,200px); aspect-ratio:3/4;
   background:var(--cream); border:1px solid rgba(255,255,255,.12);
   box-shadow:0 18px 34px -14px rgba(0,0,0,.6);
   overflow:hidden; transition:transform .4s var(--ease), box-shadow .4s var(--ease), z-index .4s;
 }
 .vip-new__panel img{ width:100%; height:100%; object-fit:cover; }
-.vip-new__panel:not(:first-child){ margin-left:-1.8rem; }
+.vip-new__panel:not(:first-child){ margin-left:-2.2rem; }
 .vip-new__panel:nth-child(1){ transform:rotate(-12deg) translateY(20px); z-index:1; }
 .vip-new__panel:nth-child(2){ transform:rotate(-6deg) translateY(6px); z-index:2; }
 .vip-new__panel:nth-child(3){ transform:rotate(0deg) translateY(-14px); z-index:3; }
@@ -306,8 +306,8 @@ body.vip-page .dark{ background:transparent; }
 .vip-new__panel:nth-child(5){ transform:rotate(12deg) translateY(20px); z-index:1; }
 .vip-new__panel:hover{ transform:rotate(0deg) translateY(-14px) scale(1.06); box-shadow:0 26px 44px -16px rgba(0,0,0,.7); z-index:5; }
 @media (max-width:1000px){
-  .vip-new__panel{ width:clamp(70px,9vw,110px); }
-  .vip-new__panel:not(:first-child){ margin-left:-1.2rem; }
+  .vip-new__panel{ width:clamp(100px,13vw,150px); }
+  .vip-new__panel:not(:first-child){ margin-left:-1.6rem; }
 }
 
 .vip-drops{ padding:6rem 0 5rem; }
