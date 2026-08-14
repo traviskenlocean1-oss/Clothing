@@ -259,38 +259,6 @@ body.vip-page .dark{ background:transparent; }
 .vip-scrub-wrap .scrub-canvas{ filter:none; } /* footage is already color-locked — don't re-grade it */
 @media (max-width:768px){ .vip-scrub-wrap{ height:340vh; } }
 
-/* ---------- VIP New Arrivals (angled real-product panel cluster) ---------- */
-.vip-new{ padding:6rem var(--gutter) 5rem; overflow:hidden; }
-.vip-new__cluster{
-  position:relative; max-width:1000px; margin:4rem auto 0;
-  display:flex; justify-content:center; align-items:center;
-}
-.vip-new__panel{
-  position:relative; display:block; flex:0 0 auto;
-  width:clamp(130px,17vw,210px); aspect-ratio:3/4;
-  background:var(--cream); border:1px solid rgba(255,255,255,.12);
-  box-shadow:0 18px 34px -14px rgba(0,0,0,.6);
-  overflow:hidden; transition:transform .4s var(--ease), box-shadow .4s var(--ease), z-index .4s;
-}
-.vip-new__panel img{ width:100%; height:100%; object-fit:cover; }
-.vip-new__panel:not(:first-child){ margin-left:-2.4rem; }
-.vip-new__panel:nth-child(1){ transform:rotate(-12deg) translateY(20px); z-index:1; }
-.vip-new__panel:nth-child(2){ transform:rotate(-6deg) translateY(6px); z-index:2; }
-.vip-new__panel:nth-child(3){ transform:rotate(0deg) translateY(-14px); z-index:3; }
-.vip-new__panel:nth-child(4){ transform:rotate(6deg) translateY(6px); z-index:2; }
-.vip-new__panel:nth-child(5){ transform:rotate(12deg) translateY(20px); z-index:1; }
-.vip-new__panel:hover{ transform:rotate(0deg) translateY(-14px) scale(1.06); box-shadow:0 26px 44px -16px rgba(0,0,0,.7); z-index:5; }
-.vip-new__headline{
-  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
-  z-index:6; pointer-events:none; text-align:center; color:var(--white);
-  font-size:clamp(3rem,9vw,7rem); text-shadow:0 2px 0 rgba(0,0,0,.5), 0 6px 22px rgba(0,0,0,.7);
-}
-@media (max-width:700px){
-  .vip-new__cluster{ margin-top:3rem; }
-  .vip-new__panel{ width:clamp(84px,26vw,120px); }
-  .vip-new__panel:not(:first-child){ margin-left:-1.4rem; }
-}
-
 /* ---------- VIP New Releases (matches the referenced Trikko-style drop
    banner: cream ground fading into black on the right, black type, small
    stacked year mark, discount line) ---------- */
@@ -308,13 +276,38 @@ body.vip-page .dark{ background:transparent; }
   font-family:var(--font-display); text-transform:uppercase; letter-spacing:.06em;
   font-size:clamp(1.1rem,2vw,1.5rem); color:var(--black); margin-top:1.2rem;
 }
-/* Reserved for a future model/lookbook photo — transparent so the section's
-   own left-to-black gradient carries through underneath it until the photo
-   is dropped in, rather than a separate hard-edged box. */
-.vip-releases__media{ align-self:stretch; min-height:420px; background:transparent; }
+/* Holds the relocated New Arrivals angled panel cluster (moved here from
+   its own standalone section — see .vip-new__cluster below). Stretches to
+   the row's full height so the cluster centers within it. */
+.vip-releases__media{ align-self:stretch; min-height:420px; background:transparent; display:flex; align-items:center; justify-content:center; }
 @media (max-width:800px){
   .vip-releases{ grid-template-columns:1fr; background:var(--cream); }
   .vip-releases__media{ display:none; }
+}
+
+/* ---------- VIP New Arrivals panel cluster (angled real-product photos,
+   relocated into the New Releases media column) ---------- */
+.vip-new__cluster{
+  position:relative; display:flex; justify-content:center; align-items:center;
+}
+.vip-new__panel{
+  position:relative; display:block; flex:0 0 auto;
+  width:clamp(90px,11vw,150px); aspect-ratio:3/4;
+  background:var(--cream); border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 18px 34px -14px rgba(0,0,0,.6);
+  overflow:hidden; transition:transform .4s var(--ease), box-shadow .4s var(--ease), z-index .4s;
+}
+.vip-new__panel img{ width:100%; height:100%; object-fit:cover; }
+.vip-new__panel:not(:first-child){ margin-left:-1.8rem; }
+.vip-new__panel:nth-child(1){ transform:rotate(-12deg) translateY(20px); z-index:1; }
+.vip-new__panel:nth-child(2){ transform:rotate(-6deg) translateY(6px); z-index:2; }
+.vip-new__panel:nth-child(3){ transform:rotate(0deg) translateY(-14px); z-index:3; }
+.vip-new__panel:nth-child(4){ transform:rotate(6deg) translateY(6px); z-index:2; }
+.vip-new__panel:nth-child(5){ transform:rotate(12deg) translateY(20px); z-index:1; }
+.vip-new__panel:hover{ transform:rotate(0deg) translateY(-14px) scale(1.06); box-shadow:0 26px 44px -16px rgba(0,0,0,.7); z-index:5; }
+@media (max-width:1000px){
+  .vip-new__panel{ width:clamp(70px,9vw,110px); }
+  .vip-new__panel:not(:first-child){ margin-left:-1.2rem; }
 }
 
 .vip-drops{ padding:6rem 0 5rem; }
@@ -390,9 +383,6 @@ body.vip-page .dark{ background:transparent; }
 .vip-welcome .reveal--gasp:nth-child(3){ transition-delay:.22s; }
 .vip-welcome .reveal--gasp:nth-child(4){ transition-delay:.36s; }
 
-.vip-marquee{ border-top:1px solid rgba(255,255,255,.1); border-bottom:1px solid rgba(255,255,255,.1); }
-.vip-marquee .marquee__item{ color:var(--white); font-size:1rem; }
-.vip-marquee__dot{ color:rgba(255,255,255,.35); font-size:.7rem; }
 /* Broader "make it bigger" pass on the VIP page specifically — headings,
    product panels, everything reads a size class up from the sitewide default. */
 body.vip-page .section-head .display{ font-size:clamp(2.8rem,6.5vw,4.6rem); }
