@@ -174,7 +174,10 @@ export async function handleRecoverVerify(request, env) {
     return json({ error: 'Phone and code are required.' }, { status: 400 });
   }
   const member = await getMemberByPhone(env, phone);
-  if (!member || !member.otp) {
+  if (!member || !member.verified) {
+    return json({ error: 'No VIP account found for that number.' }, { status: 404 });
+  }
+  if (!member.otp) {
     return json({ error: 'No pending recovery for that number.' }, { status: 404 });
   }
   if (Date.now() > member.otpExpiry) {
