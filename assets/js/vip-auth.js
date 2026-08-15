@@ -68,7 +68,7 @@
     if (data.ticket) {
       showWelcome(data);
     } else if (data.verified) {
-      location.href = '/vip';
+      location.href = '/vip-enter';
     } else {
       pendingPhone = payload.phone;
       showState('otp');
@@ -89,12 +89,12 @@
       password: form.password.value,
       rememberMe: form.rememberMe.checked
     });
-    location.href = '/vip';
+    location.href = '/vip-enter';
   });
 
   bindForm('ticket', async (form) => {
     await postJson('/api/vip/login-ticket', { ticket: form.ticket.value.trim().toUpperCase() });
-    location.href = '/vip';
+    location.href = '/vip-enter';
   });
 
   bindForm('recover-phone', async (form) => {
@@ -104,10 +104,22 @@
 
   bindForm('admin', async (form) => {
     await postJson('/api/vip/admin-login', { phone: form.phone.value.trim() });
-    location.href = '/vip';
+    location.href = '/vip-enter';
   });
 
   root.querySelector('.vip-auth__enter').addEventListener('click', () => {
-    location.href = '/vip';
+    location.href = '/vip-enter';
   });
+
+  root.querySelector('.vip-auth__continue').addEventListener('click', () => {
+    location.href = '/vip-enter';
+  });
+
+  // The gate shell always shows first, even for an already-authenticated
+  // visitor -- this check is what lets a remembered visitor skip straight
+  // to a one-tap "Continue to VIP" instead of the Sign Up/Log In choice.
+  fetch('/api/vip/status', { credentials: 'same-origin' })
+    .then(res => res.json())
+    .then(data => { if (data.authenticated) showState('welcome-back'); })
+    .catch(() => {});
 })();

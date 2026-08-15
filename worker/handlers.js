@@ -3,7 +3,7 @@ import { hashPassword, verifyPassword, generateOtp, generateTicket, normalizePho
 import { getMemberByPhone, getMemberByUsername, getMemberByTicket, isUsernameTaken, saveMember } from './store.js';
 import { sendOtp } from './sms.js';
 import { findAdminRole } from './admin.js';
-import { sessionCookieHeader, clearSessionCookieHeader } from './gate.js';
+import { sessionCookieHeader, clearSessionCookieHeader, isAuthenticated } from './gate.js';
 
 const OTP_TTL_MS = 10 * 60 * 1000;
 
@@ -136,6 +136,11 @@ export async function handleLoginTicket(request, env) {
 
 export async function handleLogout(request, env) {
   return json({ loggedOut: true }, { headers: { 'Set-Cookie': clearSessionCookieHeader() } });
+}
+
+export async function handleStatus(request, env) {
+  const auth = await isAuthenticated(request, env);
+  return json({ authenticated: auth.authenticated });
 }
 
 export async function handleRecover(request, env) {
