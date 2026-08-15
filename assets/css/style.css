@@ -826,6 +826,24 @@ footer.site-footer{ padding:1.6rem var(--gutter) 2rem; }
 .checkout-hero .eyebrow{ display:block; margin-bottom:.6rem; }
 .checkout-hero .display{ font-size:clamp(2.2rem,5vw,3.4rem); }
 
+/* ---------- legal pages (terms / privacy) ---------- */
+.legal-content{
+  max-width:42rem; margin:0 auto; padding:1rem var(--gutter) 8rem;
+  font-size:.98rem; line-height:1.7; color:var(--black);
+}
+.legal-updated{ color:var(--gray); font-size:.82rem; margin-bottom:2rem; }
+.legal-content h2{
+  font-family:var(--font-display); font-size:1.3rem; letter-spacing:.02em;
+  margin:2.4rem 0 .8rem;
+}
+.legal-content h2:first-of-type{ margin-top:0; }
+.legal-content p{ margin-bottom:1.1rem; }
+.legal-content a{ color:var(--black); text-decoration:underline; text-underline-offset:2px; }
+
+/* ---------- footer policy links ---------- */
+.footer-bottom__links a{ color:inherit; text-decoration:underline; text-underline-offset:2px; opacity:.85; }
+.footer-bottom__links a:hover{ opacity:1; }
+
 .checkout-grid{
   display:grid; grid-template-columns:1.15fr .85fr; gap:5vw; align-items:start;
   max-width:var(--container); margin:0 auto; padding:2rem var(--gutter) 8rem;
@@ -875,8 +893,19 @@ footer.site-footer{ padding:1.6rem var(--gutter) 2rem; }
 .order-item__meta .opts{ font-size:.76rem; color:var(--gray); margin-top:.2rem; }
 .order-item__price{ font-size:.88rem; font-weight:600; white-space:nowrap; }
 
+.discount-form{ display:flex; gap:.6rem; margin:1.2rem 0; }
+.discount-form input{
+  flex:1; padding:.75em 1em; font-size:.85rem;
+  border:1px solid rgba(0,0,0,.15); border-radius:8px; font-family:var(--font-body);
+}
+.discount-form input:focus{ outline:none; border-color:var(--black); }
+.discount-form .btn{ padding:.75em 1.4em; font-size:.72rem; flex-shrink:0; }
+.discount-message{ font-size:.78rem; color:var(--green); min-height:1.1em; margin:-.6rem 0 .8rem; }
+.discount-message.is-error{ color:#c0392b; }
+
 .order-totals{ display:flex; flex-direction:column; gap:.7rem; font-size:.9rem; }
 .order-totals .row{ display:flex; justify-content:space-between; color:var(--gray); }
+.order-totals .row.checkout-discount{ color:var(--green); }
 .order-totals .row.total{
   font-size:1.15rem; font-weight:700; color:var(--black);
   padding-top:.9rem; border-top:1px solid rgba(0,0,0,.08); margin-top:.2rem;

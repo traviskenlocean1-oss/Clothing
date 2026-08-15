@@ -134,8 +134,14 @@
     <div class="order-panel reveal">
       <h2 class="checkout-section-title">Your Order</h2>
       <div class="order-list checkout-items"></div>
+      <div class="discount-form">
+        <input type="text" id="discount-code" placeholder="Discount code" autocomplete="off">
+        <button type="button" id="discount-apply" class="btn">Apply</button>
+      </div>
+      <p class="discount-message" id="discount-message"></p>
       <div class="order-totals">
         <div class="row checkout-subtotal"><span>Subtotal</span><span class="amount">$0.00</span></div>
+        <div class="row checkout-discount" hidden><span class="discount-label">Discount</span><span class="amount">&minus;$0.00</span></div>
         <div class="row checkout-shipping"><span>Shipping</span><span class="amount">$0.00</span></div>
         <div class="row total checkout-total"><span>Total</span><span class="amount">$0.00</span></div>
       </div>
@@ -172,7 +178,7 @@
             <input type="text" id="card-cvv" name="card-cvv" placeholder="CVV" inputmode="numeric" maxlength="4" required disabled>
           </div>
         </div>
-        <p class="checkout-consent">By placing this order, you agree to Psychotic Love's <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>, and authorize this card to be charged for the total shown above.</p>
+        <p class="checkout-consent">By placing this order, you agree to Psychotic Love's <a href="terms.html">Terms of Service</a> and <a href="privacy.html">Privacy Policy</a>, and authorize this card to be charged for the total shown above.</p>
         <button type="submit" class="btn btn-solid" style="width:100%;margin-top:1.2rem;"><span>Finish Checkout</span></button>
       </div>
     </div>
@@ -226,6 +232,7 @@
     <div class="footer-bottom">
       <span>&copy; <span id="year"></span> Psychotic Love. All rights reserved.</span>
       <span>Built From Broken Hearts.</span>
+      <span class="footer-bottom__links"><a href="terms.html">Terms of Service</a> &middot; <a href="privacy.html">Privacy Policy</a></span>
     </div>
   </div>
 </footer>
@@ -234,5 +241,6 @@
 <script src="assets/js/cart.js"></script>
 <script src="assets/js/main.js"></script>
 <script src="assets/js/cookie-consent.js"></script>
+<script src="assets/js/analytics.js"></script>
 </body>
 </html>

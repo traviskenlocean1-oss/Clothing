@@ -32,6 +32,7 @@
       localStorage.setItem(KEY, choice);
       bar.classList.remove('is-visible');
       setTimeout(() => bar.remove(), 500);
+      document.dispatchEvent(new CustomEvent('pl:consent', { detail: { choice } }));
     }
     bar.querySelector('.cookie-consent__accept').addEventListener('click', () => dismiss('accepted'));
     bar.querySelector('.cookie-consent__reject').addEventListener('click', () => dismiss('rejected'));

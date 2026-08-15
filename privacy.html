@@ -3,13 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Shop | Psychotic Love</title>
-<meta name="description" content="Shop the Psychotic Love collection — heavyweight cotton tees with stitched heart graphics in blue, green, pink, and more.">
-<link rel="canonical" href="https://psychoticlove.com/shop.html">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Shop | Psychotic Love">
-<meta property="og:description" content="Heavyweight cotton tees with stitched heart graphics. Built From Broken Hearts.">
-<meta property="og:url" content="https://psychoticlove.com/shop.html">
+<title>Privacy Policy | Psychotic Love</title>
+<meta name="description" content="How Psychotic Love collects, uses, and protects your information.">
+<link rel="canonical" href="https://psychoticlove.com/privacy.html">
+<meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Alex+Brush&family=Cormorant+Garamond:ital,wght@1,500&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -64,60 +61,52 @@
   </div>
 </nav>
 
-<header class="shop-hero on-cream">
-  <h1 class="display reveal">The Collection</h1>
+<header class="checkout-hero on-cream">
+  <span class="eyebrow reveal">Legal</span>
+  <h1 class="display reveal">Privacy Policy</h1>
 </header>
 
-<div class="filters on-cream">
-  <button class="filter-pill is-active" data-filter="all">All</button>
-  <button class="filter-pill" data-filter="front-graphics">Front Graphics</button>
-  <button class="filter-pill" data-filter="back-graphics">Back Graphics</button>
-  <button class="filter-pill" data-filter="logo">Logo</button>
-  <button class="filter-pill" data-filter="hearts">Hearts</button>
-  <button class="filter-pill" data-filter="hoodies">Hoodies</button>
-</div>
+<section class="on-cream">
+  <div class="legal-content reveal">
+    <p class="legal-updated">Last updated: August 2026</p>
 
-<div class="product-grid on-cream" id="product-grid"></div>
-<script src="assets/js/products.js"></script>
-<script>
-(function(){
-  const grid = document.getElementById('product-grid');
-  const stars = '&#9733;&#9733;&#9733;&#9733;&#9733;';
-  Object.entries(window.PL_PRODUCTS).forEach(([slug, p]) => {
-    const primary = p.front || p.back;
-    const el = document.createElement('article');
-    el.className = 'product-card reveal';
-    el.dataset.product = slug;
-    el.dataset.name = p.name;
-    el.dataset.price = p.price;
-    el.dataset.image = primary;
-    el.dataset.tags = p.tags.join(',');
-    // Always render both layers, even for single-image products — with only
-    // a .tee--front div, the hover rule that fades it out on
-    // .product-card:hover still fires with no .tee--back to fade in behind
-    // it, so the card just goes blank on hover. Reusing the same image for
-    // both layers when there's no back keeps hover a no-op instead.
-    const media = `
-      <div class="tee tee--front"><img src="${p.front || p.back}" alt="${p.name}${p.front && p.back ? ' — front' : ''}" loading="lazy"></div>
-      <div class="tee tee--back"><img src="${p.back || p.front}" alt="${p.name}${p.front && p.back ? ' — back' : ''}" loading="lazy"></div>`;
-    el.innerHTML = `
-      <div class="product-card__frame">
-        <a href="product.html?p=${slug}" class="product-card__media">${media}</a>
-        <div class="product-card__quickadd">
-          <button class="btn btn-dark" data-add-to-cart><span>Add to Cart</span></button>
-          <button class="btn btn-solid" data-buy-now><span>Buy Now</span></button>
-        </div>
-      </div>
-      <div class="product-card__info">
-        <a href="product.html?p=${slug}" class="product-card__name">${p.name}</a>
-        <span class="product-card__stars">${stars}</span>
-        <span class="product-card__price">$${p.price}</span>
-      </div>`;
-    grid.appendChild(el);
-  });
-  document.dispatchEvent(new Event('pl:grid-ready'));
-})();
-</script>
+    <p>This Privacy Policy explains what information Psychotic Love collects when you use psychoticlove.com (the "Site"), why we collect it, and the choices you have. We keep this as short and plain as we can — if anything's unclear, email us.</p>
+
+    <h2>1. Information We Collect</h2>
+    <p>We collect information you give us directly — your name, email, shipping address, and phone number when you place an order or sign up for VIP membership, and a password (which we never store in plain text — it's hashed). If you sign up for our newsletter, we collect the phone number you provide.</p>
+    <p>We also collect a small amount of information automatically, like which pages you visit and how you got to the Site, so we can understand how the Site is used and fix what's broken.</p>
+
+    <h2>2. How We Use Your Information</h2>
+    <p>We use your information to process and ship orders, manage your VIP membership and login sessions, respond to your questions, and — only if you've opted in — send you updates about drops and offers. We don't sell your personal information to third parties.</p>
+
+    <h2>3. Cookies &amp; Tracking</h2>
+    <p>We use a small number of cookies: one to keep you signed in to your VIP account, and (if the Site has analytics enabled) an anonymous, aggregate site-traffic tool that doesn't use tracking cookies to identify you individually. When you first visit, we ask whether you accept or reject non-essential cookies; your choice is remembered on your device. Essential cookies — like the one that keeps you logged in — aren't affected by this choice, since the Site can't function without them.</p>
+
+    <h2>4. VIP Membership Data</h2>
+    <p>Your VIP account stores your name, username, phone number, a hashed password, and your unique ticket code. Your phone number is how we recognize your account if you ever need to recover access — we don't use it to send marketing texts unless you separately opt in elsewhere on the Site.</p>
+
+    <h2>5. Data Sharing</h2>
+    <p>We share information only with the service providers who help us run the Site and fulfill orders — for example, shipping carriers and payment processors — and only the information each of them needs to do their job. We don't share your information with third parties for their own marketing purposes.</p>
+
+    <h2>6. Data Security</h2>
+    <p>We take reasonable technical measures to protect your information, including encrypting passwords and securing data in transit. No system is perfectly secure, but we work to keep your information safe and will notify you if we become aware of a breach affecting your data.</p>
+
+    <h2>7. Your Rights &amp; Choices</h2>
+    <p>You can ask us to access, correct, or delete the personal information we hold about you at any time by emailing <a href="mailto:hello@psychoticlove.com">hello@psychoticlove.com</a>. You can unsubscribe from marketing messages at any time using the link or instructions provided in those messages.</p>
+
+    <h2>8. Data Retention</h2>
+    <p>We keep your information for as long as your account is active or as needed to provide you services, comply with our legal obligations, and resolve disputes. If you ask us to delete your account, we'll do so within a reasonable time, except where we're required to retain certain records by law.</p>
+
+    <h2>9. Children's Privacy</h2>
+    <p>The Site isn't intended for anyone under 16, and we don't knowingly collect information from children under 16.</p>
+
+    <h2>10. Changes to This Policy</h2>
+    <p>We may update this Privacy Policy from time to time. The "Last updated" date at the top reflects the most recent revision. Continuing to use the Site after changes take effect means you accept the updated policy.</p>
+
+    <h2>11. Contact</h2>
+    <p>Questions about this Privacy Policy or your data? Reach us at <a href="mailto:hello@psychoticlove.com">hello@psychoticlove.com</a>.</p>
+  </div>
+</section>
 
 <footer class="site-footer on-cream" style="border-top:1px solid rgba(0,0,0,.08);">
   <div class="footer-grid">
@@ -147,7 +136,7 @@
     <span class="payment-badge payment-badge--amex">AMEX</span>
     <span class="payment-badge payment-badge--discover">DISCOVER</span>
     <span class="payment-badge payment-badge--paypal">PayPal</span>
-    <span class="payment-badge payment-badge--applepay"> Pay</span>
+    <span class="payment-badge payment-badge--applepay"> Pay</span>
   </div>
   <div class="footer-outro-wrap">
     <div class="brand-outro" aria-hidden="true">
@@ -166,13 +155,5 @@
 <script src="assets/js/main.js"></script>
 <script src="assets/js/cookie-consent.js"></script>
 <script src="assets/js/analytics.js"></script>
-<script>
-  const params = new URLSearchParams(location.search);
-  const wantedFilter = params.get('filter');
-  if (wantedFilter) {
-    const pill = document.querySelector(`.filter-pill[data-filter="${wantedFilter === 'blue' || wantedFilter === 'green' || wantedFilter === 'pink' ? 'hearts' : wantedFilter}"]`);
-    pill?.click();
-  }
-</script>
 </body>
 </html>

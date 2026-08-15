@@ -3,13 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Shop | Psychotic Love</title>
-<meta name="description" content="Shop the Psychotic Love collection — heavyweight cotton tees with stitched heart graphics in blue, green, pink, and more.">
-<link rel="canonical" href="https://psychoticlove.com/shop.html">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Shop | Psychotic Love">
-<meta property="og:description" content="Heavyweight cotton tees with stitched heart graphics. Built From Broken Hearts.">
-<meta property="og:url" content="https://psychoticlove.com/shop.html">
+<title>Terms of Service | Psychotic Love</title>
+<meta name="description" content="The terms that govern your use of the Psychotic Love website and your purchases from us.">
+<link rel="canonical" href="https://psychoticlove.com/terms.html">
+<meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Alex+Brush&family=Cormorant+Garamond:ital,wght@1,500&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -64,60 +61,54 @@
   </div>
 </nav>
 
-<header class="shop-hero on-cream">
-  <h1 class="display reveal">The Collection</h1>
+<header class="checkout-hero on-cream">
+  <span class="eyebrow reveal">Legal</span>
+  <h1 class="display reveal">Terms of Service</h1>
 </header>
 
-<div class="filters on-cream">
-  <button class="filter-pill is-active" data-filter="all">All</button>
-  <button class="filter-pill" data-filter="front-graphics">Front Graphics</button>
-  <button class="filter-pill" data-filter="back-graphics">Back Graphics</button>
-  <button class="filter-pill" data-filter="logo">Logo</button>
-  <button class="filter-pill" data-filter="hearts">Hearts</button>
-  <button class="filter-pill" data-filter="hoodies">Hoodies</button>
-</div>
+<section class="on-cream">
+  <div class="legal-content reveal">
+    <p class="legal-updated">Last updated: August 2026</p>
 
-<div class="product-grid on-cream" id="product-grid"></div>
-<script src="assets/js/products.js"></script>
-<script>
-(function(){
-  const grid = document.getElementById('product-grid');
-  const stars = '&#9733;&#9733;&#9733;&#9733;&#9733;';
-  Object.entries(window.PL_PRODUCTS).forEach(([slug, p]) => {
-    const primary = p.front || p.back;
-    const el = document.createElement('article');
-    el.className = 'product-card reveal';
-    el.dataset.product = slug;
-    el.dataset.name = p.name;
-    el.dataset.price = p.price;
-    el.dataset.image = primary;
-    el.dataset.tags = p.tags.join(',');
-    // Always render both layers, even for single-image products — with only
-    // a .tee--front div, the hover rule that fades it out on
-    // .product-card:hover still fires with no .tee--back to fade in behind
-    // it, so the card just goes blank on hover. Reusing the same image for
-    // both layers when there's no back keeps hover a no-op instead.
-    const media = `
-      <div class="tee tee--front"><img src="${p.front || p.back}" alt="${p.name}${p.front && p.back ? ' — front' : ''}" loading="lazy"></div>
-      <div class="tee tee--back"><img src="${p.back || p.front}" alt="${p.name}${p.front && p.back ? ' — back' : ''}" loading="lazy"></div>`;
-    el.innerHTML = `
-      <div class="product-card__frame">
-        <a href="product.html?p=${slug}" class="product-card__media">${media}</a>
-        <div class="product-card__quickadd">
-          <button class="btn btn-dark" data-add-to-cart><span>Add to Cart</span></button>
-          <button class="btn btn-solid" data-buy-now><span>Buy Now</span></button>
-        </div>
-      </div>
-      <div class="product-card__info">
-        <a href="product.html?p=${slug}" class="product-card__name">${p.name}</a>
-        <span class="product-card__stars">${stars}</span>
-        <span class="product-card__price">$${p.price}</span>
-      </div>`;
-    grid.appendChild(el);
-  });
-  document.dispatchEvent(new Event('pl:grid-ready'));
-})();
-</script>
+    <p>Welcome to Psychotic Love. These Terms of Service ("Terms") govern your use of psychoticlove.com (the "Site") and any purchase you make from us. By browsing the Site, creating an account, joining the VIP program, or placing an order, you agree to these Terms. If you don't agree with any part of them, please don't use the Site.</p>
+
+    <h2>1. Eligibility</h2>
+    <p>You must be at least 16 years old to create an account or place an order. If you're using the Site on behalf of someone else, you confirm you have their permission to do so.</p>
+
+    <h2>2. Products &amp; Pricing</h2>
+    <p>We do our best to describe and photograph every piece accurately, but slight variations in color, print placement, and fabric can occur between what you see on screen and what arrives — that's part of small-batch production. Prices are listed in USD and may change at any time without notice; the price shown at checkout is the price you pay. We reserve the right to limit quantities, refuse any order, or discontinue a product at our discretion.</p>
+
+    <h2>3. Orders &amp; Payment</h2>
+    <p>Placing an order is an offer to buy; we accept that offer once your payment is processed. We reserve the right to cancel or refuse any order — for example, if an item is out of stock, if we suspect fraud, or if there was a pricing error. If we cancel an order after payment, you'll be refunded in full.</p>
+
+    <h2>4. Shipping &amp; Delivery</h2>
+    <p>Orders over $100 ship free; smaller orders carry a flat shipping fee shown at checkout. Delivery estimates are just that — estimates — and we're not responsible for carrier delays outside our control. Risk of loss passes to you once an order is handed to the carrier.</p>
+
+    <h2>5. Returns &amp; Exchanges</h2>
+    <p>Unworn, unwashed items in original condition with tags attached can be returned within 30 days of delivery for a refund or exchange. Final sale items (marked as such at purchase) aren't eligible. To start a return, email <a href="mailto:hello@psychoticlove.com">hello@psychoticlove.com</a> with your order number.</p>
+
+    <h2>6. VIP Membership</h2>
+    <p>The VIP program is free to join and gives members early access to select drops. Membership is personal to the account holder and isn't transferable. We reserve the right to suspend or terminate a VIP account for abuse of the program, including sharing login credentials or ticket codes to grant access to non-members.</p>
+
+    <h2>7. Intellectual Property</h2>
+    <p>Everything on this Site — the Psychotic Love name, logo, graphics, product designs, photography, and site content — belongs to us or our licensors and is protected by copyright and trademark law. You may not reproduce, distribute, or create derivative works from any of it without our written permission.</p>
+
+    <h2>8. User Conduct</h2>
+    <p>You agree not to use the Site for any unlawful purpose, to attempt to gain unauthorized access to any part of the Site or another user's account, or to interfere with the Site's normal operation.</p>
+
+    <h2>9. Limitation of Liability</h2>
+    <p>The Site and all products are provided "as is." To the fullest extent permitted by law, Psychotic Love isn't liable for any indirect, incidental, or consequential damages arising from your use of the Site or your purchase of our products. Our total liability for any claim is limited to the amount you paid for the product giving rise to the claim.</p>
+
+    <h2>10. Changes to These Terms</h2>
+    <p>We may update these Terms from time to time. The "Last updated" date at the top of this page reflects the most recent revision. Continuing to use the Site after changes take effect means you accept the updated Terms.</p>
+
+    <h2>11. Governing Law</h2>
+    <p>These Terms are governed by the laws of the United States and the state in which Psychotic Love is registered, without regard to conflict-of-law principles.</p>
+
+    <h2>12. Contact</h2>
+    <p>Questions about these Terms? Reach us at <a href="mailto:hello@psychoticlove.com">hello@psychoticlove.com</a>.</p>
+  </div>
+</section>
 
 <footer class="site-footer on-cream" style="border-top:1px solid rgba(0,0,0,.08);">
   <div class="footer-grid">
@@ -147,7 +138,7 @@
     <span class="payment-badge payment-badge--amex">AMEX</span>
     <span class="payment-badge payment-badge--discover">DISCOVER</span>
     <span class="payment-badge payment-badge--paypal">PayPal</span>
-    <span class="payment-badge payment-badge--applepay"> Pay</span>
+    <span class="payment-badge payment-badge--applepay"> Pay</span>
   </div>
   <div class="footer-outro-wrap">
     <div class="brand-outro" aria-hidden="true">
@@ -166,13 +157,5 @@
 <script src="assets/js/main.js"></script>
 <script src="assets/js/cookie-consent.js"></script>
 <script src="assets/js/analytics.js"></script>
-<script>
-  const params = new URLSearchParams(location.search);
-  const wantedFilter = params.get('filter');
-  if (wantedFilter) {
-    const pill = document.querySelector(`.filter-pill[data-filter="${wantedFilter === 'blue' || wantedFilter === 'green' || wantedFilter === 'pink' ? 'hearts' : wantedFilter}"]`);
-    pill?.click();
-  }
-</script>
 </body>
 </html>

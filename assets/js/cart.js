@@ -32,6 +32,13 @@
   function count(){ return read().reduce((n,i)=>n+i.qty,0); }
   function subtotal(){ return read().reduce((n,i)=>n+i.qty*i.price,0); }
 
+  /* ---------- discount codes ---------- */
+  // Empty until the real 100-code list (60 at 15% off, 40 at 30% off) is
+  // ready -- paste them in as "CODE": percentOff, no logic changes needed.
+  const DISCOUNT_CODES = {};
+  let appliedDiscount = null; // { code, percent } | null
+  function discountAmount(sub){ return appliedDiscount ? sub * (appliedDiscount.percent / 100) : 0; }
+
   function open(){
     document.querySelector('.cart-drawer')?.classList.add('is-open');
     document.querySelector('.cart-overlay')?.classList.add('is-open');
@@ -109,12 +116,24 @@
     }
 
     const sub = subtotal();
+    const discount = discountAmount(sub);
+    // Free-shipping threshold checks the pre-discount subtotal -- otherwise
+    // stacking a big discount could flip already-qualified free shipping
+    // back to paid.
     const shipping = sub === 0 ? 0 : (sub >= 100 ? 0 : 8);
-    const total = sub + shipping;
+    const total = Math.max(0, sub - discount) + shipping;
     const subEl = document.querySelector('.checkout-subtotal .amount');
+    const discountRow = document.querySelector('.checkout-discount');
     const shipEl = document.querySelector('.checkout-shipping .amount');
     const totalEl = document.querySelector('.checkout-total .amount');
     if(subEl) subEl.textContent = `$${sub.toFixed(2)}`;
+    if(discountRow){
+      discountRow.hidden = !appliedDiscount;
+      if(appliedDiscount){
+        discountRow.querySelector('.discount-label').textContent = `Discount (${appliedDiscount.code})`;
+        discountRow.querySelector('.amount').textContent = `−$${discount.toFixed(2)}`;
+      }
+    }
     if(shipEl) shipEl.textContent = shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`;
     if(totalEl) totalEl.textContent = `$${total.toFixed(2)}`;
   }
@@ -128,6 +147,25 @@
     const checkoutForm = document.getElementById('checkout-form');
     const revealPaymentBtn = document.getElementById('reveal-payment-btn');
     const paymentSection = document.getElementById('checkout-payment');
+
+    const discountInput = document.getElementById('discount-code');
+    const discountApplyBtn = document.getElementById('discount-apply');
+    const discountMessage = document.getElementById('discount-message');
+    discountApplyBtn?.addEventListener('click', () => {
+      const code = discountInput.value.trim().toUpperCase();
+      if(!code) return;
+      const percent = DISCOUNT_CODES[code];
+      if(percent){
+        appliedDiscount = { code, percent };
+        discountMessage.textContent = `"${code}" applied — ${percent}% off.`;
+        discountMessage.classList.remove('is-error');
+        discountInput.value = '';
+      } else {
+        discountMessage.textContent = "That code doesn't look right.";
+        discountMessage.classList.add('is-error');
+      }
+      renderCheckout();
+    });
 
     revealPaymentBtn?.addEventListener('click', () => {
       if(!read().length) return;
@@ -169,6 +207,7 @@
       checkoutForm.closest('section').hidden = true;
       confirm.hidden = false;
       localStorage.removeItem(KEY);
+      appliedDiscount = null;
       render();
     });
   });
