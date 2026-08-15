@@ -383,8 +383,16 @@ body.vip-page .dark{ background:transparent; }
 @keyframes vip-welcome-pulse{ 0%,100%{ opacity:.6; transform:translate(-50%,-50%) scale(.92); } 50%{ opacity:1; transform:translate(-50%,-50%) scale(1.08); } }
 .vip-welcome__heart{
   position:relative; z-index:2; width:64px; height:auto; margin-bottom:.4rem;
-  filter:drop-shadow(0 0 18px rgba(255,255,255,.5));
-  animation:vip-welcome-pulse 4s ease-in-out infinite;
+  animation:vip-welcome-heart-pulse 2.2s ease-in-out infinite;
+}
+/* Own keyframe, not shared with .vip-welcome__glow above -- that one relies
+   on translate(-50%,-50%) to stay centered on its own absolute left:50%/
+   top:50% anchor. Reusing it here (previous version) baked that same
+   translate into a normal-flow, position:relative element with no anchor
+   to center on, silently shifting the heart up-left from where it belongs. */
+@keyframes vip-welcome-heart-pulse{
+  0%,100%{ transform:scale(.88); filter:drop-shadow(0 0 12px rgba(255,255,255,.35)); }
+  50%{ transform:scale(1.22); filter:drop-shadow(0 0 30px rgba(255,255,255,.9)); }
 }
 .vip-welcome .eyebrow{ position:relative; z-index:2; color:var(--gray); }
 .vip-welcome__headline{ position:relative; z-index:2; font-size:clamp(3rem,8vw,6.5rem); }
