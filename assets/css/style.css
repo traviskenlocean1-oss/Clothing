@@ -905,6 +905,7 @@ footer.site-footer{ padding:1.6rem var(--gutter) 2rem; }
 
 .order-totals{ display:flex; flex-direction:column; gap:.7rem; font-size:.9rem; }
 .order-totals .row{ display:flex; justify-content:space-between; color:var(--gray); }
+.order-totals .row[hidden]{ display:none; }
 .order-totals .row.checkout-discount{ color:var(--green); }
 .order-totals .row.total{
   font-size:1.15rem; font-weight:700; color:var(--black);
