@@ -993,3 +993,23 @@ footer.site-footer{ padding:1.6rem var(--gutter) 2rem; }
 }
 .vip-auth__ticket-note{ display:block; font-size:.76rem; color:var(--gray); }
 @media (max-width:480px){ .vip-auth__panel{ padding:1.8rem 1.4rem; } }
+
+/* ---------- cookie consent ---------- */
+.cookie-consent{
+  position:fixed; left:0; right:0; bottom:0; z-index:200;
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1.4rem;
+  padding:1.2rem var(--gutter);
+  background:var(--black); color:var(--white);
+  border-top:1px solid rgba(255,255,255,.12);
+  transform:translateY(100%);
+  transition:transform .5s var(--ease);
+}
+.cookie-consent.is-visible{ transform:translateY(0); }
+.cookie-consent__text{ font-size:.85rem; color:rgba(255,255,255,.8); max-width:44rem; margin:0; }
+.cookie-consent__actions{ display:flex; gap:.8rem; flex-shrink:0; }
+.cookie-consent__actions .btn{ padding:.75em 1.6em; font-size:.72rem; }
+.cookie-consent .btn:not(.btn-solid){ color:var(--white); }
+@media (max-width:640px){
+  .cookie-consent{ flex-direction:column; align-items:stretch; text-align:center; }
+  .cookie-consent__actions{ justify-content:center; }
+}

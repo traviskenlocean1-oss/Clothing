@@ -1,7 +1,7 @@
 // worker/gate.js
 import { signSession, verifySession } from './crypto.js';
 
-const SESSION_MAX_AGE = 60 * 60 * 24 * 60; // 60 days, in seconds
+const SESSION_MAX_AGE = 60 * 60 * 24 * 30; // 30 days, in seconds -- same constant covers admin logins too, since handleAdminLogin also calls sessionCookieHeader() with the remember=true default
 
 export function getCookie(request, name) {
   const header = request.headers.get('Cookie');
