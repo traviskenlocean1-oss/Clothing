@@ -289,7 +289,13 @@ body.vip-page .dark{ background:transparent; }
 }
 @media (max-width:800px){
   .vip-releases{ grid-template-columns:1fr; background:var(--cream); }
-  .vip-releases__media{ display:none; }
+  /* Was display:none -- the panel cluster was hidden entirely on mobile
+     instead of adapted. Stacks below the text as its own row; the min-width
+     floor on .vip-new__panel's clamp() (sized for the wide desktop column)
+     would otherwise dominate over 25cqi at mobile widths and overflow the
+     screen, so it gets a smaller floor/ceiling here too. */
+  .vip-releases__media{ min-height:240px; padding:1.5rem 0 3rem; }
+  .vip-new__panel{ width:clamp(72px,20cqi,140px); }
 }
 
 /* ---------- VIP New Arrivals panel cluster (angled real-product photos,
@@ -340,12 +346,22 @@ body.vip-page .dark{ background:transparent; }
   padding:.4em .8em; border:1px solid rgba(255,255,255,.25);
 }
 @media (max-width:1100px){
-  .vip-drops__grid{ flex-wrap:wrap; height:auto; }
+  /* max-height:1100px (set above for the desktop single-row-of-4 layout)
+     was still capping the wrapped/stacked mobile layout, squeezing 4 full-
+     width 3:4 cards -- which need ~2000px stacked -- down into a box far
+     too short for them instead of letting the column grow to fit. */
+  .vip-drops__grid{ flex-wrap:wrap; height:auto; max-height:none; }
   .vip-drops__card{ flex:1 1 50%; aspect-ratio:3/4; height:auto; }
   .vip-drops__grid:has(.vip-drops__card:hover) .vip-drops__card,
   .vip-drops__grid:has(.vip-drops__card:hover) .vip-drops__card:hover{ flex:1 1 50%; }
 }
-@media (max-width:700px){ .vip-drops__card{ flex-basis:100%; } }
+@media (max-width:700px){
+  /* The AI-model row goes single-column (all 4 shown, stacked). The
+     "Coming Soon" row stays a 2x2 grid rather than also collapsing to
+     one column -- more specific selector wins over the rule above. */
+  .vip-drops__card{ flex-basis:100%; }
+  .vip-drops__grid--mixed .vip-drops__card{ flex-basis:50%; }
+}
 
 /* Second tier of placeholders under the AI model row — 2 big + 2 small
    columns, same edge-to-edge no-gap treatment. */

@@ -273,13 +273,15 @@
   const scrubBar   = document.getElementById('scrub-bar');
   const heroContent = document.getElementById('hero-content');
 
-  // Mobile gets its own frame sequence shot natively in 9:16 — the desktop
-  // set is 16:9 footage, which has no clean crop against a portrait screen.
-  const isMobileHero = window.matchMedia('(max-width:768px)').matches;
-  const HERO_FRAME_COUNT = isMobileHero ? 152 : 141;
-  const heroFramePath = i => isMobileHero
-    ? `assets/img/hero-frames-mobile/frame-${String(i).padStart(3, '0')}.jpg`
-    : `assets/img/hero-frames/frame-${String(i).padStart(3, '0')}.jpg`;
+  // hero-frames-mobile/ was a separate 9:16-native shoot, but it predates
+  // the switch to the red/white neon treatment on the desktop set and was
+  // never regenerated to match -- it still shows the old blue/magenta neon.
+  // Using the corrected desktop footage (cover-cropped for portrait, same
+  // as every other aspect ratio this hero already handles) ships the right
+  // colors immediately; swap back to a purpose-shot portrait version if one
+  // gets made later with the current red/white treatment.
+  const HERO_FRAME_COUNT = 141;
+  const heroFramePath = i => `assets/img/hero-frames/frame-${String(i).padStart(3, '0')}.jpg`;
   const heroFrames = new Array(HERO_FRAME_COUNT + 1);
   // A frame is only usable once decode() resolves. Drawing an Image to canvas
   // before it's decoded forces the browser to decode it synchronously inside
