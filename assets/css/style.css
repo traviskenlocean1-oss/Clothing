@@ -255,7 +255,7 @@ body.vip-page{
 }
 body.vip-page .scrub-pin{ background:#050505; }
 body.vip-page .dark{ background:transparent; }
-.vip-scrub-wrap{ height:650vh; }
+.vip-scrub-wrap{ height:1000vh; }
 .vip-scrub-wrap .scrub-canvas{ filter:none; } /* footage is already color-locked — don't re-grade it */
 @media (max-width:768px){ .vip-scrub-wrap{ height:340vh; } }
 
