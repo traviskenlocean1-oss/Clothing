@@ -201,7 +201,8 @@
   const slug = new URLSearchParams(location.search).get('p') || Object.keys(window.PL_PRODUCTS)[0];
   const p = window.PL_PRODUCTS[slug] || window.PL_PRODUCTS[Object.keys(window.PL_PRODUCTS)[0]];
   const root = document.getElementById('product-root');
-  if (p.vip) {
+  const vipContext = p.vip || new URLSearchParams(location.search).get('vip') === '1';
+  if (vipContext) {
     document.body.classList.add('vip-product-page');
     root.classList.remove('on-cream');
     document.querySelector('.also-like').classList.remove('on-cream');
