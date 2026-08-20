@@ -58,6 +58,20 @@ window.PL_PRODUCTS = {
     tags: ['front-graphics','back-graphics','hearts','logo'],
     desc: 'Sand-cream tee with a clean distressed wordmark up front and an oversized stitched green heart on the back.'
   },
+  'stitched-heart-tee': {
+    name: 'Stitched Heart Tee', price: 58, type: 'tee', vip: true,
+    front: 'assets/img/products/stitched-heart-tee/front.png',
+    gallery: ['assets/img/vip-models/model-5.jpg'],
+    tags: ['front-graphics','hearts'],
+    desc: 'Vintage cream tee with a cracked, stitched heart graphic front and center. "Love Hurts, Forever Psychotic." VIP early access.'
+  },
+  'ember-monogram-tee': {
+    name: 'Ember Monogram Tee', price: 58, type: 'tee', vip: true,
+    front: 'assets/img/products/ember-monogram-tee/front.jpg',
+    gallery: ['assets/img/vip-models/model-6.jpg'],
+    tags: ['front-graphics','logo'],
+    desc: 'Vintage cream tee with a scorched lightning monogram and studded neckline. "Energy, Passion, Obsession." VIP early access.'
+  },
   'clean-wordmark-hoodie': {
     name: 'Clean Wordmark Hoodie', price: 88, type: 'hoodie',
     front: 'assets/img/products/clean-wordmark-hoodie/front.png',

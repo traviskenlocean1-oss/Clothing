@@ -163,7 +163,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="5.5" width="19" height="13" rx="3.5"/><path d="M10.5 9.5l5 2.5-5 2.5v-5z" fill="currentColor" stroke="none"/></svg>
         YouTube
       </a>
-      <a href="mailto:hello@psychoticlove.com">
+      <a href="mailto:psychoticlove.stizzy@gmail.com">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
         Email
       </a>
@@ -201,6 +201,12 @@
   const slug = new URLSearchParams(location.search).get('p') || Object.keys(window.PL_PRODUCTS)[0];
   const p = window.PL_PRODUCTS[slug] || window.PL_PRODUCTS[Object.keys(window.PL_PRODUCTS)[0]];
   const root = document.getElementById('product-root');
+  if (p.vip) {
+    document.body.classList.add('vip-product-page');
+    root.classList.remove('on-cream');
+    document.querySelector('.also-like').classList.remove('on-cream');
+    document.querySelector('.site-footer').classList.remove('on-cream');
+  }
   const primary = p.front || p.back;
   root.dataset.product = slug;
   root.dataset.name = p.name;
