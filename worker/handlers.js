@@ -4,6 +4,13 @@ import { getMemberByPhone, getMemberByUsername, getMemberByTicket, isUsernameTak
 import { sendOtp } from './sms.js';
 import { findAdminRole } from './admin.js';
 import { sessionCookieHeader, clearSessionCookieHeader, isAuthenticated } from './gate.js';
+import { PRODUCT_PRICES } from './products.js';
+
+// Empty until the real 100-code list is ready (mirrors assets/js/cart.js's
+// DISCOUNT_CODES) -- paste them in as "CODE": percentOff in both places.
+const DISCOUNT_CODES = {};
+
+const CLOVER_CHARGE_URL = 'https://scl.clover.com/v1/charges';
 
 const OTP_TTL_MS = 10 * 60 * 1000;
 
@@ -141,6 +148,82 @@ export async function handleLogout(request, env) {
 export async function handleStatus(request, env) {
   const auth = await isAuthenticated(request, env);
   return json({ authenticated: auth.authenticated });
+}
+
+function generateOrderNumber() {
+  return 'PL-' + Math.floor(100000 + Math.random() * 900000);
+}
+
+// Recomputes the charge amount server-side from item ids/qtys against
+// PRODUCT_PRICES -- never trusts a dollar amount sent by the browser, since
+// the cart itself lives in unauthenticated client-side localStorage. Mirrors
+// assets/js/cart.js's renderCheckout() math exactly (free shipping at/above
+// $100 subtotal, otherwise a flat $8).
+function computeTotalCents(items, discountCode) {
+  let subtotal = 0;
+  for (const item of items) {
+    const product = PRODUCT_PRICES[item.id];
+    if (!product) throw new Error(`Unknown product: ${item.id}`);
+    const qty = Math.max(1, Math.floor(Number(item.qty) || 1));
+    subtotal += product.price * qty;
+  }
+  const percent = discountCode ? DISCOUNT_CODES[String(discountCode).toUpperCase()] : null;
+  const discount = percent ? subtotal * (percent / 100) : 0;
+  const shipping = subtotal === 0 ? 0 : (subtotal >= 100 ? 0 : 8);
+  const total = Math.max(0, subtotal - discount) + shipping;
+  return Math.round(total * 100);
+}
+
+export async function handleCharge(request, env) {
+  if (!env.CLOVER_PRIVATE_KEY) {
+    return json({ error: 'Payments are not configured yet.' }, { status: 503 });
+  }
+  const body = await request.json();
+  const { token, items, discountCode } = body;
+  if (!token || !Array.isArray(items) || !items.length) {
+    return json({ error: 'Missing payment token or cart items.' }, { status: 400 });
+  }
+
+  let amount;
+  try {
+    amount = computeTotalCents(items, discountCode);
+  } catch (err) {
+    return json({ error: err.message }, { status: 400 });
+  }
+  if (amount <= 0) {
+    return json({ error: 'Order total must be greater than zero.' }, { status: 400 });
+  }
+
+  let cloverRes;
+  try {
+    cloverRes = await fetch(CLOVER_CHARGE_URL, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${env.CLOVER_PRIVATE_KEY}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'x-forwarded-for': request.headers.get('CF-Connecting-IP') || '0.0.0.0'
+      },
+      body: JSON.stringify({ amount, currency: 'usd', source: token })
+    });
+  } catch (err) {
+    console.error('[clover-charge] network error', err);
+    return json({ error: 'Could not reach the payment processor. Try again.' }, { status: 502 });
+  }
+
+  const result = await cloverRes.json().catch(() => null);
+  if (!cloverRes.ok || !result || result.status !== 'succeeded') {
+    console.error('[clover-charge] declined/failed', cloverRes.status, result);
+    const message = result?.message || result?.error?.message || 'Your card was declined. Try a different card.';
+    return json({ error: message }, { status: 402 });
+  }
+
+  return json({
+    ok: true,
+    orderNumber: generateOrderNumber(),
+    chargeId: result.id,
+    amount
+  });
 }
 
 export async function handleRecover(request, env) {

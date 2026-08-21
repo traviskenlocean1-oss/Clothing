@@ -38,6 +38,16 @@
   const DISCOUNT_CODES = {};
   let appliedDiscount = null; // { code, percent } | null
   function discountAmount(sub){ return appliedDiscount ? sub * (appliedDiscount.percent / 100) : 0; }
+  function appliedDiscountCode(){ return appliedDiscount ? appliedDiscount.code : null; }
+
+  // Called by checkout-payment.js after a real charge succeeds -- clears the
+  // cart and any applied discount together so neither leaks into the next
+  // order (mirrors what the old fake-instant-confirm handler used to do).
+  function completeOrder(){
+    localStorage.removeItem(KEY);
+    appliedDiscount = null;
+    render();
+  }
 
   function open(){
     document.querySelector('.cart-drawer')?.classList.add('is-open');
@@ -176,41 +186,11 @@
       paymentSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     });
 
-    /* ---------- card brand detection ---------- */
-    const CARD_BRAND_HTML = {
-      visa: '<span class="payment-badge payment-badge--visa">VISA</span>',
-      mastercard: '<span class="payment-badge payment-badge--mastercard"><span class="mc-circle red"></span><span class="mc-circle orange"></span></span>',
-      amex: '<span class="payment-badge payment-badge--amex">AMEX</span>',
-      discover: '<span class="payment-badge payment-badge--discover">DISCOVER</span>'
-    };
-    function detectCardBrand(digits){
-      if(/^4/.test(digits)) return 'visa';
-      if(/^(5[1-5]|2(2[2-9]\d|[3-6]\d\d|7[01]\d|720))/.test(digits)) return 'mastercard';
-      if(/^3[47]/.test(digits)) return 'amex';
-      if(/^(6011|65|64[4-9]|622(1[2-9]\d|[2-8]\d\d|9([01]\d|2[0-5])))/.test(digits)) return 'discover';
-      return null;
-    }
-    const cardNumberInput = document.getElementById('card-number');
-    const cardBrandIcon = document.getElementById('card-brand-icon');
-    cardNumberInput?.addEventListener('input', () => {
-      const digits = cardNumberInput.value.replace(/\D/g, '');
-      const brand = detectCardBrand(digits);
-      cardBrandIcon.innerHTML = brand ? CARD_BRAND_HTML[brand] : '';
-    });
-
-    checkoutForm?.addEventListener('submit', (e) => {
-      e.preventDefault();
-      if(!read().length) return;
-      const orderNumber = 'PL-' + Math.floor(100000 + Math.random() * 900000);
-      const confirm = document.querySelector('.checkout-confirm');
-      confirm.querySelector('[data-order-number]').textContent = `#${orderNumber}`;
-      checkoutForm.closest('section').hidden = true;
-      confirm.hidden = false;
-      localStorage.removeItem(KEY);
-      appliedDiscount = null;
-      render();
-    });
+    // Real submit handling (tokenize card, charge server-side) lives in
+    // assets/js/checkout-payment.js, loaded only on checkout.html -- card
+    // number/expiry/cvv are Clover's own hosted iframe fields now, not
+    // plain inputs this file can read.
   });
 
-  window.PLCart = { add, remove, setQty, count, subtotal, open, close, read };
+  window.PLCart = { add, remove, setQty, count, subtotal, open, close, read, appliedDiscountCode, completeOrder };
 })();

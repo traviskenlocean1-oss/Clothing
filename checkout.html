@@ -14,6 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Alex+Brush&family=Cormorant+Garamond:ital,wght@1,500&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
+<script src="https://checkout.clover.com/sdk.js"></script>
 <script>
 (function(){
   var rows = 2;
@@ -162,24 +163,26 @@
           <input type="text" id="card-name" name="card-name" placeholder="Name as shown on card" required disabled>
         </div>
         <div class="form-field" style="margin-top:1.2rem;">
-          <label for="card-number">Card Number</label>
-          <div class="card-number-wrap">
-            <input type="text" id="card-number" name="card-number" placeholder="1234 5678 9012 3456" inputmode="numeric" maxlength="19" required disabled>
-            <span class="card-number-brand" id="card-brand-icon" aria-hidden="true"></span>
-          </div>
+          <label>Card Number</label>
+          <div class="clover-field" id="clover-card-number"></div>
         </div>
         <div class="checkout-form__row" style="margin-top:1.2rem;">
           <div class="form-field">
-            <label for="card-expiry">Expiry</label>
-            <input type="text" id="card-expiry" name="card-expiry" placeholder="MM / YY" required disabled>
+            <label>Expiry</label>
+            <div class="clover-field" id="clover-card-date"></div>
           </div>
           <div class="form-field">
-            <label for="card-cvv">CVV</label>
-            <input type="text" id="card-cvv" name="card-cvv" placeholder="CVV" inputmode="numeric" maxlength="4" required disabled>
+            <label>CVV</label>
+            <div class="clover-field" id="clover-card-cvv"></div>
           </div>
         </div>
+        <div class="form-field" style="margin-top:1.2rem;">
+          <label>Billing Postal Code</label>
+          <div class="clover-field" id="clover-card-postal"></div>
+        </div>
+        <p class="checkout-payment-error" id="checkout-payment-error" hidden></p>
         <p class="checkout-consent">By placing this order, you agree to Psychotic Love's <a href="terms.html">Terms of Service</a> and <a href="privacy.html">Privacy Policy</a>, and authorize this card to be charged for the total shown above.</p>
-        <button type="submit" class="btn btn-solid" style="width:100%;margin-top:1.2rem;"><span>Finish Checkout</span></button>
+        <button type="submit" class="btn btn-solid" id="finish-checkout-btn" style="width:100%;margin-top:1.2rem;"><span>Finish Checkout</span></button>
       </div>
     </div>
 
@@ -190,7 +193,7 @@
   <div class="container" style="text-align:center;padding:6rem 0;">
     <span class="eyebrow">Order Confirmed</span>
     <h1 class="display" style="font-size:clamp(2.2rem,5vw,3.6rem);margin:1rem 0;">Thank You.</h1>
-    <p style="color:var(--gray);max-width:46ch;margin:0 auto 2rem;">Thank you for shopping with us at Psychotic Love. Your order <strong data-order-number></strong> has been placed — we'll be sending you an email about your order shortly. This is a demo storefront, so no real payment was processed.</p>
+    <p style="color:var(--gray);max-width:46ch;margin:0 auto 2rem;">Thank you for shopping with us at Psychotic Love. Your order <strong data-order-number></strong> has been placed — we'll be sending you an email about your order shortly.</p>
     <a href="shop.html" class="btn btn-dark"><span>Continue Shopping</span></a>
   </div>
 </section>
@@ -243,5 +246,6 @@
 <script src="assets/js/main.js"></script>
 <script src="assets/js/cookie-consent.js"></script>
 <script src="assets/js/analytics.js"></script>
+<script src="assets/js/checkout-payment.js"></script>
 </body>
 </html>
