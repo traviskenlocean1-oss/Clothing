@@ -28,3 +28,19 @@ export async function saveMember(env, member) {
     await env.VIP_MEMBERS.put(`ticket:${member.ticket}`, member.phone);
   }
 }
+
+// Discount-code redemption tracking -- a code's presence as a key means it's
+// already been used (dead), regardless of how many of the 200 batch codes
+// exist. Checked before every charge and written immediately after a
+// successful one (see worker/handlers.js's handleCharge).
+export async function isCodeRedeemed(env, code) {
+  const raw = await env.DISCOUNT_REDEMPTIONS.get(code.toUpperCase());
+  return raw !== null;
+}
+
+export async function markCodeRedeemed(env, code, orderNumber) {
+  await env.DISCOUNT_REDEMPTIONS.put(
+    code.toUpperCase(),
+    JSON.stringify({ orderNumber, redeemedAt: new Date().toISOString() })
+  );
+}

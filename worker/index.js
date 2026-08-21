@@ -2,7 +2,7 @@ import { isAuthenticated } from './gate.js';
 import {
   handleSignup, handleVerifyOtp, handleAdminLogin,
   handleLogin, handleLoginTicket, handleRecover, handleLogout, handleStatus,
-  handleCharge
+  handleCharge, handleValidateCode
 } from './handlers.js';
 
 // VIP-exclusive product slugs (must mirror the `vip: true` entries in
@@ -21,7 +21,8 @@ const POST_ROUTES = {
   '/api/vip/login-ticket': handleLoginTicket,
   '/api/vip/recover': handleRecover,
   '/api/vip/logout': handleLogout,
-  '/api/checkout/charge': handleCharge
+  '/api/checkout/charge': handleCharge,
+  '/api/checkout/validate-code': handleValidateCode
 };
 
 export default {

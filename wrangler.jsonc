@@ -17,6 +17,7 @@
   "assets": { "directory": ".", "binding": "ASSETS", "run_worker_first": ["/vip", "/vip.html", "/product", "/product.html"] },
   "compatibility_flags": ["nodejs_compat"],
   "kv_namespaces": [
-    { "binding": "VIP_MEMBERS", "id": "f940257ce27642caaf93e981d8316fd3", "preview_id": "a9c0dbb59bcb48a1b755d1915821bc87" }
+    { "binding": "VIP_MEMBERS", "id": "f940257ce27642caaf93e981d8316fd3", "preview_id": "a9c0dbb59bcb48a1b755d1915821bc87" },
+    { "binding": "DISCOUNT_REDEMPTIONS", "id": "84fe9d47fadd47a68443ea1a5c516066", "preview_id": "e7424c3466304bf3ad324c36b00fa144" }
   ]
 }

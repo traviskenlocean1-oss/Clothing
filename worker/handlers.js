@@ -1,16 +1,16 @@
 // worker/handlers.js
 import { hashPassword, verifyPassword, generateOtp, generateTicket, normalizePhone } from './crypto.js';
-import { getMemberByPhone, getMemberByUsername, getMemberByTicket, isUsernameTaken, saveMember } from './store.js';
+import { getMemberByPhone, getMemberByUsername, getMemberByTicket, isUsernameTaken, saveMember, isCodeRedeemed, markCodeRedeemed } from './store.js';
 import { sendOtp } from './sms.js';
 import { findAdminRole } from './admin.js';
 import { sessionCookieHeader, clearSessionCookieHeader, isAuthenticated } from './gate.js';
 import { PRODUCT_PRICES } from './products.js';
 
-// 200 unique single-batch codes, 15% off each -- must mirror
-// assets/js/cart.js's copy exactly. This is the copy that actually controls
-// the real charge amount; the client-side one only drives the checkout-page
-// preview. NOTE: no redemption tracking yet -- any of these 200 can be used
-// an unlimited number of times until that's built.
+// 200 unique single-batch codes, 15% off each -- this is the sole source of
+// truth (assets/js/cart.js has no copy of its own anymore; the "Apply"
+// button on checkout calls handleValidateCode below instead). Whether a
+// given code has already been redeemed lives separately in the
+// DISCOUNT_REDEMPTIONS KV namespace, checked by validateDiscountCode.
 const DISCOUNT_CODES = {
     'BROKENHEARTJE37': 15,
     'CHAOS6RPZ': 15,
@@ -358,12 +358,35 @@ function generateOrderNumber() {
   return 'PL-' + Math.floor(100000 + Math.random() * 900000);
 }
 
+// Looks up a code and confirms it hasn't already been redeemed (KV-backed --
+// see worker/store.js). Used both for the checkout page's "Apply" button
+// (a courtesy check) and, more importantly, inside handleCharge right
+// before a real charge is made, which is the check that actually matters.
+async function validateDiscountCode(env, rawCode) {
+  const code = String(rawCode).toUpperCase();
+  const percent = DISCOUNT_CODES[code];
+  if (!percent) return { valid: false, error: "That code doesn't look right." };
+  if (await isCodeRedeemed(env, code)) {
+    return { valid: false, error: 'That code has already been used.' };
+  }
+  return { valid: true, code, percent };
+}
+
+export async function handleValidateCode(request, env) {
+  const { code } = await request.json();
+  if (!code) return json({ valid: false, error: 'No code given.' }, { status: 400 });
+  const result = await validateDiscountCode(env, code);
+  return json(result);
+}
+
 // Recomputes the charge amount server-side from item ids/qtys against
 // PRODUCT_PRICES -- never trusts a dollar amount sent by the browser, since
 // the cart itself lives in unauthenticated client-side localStorage. Mirrors
 // assets/js/cart.js's renderCheckout() math exactly (free shipping at/above
-// $100 subtotal, otherwise a flat $8).
-function computeTotalCents(items, discountCode) {
+// $100 subtotal, otherwise a flat $8). `percent` is a discount already
+// resolved (and redemption-checked) by the caller -- this function just does
+// the arithmetic, it doesn't look anything up itself.
+function computeTotalCents(items, percent) {
   let subtotal = 0;
   for (const item of items) {
     const product = PRODUCT_PRICES[item.id];
@@ -371,7 +394,6 @@ function computeTotalCents(items, discountCode) {
     const qty = Math.max(1, Math.floor(Number(item.qty) || 1));
     subtotal += product.price * qty;
   }
-  const percent = discountCode ? DISCOUNT_CODES[String(discountCode).toUpperCase()] : null;
   const discount = percent ? subtotal * (percent / 100) : 0;
   const shipping = subtotal === 0 ? 0 : (subtotal >= 100 ? 0 : 8);
   const total = Math.max(0, subtotal - discount) + shipping;
@@ -388,9 +410,23 @@ export async function handleCharge(request, env) {
     return json({ error: 'Missing payment token or cart items.' }, { status: 400 });
   }
 
+  // Resolved once, up front -- reused for both the amount calculation and,
+  // after a successful charge, marking the code dead. A code sent by the
+  // browser that's unknown or already redeemed blocks the order outright
+  // rather than silently charging full price, since the customer believes
+  // they're getting a discount.
+  let discount = null;
+  if (discountCode) {
+    const result = await validateDiscountCode(env, discountCode);
+    if (!result.valid) {
+      return json({ error: result.error }, { status: 400 });
+    }
+    discount = result;
+  }
+
   let amount;
   try {
-    amount = computeTotalCents(items, discountCode);
+    amount = computeTotalCents(items, discount ? discount.percent : null);
   } catch (err) {
     return json({ error: err.message }, { status: 400 });
   }
@@ -422,9 +458,16 @@ export async function handleCharge(request, env) {
     return json({ error: message }, { status: 402 });
   }
 
+  const orderNumber = generateOrderNumber();
+  if (discount) {
+    // Only ever marked dead once the charge has actually succeeded -- a
+    // declined card or a network failure above must not burn the code.
+    await markCodeRedeemed(env, discount.code, orderNumber);
+  }
+
   return json({
     ok: true,
-    orderNumber: generateOrderNumber(),
+    orderNumber,
     chargeId: result.id,
     amount
   });
