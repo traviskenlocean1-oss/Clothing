@@ -922,8 +922,9 @@ body.vip-product-page .product-card__stars{ color:var(--white); }
    renders its own iframe inside rather than us controlling a real input. */
 .clover-field{
   border:1px solid rgba(0,0,0,.16); border-radius:6px; padding:.5em .8em;
-  background:var(--white); min-height:2.9em; transition:border-color .3s var(--ease);
+  background:var(--white); height:2.9em; overflow:hidden; transition:border-color .3s var(--ease);
 }
+.clover-field iframe{ height:100% !important; }
 .clover-field.CardInputStyle-focus{ border-color:var(--black); }
 .checkout-payment-error{
   color:#b3261e; font-size:.82rem; margin-top:1rem; padding:.8em 1em;
