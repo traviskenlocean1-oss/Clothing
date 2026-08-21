@@ -4,6 +4,14 @@ import {
   handleLogin, handleLoginTicket, handleRecover, handleLogout, handleStatus
 } from './handlers.js';
 
+// VIP-exclusive product slugs (must mirror the `vip: true` entries in
+// assets/js/products.js) -- kept as an explicit list here because the
+// Worker can't import that browser-facing file (it assigns to `window`,
+// not a module export), and the product page itself is a static asset
+// served with no server-side check unless a path is listed in
+// wrangler.jsonc's run_worker_first.
+const VIP_PRODUCT_SLUGS = new Set(['stitched-heart-tee', 'ember-monogram-tee']);
+
 const POST_ROUTES = {
   '/api/vip/signup': handleSignup,
   '/api/vip/verify-otp': handleVerifyOtp,
@@ -78,6 +86,26 @@ export default {
         return Response.redirect(new URL('/vip', url.origin), 307);
       }
       return env.ASSETS.fetch(new Request(new URL('/vip', url.origin), request));
+    }
+
+    // A VIP-exclusive product's page/photos/description shouldn't be reachable
+    // by anyone who hasn't signed up -- clicking the teaser on the homepage
+    // (or just guessing/bookmarking the URL) must bounce to the same sign-up
+    // gate as /vip, not quietly render the real page. Non-VIP products on
+    // this same product.html template are unaffected.
+    if (url.pathname === '/product' || url.pathname === '/product.html') {
+      const slug = url.searchParams.get('p');
+      if (slug && VIP_PRODUCT_SLUGS.has(slug)) {
+        try {
+          const auth = await isAuthenticated(request, env);
+          if (!auth.authenticated) {
+            return Response.redirect(new URL('/vip', url.origin), 307);
+          }
+        } catch (err) {
+          console.error('[vip-auth]', url.pathname, err);
+          return Response.redirect(new URL('/vip', url.origin), 307);
+        }
+      }
     }
 
     return env.ASSETS.fetch(request);
