@@ -6,12 +6,8 @@
    in worker/handlers.js (handleCharge), which is the only place the private
    key is ever used. */
 (function () {
-  // TODO: fill in the real Merchant ID from the Clover dashboard (the
-  // public key alone isn't enough to initialize the SDK). Everything below
-  // is wired and ready -- this is the one placeholder left before checkout
-  // can actually take a real card.
   const CLOVER_PUBLIC_KEY = 'da2e75fcbc1a7c4c9991fb9217f5762f';
-  const CLOVER_MERCHANT_ID = 'PASTE_MERCHANT_ID_HERE';
+  const CLOVER_MERCHANT_ID = '384045899992';
 
   const form = document.getElementById('checkout-form');
   const finishBtn = document.getElementById('finish-checkout-btn');
