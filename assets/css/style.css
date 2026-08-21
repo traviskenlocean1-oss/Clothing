@@ -335,13 +335,8 @@ body.vip-page .dark{ background:transparent; }
   position:relative; height:100%; overflow:hidden; background:#050505;
   flex:1; transition:flex .5s var(--ease);
 }
-/* Scoped to :not(--mixed) — this hover-grow was leaking into the "Coming
-   Soon" mixed row (big/small 2:1:1:2 cards), overriding its static flex
-   ratios and making the hovered card grow much wider than its box height,
-   which made a portrait model photo crop down to just head/shoulders via
-   object-fit:cover. The mixed row keeps its fixed proportions instead. */
-.vip-drops__grid:not(.vip-drops__grid--mixed):has(.vip-drops__card:hover) .vip-drops__card{ flex:.8; }
-.vip-drops__grid:not(.vip-drops__grid--mixed):has(.vip-drops__card:hover) .vip-drops__card:hover{ flex:1.8; }
+.vip-drops__grid:has(.vip-drops__card:hover) .vip-drops__card{ flex:.8; }
+.vip-drops__grid:has(.vip-drops__card:hover) .vip-drops__card:hover{ flex:1.8; }
 .vip-drops__card a{ display:block; width:100%; height:100%; }
 .vip-drops__card img{ width:100%; height:100%; object-fit:cover; object-position:top; display:block; }
 .vip-drops__tag{

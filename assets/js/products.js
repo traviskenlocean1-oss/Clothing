@@ -67,7 +67,7 @@ window.PL_PRODUCTS = {
   },
   'ember-monogram-tee': {
     name: 'Ember Monogram Tee', price: 58, type: 'tee', vip: true,
-    front: 'assets/img/products/ember-monogram-tee/front.png',
+    front: 'assets/img/products/ember-monogram-tee/front.jpg',
     gallery: ['assets/img/vip-models/model-6.jpg'],
     tags: ['front-graphics','logo'],
     desc: 'Vintage cream tee with a scorched lightning monogram and studded neckline. "Energy, Passion, Obsession." VIP early access.'
