@@ -383,7 +383,7 @@ export async function handleValidateCode(request, env) {
 // PRODUCT_PRICES -- never trusts a dollar amount sent by the browser, since
 // the cart itself lives in unauthenticated client-side localStorage. Mirrors
 // assets/js/cart.js's renderCheckout() math exactly (free shipping at/above
-// $100 subtotal, otherwise a flat $8). `percent` is a discount already
+// $100 subtotal, otherwise a flat $7). `percent` is a discount already
 // resolved (and redemption-checked) by the caller -- this function just does
 // the arithmetic, it doesn't look anything up itself.
 function computeTotalCents(items, percent) {
@@ -395,7 +395,7 @@ function computeTotalCents(items, percent) {
     subtotal += product.price * qty;
   }
   const discount = percent ? subtotal * (percent / 100) : 0;
-  const shipping = subtotal === 0 ? 0 : (subtotal >= 100 ? 0 : 8);
+  const shipping = subtotal === 0 ? 0 : (subtotal >= 100 ? 0 : 7);
   const total = Math.max(0, subtotal - discount) + shipping;
   return Math.round(total * 100);
 }

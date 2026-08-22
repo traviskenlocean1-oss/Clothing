@@ -83,7 +83,11 @@
 (function(){
   const grid = document.getElementById('product-grid');
   const stars = '&#9733;&#9733;&#9733;&#9733;&#9733;';
-  Object.entries(window.PL_PRODUCTS).forEach(([slug, p]) => {
+  // VIP-exclusive products (p.vip) never show here -- they're only on vip.html.
+  // lightning-monogram-tee is pulled off the regular shop pending a decision
+  // on how it's placed into the VIP page (not marked vip:true yet).
+  const SHOP_HIDDEN = new Set(['lightning-monogram-tee']);
+  Object.entries(window.PL_PRODUCTS).filter(([slug, p]) => !p.vip && !SHOP_HIDDEN.has(slug)).forEach(([slug, p]) => {
     const primary = p.front || p.back;
     const el = document.createElement('article');
     el.className = 'product-card reveal';

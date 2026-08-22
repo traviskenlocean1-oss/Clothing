@@ -118,7 +118,7 @@
     <div class="accordion">
       <div class="accordion-item">
         <button>Shipping <span>+</span></button>
-        <div class="accordion-item__panel"><div><p>Ships within 3&ndash;5 business days. Tracking sent by email the moment your order leaves the studio.</p></div></div>
+        <div class="accordion-item__panel"><div><p id="p-shipping-days">Ships within 3&ndash;5 business days. Tracking sent by email the moment your order leaves the studio.</p></div></div>
       </div>
       <div class="accordion-item">
         <button>Returns <span>+</span></button>
@@ -207,6 +207,7 @@
     root.classList.remove('on-cream');
     document.querySelector('.also-like').classList.remove('on-cream');
     document.querySelector('.site-footer').classList.remove('on-cream');
+    document.getElementById('p-shipping-days').textContent = 'Ships within 3–7 business days. Tracking sent by email the moment your order leaves the studio.';
   }
   const primary = p.front || p.back;
   root.dataset.product = slug;

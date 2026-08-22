@@ -357,7 +357,7 @@ body.vip-page .dark{ background:transparent; }
   .vip-drops__grid:has(.vip-drops__card:hover) .vip-drops__card:hover{ flex:1 1 50%; }
 }
 @media (max-width:700px){
-  /* The AI-model row goes single-column (all 4 shown, stacked). The
+  /* The AI-model row goes single-column (all cards shown, stacked). The
      "Coming Soon" row stays a 2x2 grid rather than also collapsing to
      one column -- more specific selector wins over the rule above. */
   .vip-drops__card{ flex-basis:100%; }

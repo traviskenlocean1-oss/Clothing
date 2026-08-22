@@ -133,7 +133,7 @@
     // Free-shipping threshold checks the pre-discount subtotal -- otherwise
     // stacking a big discount could flip already-qualified free shipping
     // back to paid.
-    const shipping = sub === 0 ? 0 : (sub >= 100 ? 0 : 8);
+    const shipping = sub === 0 ? 0 : (sub >= 100 ? 0 : 7);
     const total = Math.max(0, sub - discount) + shipping;
     const subEl = document.querySelector('.checkout-subtotal .amount');
     const discountRow = document.querySelector('.checkout-discount');
