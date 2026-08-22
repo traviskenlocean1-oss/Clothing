@@ -11,7 +11,7 @@ import {
 // not a module export), and the product page itself is a static asset
 // served with no server-side check unless a path is listed in
 // wrangler.jsonc's run_worker_first.
-const VIP_PRODUCT_SLUGS = new Set(['stitched-heart-tee', 'ember-monogram-tee']);
+const VIP_PRODUCT_SLUGS = new Set(['stitched-heart-tee', 'ember-monogram-tee', 'lightning-monogram-tee']);
 
 const POST_ROUTES = {
   '/api/vip/signup': handleSignup,

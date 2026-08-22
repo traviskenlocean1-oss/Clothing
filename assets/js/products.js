@@ -30,9 +30,10 @@ window.PL_PRODUCTS = {
     desc: 'Oversized purple tee with a cracked, stitched heart and lightning graphic front and back. "Built On Chaos, Driven By Purpose."'
   },
   'lightning-monogram-tee': {
-    name: 'Lightning Monogram Tee', price: 54, type: 'tee',
+    name: 'Lightning Monogram Tee', price: 54, type: 'tee', vip: true,
     front: 'assets/img/products/lightning-monogram-tee/front.jpg',
     back: 'assets/img/products/lightning-monogram-tee/back.jpg',
+    gallery: ['assets/img/vip-models/model-7.jpg'],
     tags: ['front-graphics','back-graphics','logo'],
     desc: 'Olive heavyweight tee with a lightning-struck monogram and studded neckline. Distressed spray-paint monogram repeats on the back.'
   },
