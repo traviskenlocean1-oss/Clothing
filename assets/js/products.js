@@ -22,7 +22,7 @@ window.PL_PRODUCTS = {
     desc: 'Pullover hoodie with rhinestone flame sleeves and an oversized stitched heart graphic, "Love Hurts, Psychotic Forever."'
   },
   'chaos-heart-tee': {
-    name: 'Chaos Heart Tee', price: 58, type: 'tee',
+    name: 'Chaos Heart Tee', price: 58, type: 'tee', vip: true,
     front: 'assets/img/products/chaos-heart-tee/front.png',
     back: 'assets/img/products/chaos-heart-tee/back.jpg',
     gallery: ['assets/img/products/chaos-heart-tee/extra-1.jpg', 'assets/img/vip-models/model-3.jpg'],
