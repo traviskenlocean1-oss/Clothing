@@ -1,25 +1,25 @@
 /* Psychotic Love — shared product data (single source, used by shop grid + product page) */
 window.PL_PRODUCTS = {
   'love-hurts-sweatpants': {
-    name: 'Love Hurts Flame Sweatpants', price: 72, type: 'sweatpants',
+    name: 'Love Hurts Flame Sweatpants', price: 60, type: 'sweatpants',
     front: 'assets/img/products/love-hurts-sweatpants/front.png',
     back: 'assets/img/products/love-hurts-sweatpants/back.png',
     tags: ['front-graphics','back-graphics','hearts'],
     desc: 'Wide-leg heavyweight sweatpants with a rhinestone flame running up each leg and a stitched heart front and center. "Psychotic Forever" on the back.'
   },
   'flame-zip-hoodie': {
-    name: 'Flame Sleeve Zip Hoodie', price: 92, type: 'hoodie',
+    name: 'Flame Sleeve Zip Hoodie', price: 60, type: 'hoodie', vip: true,
     front: 'assets/img/products/flame-zip-hoodie/front.png',
     gallery: ['assets/img/vip-models/model-1.jpg'],
     tags: ['front-graphics','hearts','hoodies'],
-    desc: 'Zip hoodie with rhinestone flame sleeves and a bejeweled dripping heart pocket up front.'
+    desc: 'Zip hoodie with rhinestone flame sleeves and a bejeweled dripping heart pocket up front. VIP early access.'
   },
   'love-hurts-hoodie': {
-    name: 'Love Hurts Hoodie', price: 92, type: 'hoodie',
+    name: 'Love Hurts Hoodie', price: 92, type: 'hoodie', vip: true,
     front: 'assets/img/products/love-hurts-hoodie/front.png',
     gallery: ['assets/img/vip-models/model-2.jpg'],
     tags: ['front-graphics','hearts','hoodies'],
-    desc: 'Pullover hoodie with rhinestone flame sleeves and an oversized stitched heart graphic, "Love Hurts, Psychotic Forever."'
+    desc: 'Pullover hoodie with rhinestone flame sleeves and an oversized stitched heart graphic, "Love Hurts, Psychotic Forever." VIP early access.'
   },
   'chaos-heart-tee': {
     name: 'Chaos Heart Tee', price: 58, type: 'tee', vip: true,
@@ -38,14 +38,14 @@ window.PL_PRODUCTS = {
     desc: 'Olive heavyweight tee with a lightning-struck monogram and studded neckline. Distressed spray-paint monogram repeats on the back.'
   },
   'cream-heart-tee': {
-    name: 'Cream Heart Tee', price: 50, type: 'tee',
+    name: 'Cream Heart Tee', price: 52.99, type: 'tee',
     front: 'assets/img/products/cream-heart-tee/front.png',
     gallery: ['assets/img/vip-models/model-4.jpg'],
     tags: ['front-graphics','hearts'],
     desc: 'Vintage cream tee with a distressed wordmark and stitched heart corner hit up front.'
   },
   'gray-wordmark-heart-tee': {
-    name: 'Gray Wordmark Heart Tee', price: 48, type: 'tee',
+    name: 'Gray Wordmark Heart Tee', price: 52.99, type: 'tee',
     front: 'assets/img/products/wordmark-heart-tee/extra-1.jpg',
     back: 'assets/img/products/wordmark-heart-tee/back.jpg',
     gallery: ['assets/img/products/wordmark-heart-tee/extra-2.jpg'],
@@ -53,7 +53,7 @@ window.PL_PRODUCTS = {
     desc: 'Charcoal acid-wash tee — clean wordmark up front, an oversized dripping stitched heart across the back.'
   },
   'wordmark-only-tee': {
-    name: 'Wordmark Tee', price: 46, type: 'tee',
+    name: 'Wordmark Tee', price: 52.99, type: 'tee',
     front: 'assets/img/products/wordmark-only-tee/front.png',
     back: 'assets/img/products/wordmark-only-tee/back.png',
     tags: ['front-graphics','back-graphics','hearts','logo'],
