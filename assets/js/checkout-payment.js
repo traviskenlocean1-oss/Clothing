@@ -80,8 +80,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           token: tokenResult.token,
-          items,
-          discountCode: window.PLCart ? window.PLCart.appliedDiscountCode() : null
+          items
         })
       });
       const result = await res.json();

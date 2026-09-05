@@ -1,16 +1,15 @@
 // worker/handlers.js
 import { hashPassword, verifyPassword, generateOtp, generateTicket, normalizePhone } from './crypto.js';
-import { getMemberByPhone, getMemberByUsername, getMemberByTicket, isUsernameTaken, saveMember, isCodeRedeemed, markCodeRedeemed } from './store.js';
+import { getMemberByPhone, getMemberByUsername, getMemberByTicket, isUsernameTaken, saveMember, isCodeRedeemed, getEarlyOrderCount, incrementEarlyOrderCount } from './store.js';
 import { sendOtp } from './sms.js';
 import { findAdminRole } from './admin.js';
 import { sessionCookieHeader, clearSessionCookieHeader, isAuthenticated } from './gate.js';
 import { PRODUCT_PRICES } from './products.js';
 
-// 200 unique single-batch codes, 15% off each -- this is the sole source of
-// truth (assets/js/cart.js has no copy of its own anymore; the "Apply"
-// button on checkout calls handleValidateCode below instead). Whether a
-// given code has already been redeemed lives separately in the
-// DISCOUNT_REDEMPTIONS KV namespace, checked by validateDiscountCode.
+// Inactive as of 2026-09-05 -- replaced by the automatic first-80-orders
+// discount (see EARLY_ORDER_LIMIT below). Left in place rather than deleted
+// since Travis said "for now," not permanently; nothing routes to
+// validateDiscountCode/handleValidateCode anymore, so this data is inert.
 const DISCOUNT_CODES = {
     'BROKENHEARTJE37': 15,
     'CHAOS6RPZ': 15,
@@ -379,13 +378,25 @@ export async function handleValidateCode(request, env) {
   return json(result);
 }
 
+// First 80 real paid orders get 15% off automatically, no code -- replaces
+// the old promo-code system (2026-09-05). Checkout calls this to show the
+// discount before charging; handleCharge re-checks the live count itself
+// right before charging, since that's the check that actually matters.
+const EARLY_ORDER_LIMIT = 80;
+const EARLY_ORDER_PERCENT = 15;
+
+export async function handleEarlyDiscountStatus(request, env) {
+  const count = await getEarlyOrderCount(env);
+  const active = count < EARLY_ORDER_LIMIT;
+  return json({ active, percent: EARLY_ORDER_PERCENT, remaining: Math.max(0, EARLY_ORDER_LIMIT - count) });
+}
+
 // Recomputes the charge amount server-side from item ids/qtys against
 // PRODUCT_PRICES -- never trusts a dollar amount sent by the browser, since
 // the cart itself lives in unauthenticated client-side localStorage. Mirrors
 // assets/js/cart.js's renderCheckout() math exactly (free shipping at/above
-// $100 subtotal, otherwise a flat $7). `percent` is a discount already
-// resolved (and redemption-checked) by the caller -- this function just does
-// the arithmetic, it doesn't look anything up itself.
+// $100 subtotal, otherwise a flat $7). `percent` is the early-order discount,
+// already resolved by the caller -- this function just does the arithmetic.
 function computeTotalCents(items, percent) {
   let subtotal = 0;
   for (const item of items) {
@@ -405,28 +416,19 @@ export async function handleCharge(request, env) {
     return json({ error: 'Payments are not configured yet.' }, { status: 503 });
   }
   const body = await request.json();
-  const { token, items, discountCode } = body;
+  const { token, items } = body;
   if (!token || !Array.isArray(items) || !items.length) {
     return json({ error: 'Missing payment token or cart items.' }, { status: 400 });
   }
 
-  // Resolved once, up front -- reused for both the amount calculation and,
-  // after a successful charge, marking the code dead. A code sent by the
-  // browser that's unknown or already redeemed blocks the order outright
-  // rather than silently charging full price, since the customer believes
-  // they're getting a discount.
-  let discount = null;
-  if (discountCode) {
-    const result = await validateDiscountCode(env, discountCode);
-    if (!result.valid) {
-      return json({ error: result.error }, { status: 400 });
-    }
-    discount = result;
-  }
+  // Live count checked right before charging -- this, not the status the
+  // browser saw earlier, is what actually decides whether this order gets
+  // the discount (never trust a discount claim made by the client).
+  const earlyOrderApplies = (await getEarlyOrderCount(env)) < EARLY_ORDER_LIMIT;
 
   let amount;
   try {
-    amount = computeTotalCents(items, discount ? discount.percent : null);
+    amount = computeTotalCents(items, earlyOrderApplies ? EARLY_ORDER_PERCENT : null);
   } catch (err) {
     return json({ error: err.message }, { status: 400 });
   }
@@ -459,17 +461,18 @@ export async function handleCharge(request, env) {
   }
 
   const orderNumber = generateOrderNumber();
-  if (discount) {
-    // Only ever marked dead once the charge has actually succeeded -- a
-    // declined card or a network failure above must not burn the code.
-    await markCodeRedeemed(env, discount.code, orderNumber);
+  if (earlyOrderApplies) {
+    // Only ever incremented once the charge has actually succeeded -- a
+    // declined card or a network failure above must not consume a slot.
+    await incrementEarlyOrderCount(env);
   }
 
   return json({
     ok: true,
     orderNumber,
     chargeId: result.id,
-    amount
+    amount,
+    discountApplied: earlyOrderApplies
   });
 }
 

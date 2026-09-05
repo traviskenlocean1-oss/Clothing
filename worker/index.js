@@ -2,7 +2,7 @@ import { isAuthenticated } from './gate.js';
 import {
   handleSignup, handleVerifyOtp, handleAdminLogin,
   handleLogin, handleLoginTicket, handleRecover, handleLogout, handleStatus,
-  handleCharge, handleValidateCode
+  handleCharge, handleEarlyDiscountStatus
 } from './handlers.js';
 
 // VIP-exclusive product slugs (must mirror the `vip: true` entries in
@@ -21,8 +21,7 @@ const POST_ROUTES = {
   '/api/vip/login-ticket': handleLoginTicket,
   '/api/vip/recover': handleRecover,
   '/api/vip/logout': handleLogout,
-  '/api/checkout/charge': handleCharge,
-  '/api/checkout/validate-code': handleValidateCode
+  '/api/checkout/charge': handleCharge
 };
 
 export default {
@@ -41,6 +40,18 @@ export default {
         return await handleStatus(request, env);
       } catch (err) {
         console.error('[vip-auth]', url.pathname, err);
+        return new Response(JSON.stringify({ error: 'Something went wrong. Try again.' }), {
+          status: 500,
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
+    if (request.method === 'GET' && url.pathname === '/api/checkout/early-discount-status') {
+      try {
+        return await handleEarlyDiscountStatus(request, env);
+      } catch (err) {
+        console.error('[checkout]', url.pathname, err);
         return new Response(JSON.stringify({ error: 'Something went wrong. Try again.' }), {
           status: 500,
           headers: { 'Content-Type': 'application/json' }

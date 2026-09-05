@@ -44,3 +44,21 @@ export async function markCodeRedeemed(env, code, orderNumber) {
     JSON.stringify({ orderNumber, redeemedAt: new Date().toISOString() })
   );
 }
+
+// Launch discount: automatic 15% off the first 80 real paid orders, no code
+// needed -- replaces the old 200-single-use-code system (2026-09-05). Reuses
+// the DISCOUNT_REDEMPTIONS namespace with one reserved counter key. KV has
+// no atomic increment, so two charges completing in the same instant could
+// both read the same count and both qualify -- an acceptable risk at this
+// store's order volume, not worth a Durable Object for.
+const EARLY_ORDER_COUNTER_KEY = '__early_order_count__';
+
+export async function getEarlyOrderCount(env) {
+  const raw = await env.DISCOUNT_REDEMPTIONS.get(EARLY_ORDER_COUNTER_KEY);
+  return raw ? Number(raw) : 0;
+}
+
+export async function incrementEarlyOrderCount(env) {
+  const count = await getEarlyOrderCount(env);
+  await env.DISCOUNT_REDEMPTIONS.put(EARLY_ORDER_COUNTER_KEY, String(count + 1));
+}

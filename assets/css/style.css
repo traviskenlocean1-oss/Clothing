@@ -937,15 +937,6 @@ body.vip-product-page .product-card__stars{ color:var(--white); }
 .order-item__meta .opts{ font-size:.76rem; color:var(--gray); margin-top:.2rem; }
 .order-item__price{ font-size:.88rem; font-weight:600; white-space:nowrap; }
 
-.discount-form{ display:flex; gap:.6rem; margin:1.2rem 0; }
-.discount-form input{
-  flex:1; padding:.75em 1em; font-size:.85rem;
-  border:1px solid rgba(0,0,0,.15); border-radius:8px; font-family:var(--font-body);
-}
-.discount-form input:focus{ outline:none; border-color:var(--black); }
-.discount-form .btn{ padding:.75em 1.4em; font-size:.72rem; flex-shrink:0; }
-.discount-message{ font-size:.78rem; color:var(--green); min-height:1.1em; margin:-.6rem 0 .8rem; }
-.discount-message.is-error{ color:#c0392b; }
 
 .order-totals{ display:flex; flex-direction:column; gap:.7rem; font-size:.9rem; }
 .order-totals .row{ display:flex; justify-content:space-between; color:var(--gray); }

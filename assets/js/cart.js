@@ -32,23 +32,19 @@
   function count(){ return read().reduce((n,i)=>n+i.qty,0); }
   function subtotal(){ return read().reduce((n,i)=>n+i.qty*i.price,0); }
 
-  /* ---------- discount codes ---------- */
-  // No local code list anymore -- the "Apply" button calls the server
-  // (POST /api/checkout/validate-code), which is also the sole source of
-  // truth checked again at charge time. Keeping codes/redemption state only
-  // server-side avoids exactly the kind of drift the old two-copy setup
-  // risked, and lets redemption actually be enforced (see worker/store.js's
-  // DISCOUNT_REDEMPTIONS KV).
-  let appliedDiscount = null; // { code, percent } | null
-  function discountAmount(sub){ return appliedDiscount ? sub * (appliedDiscount.percent / 100) : 0; }
-  function appliedDiscountCode(){ return appliedDiscount ? appliedDiscount.code : null; }
+  /* ---------- early-order discount (2026-09-05, replaces promo codes) ---------- */
+  // Automatic 15% off the first 80 real paid orders, no code needed. This
+  // flag is just what the checkout page shows the customer -- the server
+  // re-checks the live count itself right before charging (see
+  // worker/handlers.js's handleCharge), so this can't be spoofed into a
+  // discount that isn't real.
+  let earlyDiscountPercent = 0; // 0 = inactive; set from the server's own status response, never guessed client-side
+  function discountAmount(sub){ return earlyDiscountPercent ? sub * (earlyDiscountPercent / 100) : 0; }
 
   // Called by checkout-payment.js after a real charge succeeds -- clears the
-  // cart and any applied discount together so neither leaks into the next
-  // order (mirrors what the old fake-instant-confirm handler used to do).
+  // cart (mirrors what the old fake-instant-confirm handler used to do).
   function completeOrder(){
     localStorage.removeItem(KEY);
-    appliedDiscount = null;
     render();
   }
 
@@ -141,9 +137,9 @@
     const totalEl = document.querySelector('.checkout-total .amount');
     if(subEl) subEl.textContent = `$${sub.toFixed(2)}`;
     if(discountRow){
-      discountRow.hidden = !appliedDiscount;
-      if(appliedDiscount){
-        discountRow.querySelector('.discount-label').textContent = `Discount (${appliedDiscount.code})`;
+      discountRow.hidden = !earlyDiscountPercent;
+      if(earlyDiscountPercent){
+        discountRow.querySelector('.discount-label').textContent = `First 80 Orders — ${earlyDiscountPercent}% Off`;
         discountRow.querySelector('.amount').textContent = `−$${discount.toFixed(2)}`;
       }
     }
@@ -161,36 +157,22 @@
     const revealPaymentBtn = document.getElementById('reveal-payment-btn');
     const paymentSection = document.getElementById('checkout-payment');
 
-    const discountInput = document.getElementById('discount-code');
-    const discountApplyBtn = document.getElementById('discount-apply');
-    const discountMessage = document.getElementById('discount-message');
-    discountApplyBtn?.addEventListener('click', async () => {
-      const code = discountInput.value.trim().toUpperCase();
-      if(!code) return;
-      discountApplyBtn.disabled = true;
-      try {
-        const res = await fetch('/api/checkout/validate-code', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ code })
-        });
-        const result = await res.json();
-        if(result.valid){
-          appliedDiscount = { code: result.code, percent: result.percent };
-          discountMessage.textContent = `"${result.code}" applied — ${result.percent}% off.`;
-          discountMessage.classList.remove('is-error');
-          discountInput.value = '';
-        } else {
-          discountMessage.textContent = result.error || "That code doesn't look right.";
-          discountMessage.classList.add('is-error');
-        }
-      } catch(e) {
-        discountMessage.textContent = "Couldn't check that code right now. Try again.";
-        discountMessage.classList.add('is-error');
-      }
-      discountApplyBtn.disabled = false;
-      renderCheckout();
-    });
+    // Checks whether the first-80-orders discount is still live and shows it
+    // automatically -- no code for the customer to enter. If the fetch fails
+    // for any reason, the discount just doesn't show; handleCharge still
+    // re-checks the real count itself, so nothing here can under- or
+    // over-charge anyone either way.
+    if(document.getElementById('checkout-payment')){
+      fetch('/api/checkout/early-discount-status')
+        .then(res => res.json())
+        .then(status => {
+          if(status.active){
+            earlyDiscountPercent = status.percent;
+            renderCheckout();
+          }
+        })
+        .catch(() => {});
+    }
 
     revealPaymentBtn?.addEventListener('click', () => {
       if(!read().length) return;
@@ -207,5 +189,5 @@
     // plain inputs this file can read.
   });
 
-  window.PLCart = { add, remove, setQty, count, subtotal, open, close, read, appliedDiscountCode, completeOrder };
+  window.PLCart = { add, remove, setQty, count, subtotal, open, close, read, completeOrder };
 })();
