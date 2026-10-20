@@ -216,6 +216,7 @@ const DISCOUNT_CODES = {
 const CLOVER_CHARGE_URL = 'https://scl.clover.com/v1/charges';
 
 const OTP_TTL_MS = 10 * 60 * 1000;
+const OTP_MAX_ATTEMPTS = 5;
 
 export function json(data, init = {}) {
   return new Response(JSON.stringify(data), {
@@ -295,6 +296,17 @@ export async function handleVerifyOtp(request, env) {
     return json({ error: 'That code expired. Request a new one.' }, { status: 410 });
   }
   if (member.otp !== code) {
+    // Cap wrong guesses per code so a bot can't walk through every 6-digit
+    // combination; after the cap the code is burned and a new one is needed.
+    member.otpAttempts = (member.otpAttempts || 0) + 1;
+    if (member.otpAttempts >= OTP_MAX_ATTEMPTS) {
+      member.otp = null;
+      member.otpExpiry = null;
+      member.otpAttempts = 0;
+      await saveMember(env, member);
+      return json({ error: 'Too many wrong codes. Request a new one.' }, { status: 429 });
+    }
+    await saveMember(env, member);
     return json({ error: "That code doesn't match." }, { status: 401 });
   }
   return await completeVerification(env, phone);

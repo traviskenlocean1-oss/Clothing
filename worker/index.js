@@ -60,6 +60,21 @@ export default {
     }
 
     if (request.method === 'POST' && POST_ROUTES[url.pathname]) {
+      // Per-IP attempt limits (Cloudflare Workers rate-limit bindings in
+      // wrangler.jsonc). Stops card-testing bots on checkout and password /
+      // code guessing on the VIP routes. Bindings are absent in unit tests.
+      const limiter = url.pathname === '/api/checkout/charge' ? env.RL_CHARGE
+        : url.pathname === '/api/vip/logout' ? null : env.RL_AUTH;
+      if (limiter) {
+        const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+        const { success } = await limiter.limit({ key: ip + ':' + url.pathname });
+        if (!success) {
+          return new Response(JSON.stringify({ error: 'Too many attempts. Wait a minute and try again.' }), {
+            status: 429,
+            headers: { 'Content-Type': 'application/json', 'Retry-After': '60' }
+          });
+        }
+      }
       try {
         return await POST_ROUTES[url.pathname](request, env);
       } catch (err) {
